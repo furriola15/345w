@@ -1,0 +1,95 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Cita
+ *
+ * @ORM\Table(name="cita")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CitaRepository")
+ */
+class Cita
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=255)
+     */
+    private $nombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="apellido", type="string", length=255)
+     */
+    private $apellido;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telefono", type="string", length=255)
+     */
+    private $telefono;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mail", type="string", length=255)
+     */
+    private $mail;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="precio", type="float")
+     */
+    private $precio;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="descuento", type="float")
+     */
+    private $descuento;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha", type="date")
+     */
+    private $fecha;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="alta", type="date")
+     */
+    private $alta;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="hora", type="float")
+     */
+    private $hora;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Post")
+     * @ORM\JoinColumn(name="post_id", referencedColumnName="id", nullable = true)
+     */
+    private $post_id;
+    
+
+
+}

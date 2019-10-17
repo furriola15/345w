@@ -1,0 +1,137 @@
+<div class="col-md-12">
+    <p class="ptext">
+        This organization is working on
+        {{record.t_acts}}
+        diferent activities. 
+        {{record.t_departaments}}
+        departments or provinces and
+        {{record.t_municipios}}
+        district, municipalities or cantones are being covered.
+    </p>
+</div>
+
+<div class="col-md-12">
+<div id="accordion">
+    {% for j,act in records %}
+        
+            <div class="card">
+                <div class="card-header {{j == 0 ? 'card-act-actives':''}}">
+                    <a class="card-link color-black " data-toggle="collapse" href="#collapse{{act.id}}">
+                        {{j+1}}.
+                        {{act.actividad|title}}
+                    </a>
+                </div>
+                <div id="collapse{{act.id}}" class="collapse {{j == 0 ? 'show':''}}" data-parent="#accordion">
+                    <div class="card-body">
+                        <table class="table-sm table-striped tablesacts" id="tableact{{act.id}}">
+                            <thead>
+                                <tr class="whoclass">
+                                    <th>ID</th>
+                                    {% if "financed" in campos %}
+                                        <th>ORG. FINANCED</th>
+                                    {% endif %}
+                                    {% if "toficina_id" in campos %}
+                                        <th>TYPE OF PRESENCE</th>
+                                    {% endif %}
+                                    {% if "departamento" in campos %}
+                                        <th data-name="dropdown3" id="departamentoth">ADMIN 1</th>
+                                    {% endif %}
+                                    {% if "municipio" in campos %}
+                                        <th data-name="dropdown4" id="municipioth">ADMIN 2</th>
+                                    {% endif %}
+
+                                    {% if "coverage_id" in campos %}
+                                        <th>COUNTRY COVERAGE</th>
+                                    {% endif %}
+
+                                    {% if "dini" in campos %}
+                                        <th width="80">STATUS</th>
+                                    {% endif %}
+
+                                    {% if "detalle" in campos %}
+                                        <th>ACTIVITY DETAIL</th>
+                                    {% endif %}
+
+
+                                    {% if "recurso_id" in campos %}
+                                        <th>RESOURCE</th>
+                                        <th>QUANTITY</th>
+                                        <th>UNIT</th>
+                                    {% endif %}
+                                    {% if "atendidas" in campos %}
+                                        <th>REACHED</th>
+                                    {% endif %}
+
+
+                                </tr>
+
+
+                            </thead>
+
+                            <tbody>
+
+                                {% for k,item in act.places %}
+                                    <tr id="tr-record-{{item.id}}" title="Last update: {{item.fecha_modifica|date('d/m/Y')}}">
+                                        <td align="center" width="50">
+                                            {% if project in app.user.projects %}
+                                                <a class="btn btn-danger btn-sm delete-record" data-option="0" href="#" role="button" onclick="javascript:return false;" data-id="{{item.id}}" data-org="{{record.o_id}}">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                        {% if "financed" in campos %}
+                                            <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" data-org="{{record.o_id}}">
+                                                {{ item.financed }}
+                                            </td>
+                                        {% endif %}
+
+                                        {% if "toficina_id" in campos %}
+                                            <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" data-org="{{record.o_id}}">{{item.toficina}}</td>
+                                        {% endif %}
+                                        {% if "departamento" in campos %}
+                                            <td class="{{ project in app.user.projects ? 'add-record':'' }} departamentotd" data-id="{{item.id}}" data-org="{{record.o_id}}">
+                                                {{ item.departamento }}
+                                            </td>
+                                        {% endif %}
+                                        {% if "municipio" in campos %}
+                                            <td class="{{ project in app.user.projects ? 'add-record':'' }} municipiotd" data-id="{{item.id}}" data-org="{{record.o_id}}">
+                                                {{ item.municipio }}
+                                            </td>
+                                        {% endif %}
+                                        {% if "coverage_id" in campos %}
+                                            <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" data-org="{{record.o_id}}">{{item.coverage}} </td>
+                                        {% endif %}
+
+                                        {% if "dini" in campos %}
+                                            <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" width="100" data-org="{{record.o_id}}">{{item.estado}}</td>
+                                        {% endif %}
+                                
+                                        {% if "detalle" in campos %}
+                                            <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" width="300" style="width: 350px important!; " data-org="{{record.o_id}}">{{item.detalle|slice(0,80)}}...</td>
+                                        {% endif %}
+                                        {% if "recurso_id" in campos %}
+                                            <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" data-org="{{record.o_id}}">{{item.recurso}}</td>
+                                            <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" data-org="{{record.o_id}}">{{item.cantidad|number_format(0,'.',',')}}</td>
+                                            <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" data-org="{{record.o_id}}">{{item.unidad}}</td>
+                                        {% endif %}
+                                        {% if "atendidas" in campos %}
+                                            <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" data-org="{{record.o_id}}">{{item.atendidas}}</td>
+                                        {% endif %}
+
+                                    </tr>
+                                {% endfor %}
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        
+
+
+    {% endfor %}
+    </div>
+</div>

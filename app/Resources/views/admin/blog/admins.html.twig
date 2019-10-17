@@ -1,0 +1,24 @@
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="150">Admin 2</th>
+                {% for item in sectores %}
+                    <th scope="col">
+                        <div align="center"><img src="{{asset('images/sectors/')}}{{item.id}}.png" style="width: 15px;"></div>
+                    </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for k,item in items %}
+                <tr class="tr-pais" data-id="{{item.id}}">
+                    <td>{{ item.nombre }}</td>
+                    {% for sect in sectores %}
+                        <td data-level="municipio" data-sector="{{sect.id}}" data-id="{{item.id}}" data-org="{{org}}" class="tdselection"></td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+

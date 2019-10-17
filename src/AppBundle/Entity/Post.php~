@@ -1,0 +1,156 @@
+<?php
+
+/*
+ * This file is part of the Symfony package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace AppBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\PostRepository")
+ * @ORM\Table(name="post")
+ *
+ * Defines the properties of the Post entity to represent the blog posts.
+ *
+ * See https://symfony.com/doc/current/book/doctrine.html#creating-an-entity-class
+ *
+ * Tip: if you have an existing database, you can generate these entity class automatically.
+ * See https://symfony.com/doc/current/cookbook/doctrine/reverse_engineering.html
+ *
+ * @author Ryan Weaver <weaverryan@gmail.com>
+ * @author Javier Eguiluz <javier.eguiluz@gmail.com>
+ * @author Yonel Ceruto <yonelceruto@gmail.com>
+ */
+class Post
+{
+    /**
+     * Use constants to define configuration options that rarely change instead
+     * of specifying them in app/config/config.yml.
+     *
+     * See https://symfony.com/doc/current/best_practices/configuration.html#constants-vs-configuration-options
+     */
+
+    /**
+     * @var int
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     */
+    private $title;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank
+     */
+    private $activo;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    private $tipo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    private $slug;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     * @Assert\NotBlank
+     */
+    private $summary;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="float")
+     */
+    private $precio;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="float")
+     */
+    private $descuento;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="text")
+     * @Assert\NotBlank
+     */
+    private $content;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     * @Assert\DateTime
+     */
+    private $publishedAt;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     * @Assert\DateTime
+     */
+    private $dini;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     * @Assert\DateTime
+     */
+    private $dfin;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Categoria")
+     * @ORM\JoinColumn(name="cat_id", referencedColumnName="id", nullable = true)
+     */
+    private $cat_id;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Subcategoria")
+     * @ORM\JoinColumn(name="scat_id", referencedColumnName="id", nullable = true)
+     */
+    private $scat_id;
+
+    public function __construct()
+    {
+        $this->publishedAt = new \DateTime();
+        $this->dini = new \DateTime();
+        $this->dfin = new \DateTime();
+    }
+
+
+
+}

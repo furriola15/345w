@@ -1,0 +1,164 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+<section id="demos">
+    <div class="row">
+        <div class="large-12 columns">
+            <div class="owl-carousel owl-theme">
+                <div class="item diceodiv">
+                    <iframe style="width: 100%;" src="https://www.youtube.com/embed/CoatvWIS1Yg?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+                <div class="item" >
+                    <img src="{{asset('page/images/bg.png')}}">
+                </div>
+                <div class="item">
+                    <img src="{{asset('images/carouse2.jpeg')}}">
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!--
+<div  class="diceodiv"> 
+                    <iframe style="width: 100%; height: 600px;"  src="https://www.youtube.com/embed/7nWmv3xpoP0?rel=0&amp;controls=0&amp;showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>
+<div class="">
+    <div id="owl-hero" class="owl-carousel owl-theme">
+        <div class="item">
+            <div class="caption">
+                
+            </div>
+        </div>
+        <div class="item" style="background-image: url({{asset('page/images/bg.png')}})">
+            <div class="caption">
+
+
+
+            </div>
+        </div>
+        <div class="item" style="background-image: url({{asset('images/carouse2.jpeg')}})">
+            <div class="caption">
+              
+
+            </div>
+        </div>
+        
+    </div>
+ 
+</div>
+-->
+<div id="gtco-features">
+    <div class="gtco-container feature">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center gtco-heading animate-box">
+                <h2 class="colorazul">SERVICIOS</h2>
+                <p>Ofrecemos para ti una serie de servicios con una atención personalizada, visítanos y compruebalo por ti misma</p>
+            </div>
+        </div>
+        <div class="row">
+            {% for k,item in posts %}
+            {% if k == 3 %}
+            <div class="clearfix"></div>
+            <div class="hrline"></div>
+            <div class="clearfix"></div><br><br>
+            {% endif %}
+            <div class="col-md-4 col-sm-6">
+                <div class="feature-center animate-box" data-animate-effect="fadeIn">
+                    <span class="icon">
+                        <i class="ti-shine"></i>
+                    </span>
+                    <h3 class="title-service">{{item.title}}</h3>
+                    <p class="summary-text">{{item.summary|slice(0, 100)}}{{item.summary|length > 100 ? '...':''}}</p>
+                    <a href="{{path('service')}}" class="btn btn-default">Ver más</a>
+                </div>
+            </div>
+            {% endfor %}  
+        </div>
+    </div>
+
+</div>
+
+<div id="gtco-portfolio" class="gtco-section">
+    <div class="gtco-container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center gtco-heading animate-box">
+                <h2>TALLERES</h2>
+                <p>Ofrecemos talleres personalizados los cuales incluyen Certificado.
+                    <br>
+                    Inscríbete en nuestros talleres y mantente actualizada las últimas técnicas sobre micropigmentación.
+                </p>
+            </div>
+        </div>
+
+        <div class="row row-pb-md">
+            <div class="col-md-12">
+                <ul id="gtco-portfolio-list">
+                    {% for k,item in talleres %}
+                    <li class="one-half  animate-box" data-animate-effect="fadeIn" style="background-image: url({{asset('page/images/bg.png')}}); "> 
+                        <a href="{{path('taller_info')}}/{{item.slug}}" class="color-1">
+                            <div class="case-studies-summary">
+                                <span>{{item.summary}} - {{item.dini|date('d M Y')}}</span>
+                                <h2>{{item.title}}</h2>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>		
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4 text-center animate-box">
+                <a href="{{path('taller')}}" class="btn btn-white btn-outline btn-lg btn-block">Ver todos los talleres</a>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    $(document).ready(function() {
+
+
+        $('.owl-carousel').owlCarousel({
+            items: 1,
+            margin: 10,
+            autoplay: true,
+            loop: true,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+            animateOut: 'slideOutDown',
+            animateIn: 'flipInX',
+            smartSpeed: 450,
+            dots: false
+
+
+
+        });
+
+        var slideHeight = $(window).height();
+        $('.owl-carousel .item').css('height', slideHeight);
+        $('.owl-carousel .item iframe').css('height', slideHeight);
+        $(window).resize(function() {
+            $('.owl-carousel .item').css('height', slideHeight);
+            $('.owl-carousel .item iframe').css('height', slideHeight);
+        });
+
+
+        var nowPlaying = "none";
+
+        $('.diceodiv').hover(function() {
+            nowPlaying = $(this).find('iframe').attr('src');
+            $(this).find('iframe').attr('src', nowPlaying + '&autoplay=1');
+        }, function() {
+            $(this).find('iframe').attr('src', nowPlaying);
+        });
+
+    });
+</script>
+{% endblock %}

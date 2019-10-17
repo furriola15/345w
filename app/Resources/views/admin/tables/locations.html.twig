@@ -1,0 +1,202 @@
+{% extends 'base2.html.twig' %}
+
+{% block styles %}
+    <link href="{{asset('plugins/dtables/datatables.min.css')}}" rel="stylesheet">
+    <link href="{{asset('plugins/select2.4/dist/css/select2.min.css')}}" rel="stylesheet"/>
+    <style>
+        .table th {
+            color: #000 !important;
+        }
+        table.dataTable td,
+        table.dataTable th {
+            font-size: 14px;
+        }
+        table.dataTable td {
+            padding: 7px 10px !important;
+        }
+        #form-modal label {
+            margin-bottom: 0 !important;
+        }
+        .form-control,
+        .select2-container--default .select2-selection--multiple,
+        .select2-container .select2-selection--single {
+            border-radius: 2px !important;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+        .select2-container .select2-selection--single {
+            border-radius: 2px;
+            height: 35px;
+            padding-top: 3px;
+            border: 1px solid #d1d3e2;
+            font-size: 13px;
+        }
+        .select2-results__option {
+            font-size: 13px;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="mb-4">
+        <h1 class="h3 mb-0 text-gray-800 float-left">ADMIN TABLES /
+            {{tname|upper}}
+        </h1>
+        {% if table == "Distrito" %}
+            <a class="float-right d-none d-sm-inline-block btn btn-primary shadow-sm" href="{{path('admin_location')}}/{{paisid}}/Provincia/ADMIN 1">
+                <i class="fas fa-bars fa-sm"></i> Admin 1
+            </a>
+        {% else %}
+            <a class="float-right d-none d-sm-inline-block btn btn-primary shadow-sm" href="{{path('get_tables')}}/Country/Pais">
+                <i class="fas fa-bars fa-sm"></i> Country
+            </a>
+        {% endif %}
+        <a class="btn btn-primary btn-icon-split btn-sm edit-record" onclick="javascript:return false;" data-related="{{related}}" href="#" data-id="0">
+                                <span class="text">
+                                    <i class="fas fa-plus"></i>
+                                </span>
+                            </a>
+    </div>
+    <div class='clearfix'></div><br>
+    <div class="">
+        <table cellspacing="0" class="table table-bordered" id="dataTable" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>COUNTRY</th>
+                    {% if table == "Distrito" %}<th>ADMIN 1 </th>{% endif %}
+                    <th>ADMIN {{table == "Provincia" ? '1':'2' }}</th>
+                    <th>PCODE</th>
+                    <th>ISO2</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in records %}
+                    <tr id="tr-record-{{item.id}}">
+                        <td width='50'>{{item.id}}</td>
+                        <td>{{item.country}}</td>
+                        {% if table == "Distrito" %}<td>{{item.tipo}}</td>{% endif %}
+                        <td>{{item.nombre}}</td>
+                        <td>{{item.pcode}}</td>
+                        <td>{{item.iso2}}</td>
+                        <td align="center" width="110">
+                            <a class="btn btn-primary btn-icon-split btn-sm edit-record" onclick="javascript:return false;" data-related="{{item.pid}}" href="#" data-id="{{item.id}}">
+                                <span class="text">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </span>
+                            </a>
+                            {% if table == "Provincia" %}
+                                <a class="btn btn-success btn-icon-split btn-sm" href="{{path('admin_location')}}/{{item.id}}/Distrito/ADMIN 2">
+                                    <span class="text">
+                                        <i class="fas fa-globe"></i>
+                                    </span>
+                                </a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    <div aria-hidden="true" aria-labelledby="myExtraLargeModalLabel" class="modal fade bd-example-modal-xl" id="form-modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">FORM /
+                        {{tname}}</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" class="needs-validation" enctype="multipart/form-data" id="form-record" method="post" novalidate>
+
+                        <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+
+                    </form>
+                    <div class="w-100"></div><br>
+                    <div class="col-md-12"></div>
+                    <div class="w-100"></div><br>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-m" role="dialog">
+        <div
+            class="modal-dialog" style="width: 80%;">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+                    <h4 class="modal-title">PERSONAS INSCRITAS</h4>
+                </div>
+                <div class="modal-body" id="modal-detail">
+                    <p>Cargando información....</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class='clearfix'></div><br>
+{% endblock %}
+{% block javascripts %}
+
+    <script src="{{asset('plugins/dtables/datatables.min.js')}}"></script>
+    <script src="{{asset('plugins/select2.4/dist/js/select2.min.js')}}"></script>
+    <script>
+        $(function () {
+            var table = $('#dataTable').DataTable({
+                "pageLength": 50,
+                "order": [
+                    [{{table == "Provincia" ? '2':'3' }}, "asc"]
+                ]
+            });
+
+            $(document).on('click', '.edit-record', function () {
+                var id = $(this).data('id');
+                var relat = $(this).data('related');
+                $("#form-modal").modal('show');
+                $.ajax({
+                    type: "GET",
+                    url: "{{ path('admin_location_add') }}/" + id + "/{{tname}}/{{table}}/" + relat,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function (xhr) {}
+                }).done(function (data) {
+                    $("#form-record").html(data.html);
+                    $(".select2").select2();
+                });
+
+            });
+
+            $("#form-record").submit(function (e) {
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+                var form = $(this);
+                $.ajax({type: "POST", url: "{{ path('admin_location_add') }}", data: form.serialize(), beforeSend: function (xhr) {}}).done(function (data) {
+                    if (data.edita == 1) {
+                        $("#tr-record-" + data.id).html(data.html);
+                        console.log(data.html);
+                    } else {
+                        var html_page = "<tr id='tr-record-" + data.id + "'>" + data.html + "</tr>";
+                        table.row.add($(html_page)).draw(false);
+
+                    }
+                    $("#form-modal").modal('hide');
+                });
+
+
+            });
+
+
+        });
+    </script>
+{% endblock %}

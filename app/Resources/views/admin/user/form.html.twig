@@ -1,0 +1,271 @@
+{% extends 'base2.html.twig' %}
+
+{% block styles %}
+    <link href="{{asset('plugins/select2.4/dist/css/select2.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('site/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <style>
+        form label {
+            margin-bottom: 0;
+            font-weight: bold;
+        }
+        .form-control,
+        .select2-container--default .select2-selection--multiple {
+            border-radius: 2px !important;
+            height: 35px;
+        }
+        .form-check-label {
+            font-weight: normal !important;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        table tr td .form-group {
+            margin-bottom: 0;
+        }
+        table td {
+            padding: 5px 6px !important;
+        }
+        .whoclass {
+            background: #E6E6E6;
+        }
+        .whatclass {
+            background: #D4E5F7;
+        }
+        .whereclass {
+            background: #F8D8D3;
+        }
+        .whomclass {
+            background: #D6F5F3;
+        }
+        .whenclass {
+            background: #E4D8F3;
+        }
+        .select2-container--default .select2-selection--multiple,
+        .select2-container .select2-selection--single {
+            border-radius: 2px !important;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        table th {
+            cursor: pointer !important;
+            white-space: nowrap;
+        }
+
+        .select2-container .select2-selection--single {
+            border-radius: 2px;
+            height: 35px;
+            padding-top: 3px;
+            border: 1px solid #d1d3e2;
+            font-size: 14px;
+        }
+        .custom-checkbox, .custom-control-label{
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">ADMIN FORM PROJECT</h1>
+        <a class="btn btn-primary btn-icon-split" href="{{path('get_user_list')}}">
+            <span class="icon text-white-50">
+                <i class="fas fa-bars"></i>
+            </span>
+            <span class="text">User List</span>
+        </a>
+    </div>
+    <div class='clearfix'></div>
+    <div class="row">
+        <div class="col-md-6  toppad">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">USER INFORMATION</h3>
+                    <form class="needs-validation" novalidate action="{{path('add_user')}}/{{record.id}}" method="post" enctype="multipart/form-data">
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <label for="fullName">FULL NAME</label>
+                                <input class="form-control" id="fullName" name="fullName" required type="text" value="{{record.fullName}}">
+                            </div>
+                            <div class="w-100"></div><br>
+
+                            <div class="col-md-12">
+                                <label for="username">USERNAME</label>
+                                <input class="form-control" id="username" name="username" required type="text" value="{{record.username}}">
+                            </div>
+                            <div class="w-100"></div><br>
+
+                            <div class="col-md-12">
+                                <label for="username">EMAIL</label>
+                                <input class="form-control" id="email" name="email" required type="text" value="{{record.email}}">
+                            </div>
+                            <div class="w-100"></div><br>
+                            {% if record.id == 0 %}
+                                <div class="col-md-12">
+                                    <label for="password">PASSWORD</label>
+                                    <input class="form-control" id="password" name="password" required type="text" value="{{record.password}}">
+                                </div>
+                                <div class="w-100"></div><br>
+                            {% endif %}
+
+                            <div class="col-md-12">
+                                <label for="organizacion_id">Organization (*)</label>
+                                <select class="orgs-select custom-select" id="organizacion_id" name="org_id" required style="width: 100%;">
+                                    {% if record.org_name != "" %}
+                                        <option value="{{record.org_id}}">{{record.org_code}}
+                                            -
+                                            {{record.org_name}}
+                                        </option>
+                                    {% else %}
+                                        <option value="">Select organization</option>
+                                    {% endif %}
+                                </select>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                            <div class="w-100"></div><br>
+                            <div class="col-md-12">
+                                <label for="roles">ROELES</label>
+                                <select class="js-example-basic-multiple" id="roles" multiple="multiple" name="roles[]" require style="width: 100%;">
+                                    {% for item in roles %}
+                                        <option value="{{item}}" {{item in roles_user ? 'selected':'' }}>{{item}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="w-100"></div><br>
+
+                        </div>
+                        
+                        {% for item in projects %}
+                            <div class="col-md-12">
+                                <div class="custom-control custom-checkbox mb-3">
+                                    <input type="checkbox" class="custom-control-input" id="customControlValidation{{item.id}}" name="projects[]" value="{{item.id}}" {{item.id in pro_user ? 'checked':''}}>
+                                    <label class="custom-control-label" for="customControlValidation{{item.id}}">{{item.nombre}}</label>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <div class="w-100"></div><br>
+                        <input name="id" type="hidden" value="{{record.id}}">
+                        <button class="btn btn-primary" type="submit">Submit form</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% if record.id != 0 %}
+            <div class="col-md-6  toppad">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">RESET PASSWORD</h3>
+                        <form id="form-reset-user" class="needs-validation" novalidate action="{{path('add_user_reset')}}/{{record.id}}" method="post" enctype="multipart/form-data">
+                            <table class="table table-user-information ">
+                                <tbody>
+                                    <tr>
+                                        <td>New Password:</td>
+                                        <td>
+                                            <Input class="form-control" id="newPassword" name="newPassword" type="password" value=''/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Repit Password:</td>
+                                        <td>
+                                            <Input class="form-control" id="repitPassword" name="repitPassword" type="password" value=''/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <input name="id" type="hidden" value="{{record.id}}">
+                            <button class="btn btn-primary" type="submit">Submit form</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+
+    <div class="modal fade" id="modal-m" role="dialog">
+        <div
+            class="modal-dialog" style="width: 80%;">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+                    <h4 class="modal-title">PERSONAS INSCRITAS</h4>
+                </div>
+                <div class="modal-body" id="modal-detail">
+                    <p>Cargando información....</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class='clearfix'></div><br>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{asset('plugins/select2.4/dist/js/select2.min.js')}}"></script>
+    <script src="{{asset('site/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('site/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+
+    <script>
+        $(function () {
+
+            'use strict';
+            window.addEventListener('load', function () { // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+
+            $("#form-reset-user").submit(function(e) {
+                event.preventDefault();
+                if($("#repitPassword").val() == $("#newPassword").val()){
+                    var form = $("#form-reset-user");    
+                    $.ajax({
+                        type: "POST", url: "{{ path('add_user_reset') }}", data: form.serialize(), // serializes the form's elements.
+                        success: function (data) {
+                            alert("Password Changed Successfuly");
+                            $("#repitPassword").val("");
+                            $("#newPassword").val("");
+                        }
+                    });    
+                }else{
+                    alert("Passwords are differnt");
+                }
+                
+                return false;
+            });
+
+            $('.js-example-basic-multiple').select2();
+            $('#organizacion_id').select2({
+                ajax: {
+                    url: "{{ path('ajax_get_orgs') }}",
+                    processResults: function (data) {
+                        console.log(data);
+                        return {results: data.items};
+                    },
+                    data: function (params) {
+                        var query = {
+                            q: params.term,
+                            lang: "es",
+                            type: 'public'
+                        }
+                        return query;
+                    }
+                }
+            });
+
+
+        });
+    </script>
+{% endblock %}

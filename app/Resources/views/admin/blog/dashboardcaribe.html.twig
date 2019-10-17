@@ -1,0 +1,929 @@
+{% extends 'base2.html.twig' %}
+
+{% block styles %}
+
+    <style>
+        .btn-icon-split {
+            border-radius: 0 !important;
+        }
+        table tr th {
+            border-top: none !important;
+        }
+        tr:hover td {
+            background-color: #f5f5f5 !important;
+        }
+        #chartdiv,
+        #chartdiv2,
+        #chartdiv3 {
+            width: 100%;
+            height: 360px;
+            background: #E9F2FB;
+        }
+        .org-td-type {
+            padding: 3px 5px;
+            margin-right: 1px;
+            font-size: 11px !important;
+            color: #000 !important;
+            text-align: center;
+            float: left;
+            margin-bottom: 1px;
+            cursor: pointer;
+        }
+        .sidebar.toggled {
+            display: none;
+        }
+        .org-td-typer {
+            padding: 3px 5px;
+            font-size: 11px !important;
+            color: #000 !important;
+            text-align: center;
+            float: left;
+
+            cursor: pointer;
+        }
+        .org-td-type1 {
+            background: #FAE6D1;
+        }
+        .org-td-type2 {
+            background: #E8F5D6; 
+        }
+        .org-td-type4 {
+            background: #D4E5F7;
+        }
+        .org-td-type5 {
+            background: #EFF2AA;
+        }
+
+        .table-responsive {
+            height: 430px;
+            overflow: auto;
+        }
+        .table-responsive .table tr td {
+            font-size: 13px;
+            padding: 5px 7px;
+        }
+        .table-responsive .table tr th {
+            font-size: 13px;
+            padding: 5px 7px;
+            text-align: center;
+        }
+        .table-responsive thead tr:nth-child(1) th {
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .titlechart {
+            color: #000;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        #wrapper #content-wrapper #content {
+
+    background: #ffffff;
+}
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-12 header">
+        <div class='clearfix'></div><br>
+        <div class='clearfix'></div><br>
+            <h1 class="h3 mb-0 text-gray-800 float-left">DASHBOARD -
+                {{project.nombre|upper}}
+            </h1>
+<!--
+            <a class="btn btn-success btn-icon-split float-right" href="{{path('admin_new_doc')}}/{{project.id}}">
+                <span class="icon">
+                    <i class="fas fa-cog"></i>
+                    Admin project
+                </span>
+            </a>
+            <a class="btn btn-primary btn-icon-split float-right" href="{{path('admin_www_list')}}/{{project.id}}">
+                <span class="icon">
+                    <i class="fas fa-bars"></i>
+                    List
+                </span>
+            </a>
+            <a class="btn btn-primary btn-icon-split float-right" href="{{path('admin_pbi')}}/{{project.id}}">
+                <span class="icon">
+                    <i class="fas fa-chart-pie"></i>
+                    PBI
+                </span>
+            </a>
+            <div class="clearfix"></div>
+            <hr>
+        </div>
+        -->
+        <div class="clearfix"></div><br>
+
+
+    </div>
+
+    <div
+        class="row">
+
+        <!-- 
+        <div class="col-xl-3 col-md-6 mb-4">
+
+            <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOTAL LOCATIONS</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{record.locations}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">TOTAL SECTORS</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{record.sectors}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">ORGANIZATIONS</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{record.orgs}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                RECORDS</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{record.total}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
+    </div>
+
+
+    <div class="row">
+<!--
+        <div class="col-xl-6 col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <h3 class="titlechart">ORGANIZATIONS BY COUNTRY, ESTATE OR TERRITORY</h3>
+                    <div id="chartdiv"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-6 col-md-6">
+            <div class="card shadow mb-4">
+
+
+                <div class="card-body">
+                    <h3 class="titlechart">ORGANIZATIONS BY COUNTRY, ESTATE OR TERRITORY</h3>
+                    <div id="chartdiv3"></div>
+                </div>
+            </div>
+        </div>
+
+
+        
+
+        
+        <div class="col-xl-4 col-lg-4">
+            <div class="card shadow mb-4">
+
+                <div class="card-body">
+                    <h3 class="titlechart">
+                        COUNTRIES, ESTATES OR TERRITORRIES BY ORGANIZATIONS</h3>
+                    <div id="container" style="width: 100%; height: 360px; margin: 0 auto"></div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-4 col-md-4">
+            <div
+                class="card shadow mb-4">
+
+
+                <div class="card-body">
+                    <h3 class="titlechart">ORGANIZATIONS BY TYPE</h3>
+                    <div id="container2" style="width: 100%; height: 360px; margin: 0 auto"></div>
+                    <div class="clearfix"></div>
+
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-4 col-lg-4">
+            <div
+                class="card shadow mb-4">
+   
+
+                <div class="card-body">
+                    <h3 class="titlechart">ORGANIZATIONS BY TYPE OF PRESENCE</h3>
+                    <div id="container3" style="width: 100%; height: 360px; margin: 0 auto"></div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6 col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <h3 class="titlechart">ORGANIZATIONS BY SECTORS</h3>
+                    <div class="table-responsive" style="height: 360px !important;">
+                    <table class="table table-sm table-fixed" >
+                        <thead>
+                            <tr>
+                                <th class="">Organization</th>
+                                <th class="">Sectors</th>
+                                <th class="">T. Sectors</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in orgspro %}
+                                <tr>
+                                    <td class="">{{item.nombre}}</td>
+                                    <td class="">
+                                        {% for record in item.sectores %}
+                                            <img src="{{asset('images/sectors/')}}{{record.id}}.png" style="width: 15px;" data-toggle="tooltip" title="{{record.nombre}}">
+                                        {% endfor %}
+                                    </td>
+                                    <td class="" align="center">{{item.sectores|length}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-md-6">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <h3 class="titlechart">SECTORS BY COUNTRY, ESTATE OR TERRITORY</h3>
+                    <div class="table-responsive" style="height: 360px !important;">
+                    <table class="table table-sm table-fixed" >
+                        <thead>
+                            <tr>
+                                <th class="">Organization</th>
+                                <th class="">Sectors</th>
+                                <th class="">T. Sectors</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in paises %}
+                                <tr>
+                                    <td class="">{{item.nombre}}</td>
+                                    <td class="">
+                                        {% for record in item.sectores %}
+                                            <img src="{{asset('images/sectors/')}}{{record.id}}.png" style="width: 15px;" data-toggle="tooltip" title="{{record.nombre}}">
+                                        {% endfor %}
+                                    </td>
+                                    <td class="" align="center">{{item.sectores|length}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+-->
+        <div class="col-xl-12 col-lg-12">
+            <div class="card shadow mb-4">
+
+                <div class="card-body">
+                    <h3 class="titlechart">ORGANIZATIONS BY COUNTRY, ESTATE OR TERRITORY - SECTOR</h3>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="org-td-type5 org-td-typer col-md-3">NATIONAL DISASTER AUTHORITIES</div>
+                            <div class="org-td-type4 org-td-typer col-md-3">SUB-REGIONAL OFFICE</div>
+                            <div class="org-td-type1 org-td-typer col-md-3">CCUNTRY OFFCIE</div>
+                            <div class="org-td-type2 org-td-typer col-md-3">FOCAL POINT</div>
+                        </div>
+                    </div>
+                    <div class="" style="">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    {% for item in sectores %}
+                                        <th align="center" scope="col">
+                                            {{item.nombre}}<br>
+                                            <img src="{{asset('images/sectors/')}}{{item.id}}.png" style="width: 20px;">
+
+                                        </th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in paises %}
+                                    <tr class="tr-pais" data-id="{{item.id}}">
+                                        <td>{{item.nombre}}</td>
+                                        {% for record in sectores %}
+                                            <td id="tr-{{item.id}}-{{record.id}}"></td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class='clearfix'></div><br>
+                    </div>
+                    <div class='clearfix'></div><br>
+                </div>
+                <div class='clearfix'></div><br>
+            </div>
+            <div class='clearfix'></div><br>
+        </div>
+
+    </div>
+    <div class='clearfix'></div>
+
+    <div class='clearfix'></div><br>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{asset('site/js/sb-admin-2.min.js')}}"></script>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+    <script src="{{asset('js/codes.js')}}"></script>
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+    <script src="https://www.amcharts.com/lib/4/maps.js"></script>
+    <script src="https://www.amcharts.com/lib/4/geodata/worldHigh.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+
+
+    <script>
+
+
+        $(function () { // Create map instance
+
+            $(".tr-pais").each(function (index) {
+                var pais = $(this).data('id');
+                $.ajax({
+                    type: "GET",
+                    url: "{{ path('get_table_caribbean') }}/" + "{{ project.id }}/" + "{{ project.lang }}/" + pais
+                }).done(function (data) { // console.log(data.total);
+
+                    var records = data.records;
+
+                    for (var i = 0; i > records.length; i++) {
+                        // $("#tr-11-1").html($("#tr-11-1").html()+"<div>"+records[i].code+"</div>");
+                        // console.log("<div>"+records[i].code+"</div>");
+                        console.log(i);
+
+                    }
+                    for (var item of records) {
+                        console.log("Valor: " + item);
+                        $("#tr-" + pais + "-" + item.sector).html($("#tr-" + pais + "-" + item.sector).html() + "<span data-togled='notogled' data-id='" + item.oid + "' title='" + item.sname + " | " + item.nombre + "' data-toggle='tooltip' data-placement='top' class='org-td-type org-label" + item.oid + " org-td-type" + item.oficina + "'>" + item.code + "</span>");
+                    }
+                    $('[data-toggle="tooltip"]').tooltip();
+
+
+                });
+            });
+
+            $(document).on('click', '.org-td-type', function (e) { /*  var org = $(this).data('id');
+            if($(this).data('togled') == "togled"){
+                $(this).data('togled','notogled');
+                $(".org-td-type").hide();
+            }else{
+                $(".org-td-type").hide();
+                $(".org-label"+org).show();
+                $(this).data('togled','togled');
+            }*/
+
+            });
+
+            am4core.useTheme(am4themes_animated);
+
+            var chart = am4core.create("chartdiv", am4maps.MapChart);
+            var mapData = [{% for item in paises if item.acronimo == "TT" or item.acronimo == "GY" or item.acronimo == "AW" or item.acronimo == "SR" or item.acronimo == "CW" or item.acronimo == "BZ" or item.acronimo == "CU" or item.acronimo == "DO" or item.acronimo == "JM" or item.acronimo == "PR" or item.acronimo == "BS" or item.acronimo == "KY" or item.acronimo == "BM" or item.acronimo == "TC" or item.acronimo == "HT" %}{
+                        "id": "{{ item.acronimo }}",
+                        "name": "{{ item.nombre }}",
+                        "value": parseInt("{{ item.total }}"),
+                        "color": chart.colors.getIndex(0)
+                    },{% endfor %}];
+
+            for (var i = 0; i < mapData.length; i++) {
+                mapData[i].latitude = latlong[mapData[i].id].latitude;
+                mapData[i].longitude = latlong[mapData[i].id].longitude;
+            }
+
+            chart.geodata = am4geodata_worldHigh;
+            chart.projection = new am4maps.projections.Miller();
+            chart.paddingTop = "20px";
+            chart.paddingBottom = "20px";
+            chart.chartContainer.wheelable = false;
+            chart.homeZoomLevel = 5;
+            chart.homeGeoPoint = {
+                latitude: 19,
+                longitude: -75
+            };
+
+
+            var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+            polygonSeries.exclude = ["AQ"];
+            polygonSeries.useGeodata = true;
+
+            // Configure series
+            var polygonTemplate = polygonSeries.mapPolygons.template;
+            polygonTemplate.tooltipText = "{name}: {value}";
+            polygonTemplate.fill = am4core.color("#ffffff");
+            polygonTemplate.stroke = am4core.color("#eee");
+
+            // Create hover state and set alternative fill color
+
+            polygonSeries.nonScalingStroke = true;
+            polygonSeries.strokeWidth = 0.5;
+
+            var imageSeries = chart.series.push(new am4maps.MapImageSeries());
+            imageSeries.data = mapData;
+            imageSeries.dataFields.value = "value";
+
+            var imageTemplate = imageSeries.mapImages.template;
+            imageTemplate.propertyFields.latitude = "latitude";
+            imageTemplate.propertyFields.longitude = "longitude";
+            imageTemplate.nonScaling = true
+
+
+            var circle = imageTemplate.createChild(am4core.Circle);
+            circle.fillOpacity = 0.7;
+            circle.fill = am4core.color("#CD3A1F");
+            circle.tooltipText = "{name}: [bold]{value}[/] Organizations";
+
+            var label = imageTemplate.createChild(am4core.Label);
+            label.text = "{name}";
+            label.horizontalCenter = "middle";
+            label.verticalCenter = "bottom";
+            label.dy = -8;
+            label.dx = 0;
+            label.fontSize = "11px";
+
+            polygonSeries.data = [{% for item in paises if item.acronimo == "TT" or item.acronimo == "GY" or item.acronimo == "AW" or item.acronimo == "SR" or item.acronimo == "CW" or item.acronimo == "BZ" or item.acronimo == "CU" or item.acronimo == "DO" or item.acronimo == "JM" or item.acronimo == "PR" or item.acronimo == "BS" or item.acronimo == "KY" or item.acronimo == "BM" or item.acronimo == "TC" or item.acronimo == "HT" %}{
+                        "id": "{{ item.nombre }}",
+                        "name": "{{ item.acronimo }}",
+                        "value": parseInt("{{ item.total }}"),
+                        "fill": am4core.color("#DDDDDD")
+                    },{% endfor %}];
+            polygonSeries.propertyFields.fill = "fill";
+            imageSeries.heatRules.push({"target": circle, "property": "radius", "min": 4, "max": 4, "dataField": "value"});
+            polygonSeries.include = [
+                {% for item in paises if item.acronimo == "TT" or item.acronimo == "GY" or item.acronimo == "AW" or item.acronimo == "SR" or item.acronimo == "CW" or item.acronimo == "BZ" or item.acronimo == "CU" or item.acronimo == "DO" or item.acronimo == "JM" or item.acronimo == "PR" or item.acronimo == "BS" or item.acronimo == "KY" or item.acronimo == "BM" or item.acronimo == "TC" or item.acronimo == "HT" %}
+                    "{{ item.acronimo }}",{% endfor %}"VE",
+                "CO",
+                "PA",
+                "GT",
+                "HN",
+                "SV",
+                "NI",
+                "CR",
+                "MX",
+                "PE",
+                "EC",
+                "CL",
+                "BR",
+                "AR",
+                "PY",
+                "UR",
+                "BO",
+                "US"
+            ];
+
+
+            var chart3 = am4core.create("chartdiv3", am4maps.MapChart);
+            var mapData3 = [{% for item in paises if item.acronimo == "VG" or item.acronimo == "VC" or item.acronimo == "MS" or item.acronimo == "MQ" or item.acronimo == "MF" or item.acronimo == "LC" or item.acronimo == "KN" or item.acronimo == "GD" or item.acronimo == "DM" or item.acronimo == "BB" or item.acronimo == "AI" or item.acronimo == "AG" or item.acronimo == "GP" or item.acronimo == "VI" %}{
+                        "id": "{{ item.acronimo }}",
+                        "name": "{{ item.nombre }}",
+                        "value": parseInt("{{ item.total }}"),
+                        "color": chart.colors.getIndex(0)
+                    },{% endfor %}];
+
+            for (var i = 0; i < mapData3.length; i++) {
+                mapData3[i].latitude = latlong[mapData3[i].id].latitude;
+                mapData3[i].longitude = latlong[mapData3[i].id].longitude;
+            }
+
+            chart3.geodata = am4geodata_worldHigh;
+            chart3.projection = new am4maps.projections.Miller();
+            chart3.paddingTop = "20px";
+            chart3.paddingBottom = "20px";
+            chart3.chartContainer.wheelable = false;
+            var polygonSeries3 = chart3.series.push(new am4maps.MapPolygonSeries());
+            polygonSeries3.exclude = ["AQ"];
+            polygonSeries3.useGeodata = true;
+            polygonSeries3.nonScalingStroke = true;
+            polygonSeries3.strokeWidth = 0.5;
+
+            var imageSeries3 = chart3.series.push(new am4maps.MapImageSeries());
+            imageSeries3.data = mapData3;
+            imageSeries3.dataFields.value = "value";
+
+            var imageTemplate3 = imageSeries3.mapImages.template;
+            imageTemplate3.propertyFields.latitude = "latitude";
+            imageTemplate3.propertyFields.longitude = "longitude";
+            imageTemplate3.nonScaling = true
+
+            var circle3 = imageTemplate3.createChild(am4core.Circle);
+            circle3.fillOpacity = 0.7;
+            // circle3.propertyFields.fill = "color";
+            circle3.fill = am4core.color("#CD3A1F");
+            circle3.tooltipText = "{name}: [bold]{value}[/] Organizations";
+
+            var label3 = imageTemplate3.createChild(am4core.Label);
+            label3.text = "{name}";
+            label3.horizontalCenter = "middle";
+            label3.verticalCenter = "bottom";
+            label3.dy = -8;
+            label3.dx = 0;
+            label3.fontSize = "11px";
+
+
+            imageSeries3.heatRules.push({"target": circle3, "property": "radius", "min": 4, "max": 4, "dataField": "value"});
+            polygonSeries3.include = [{% for item in paises if item.acronimo == "VG" or item.acronimo == "VC" or item.acronimo == "MS" or item.acronimo == "MQ" or item.acronimo == "MF" or item.acronimo == "LC" or item.acronimo == "KN" or item.acronimo == "GD" or item.acronimo == "DM" or item.acronimo == "BB" or item.acronimo == "AI" or item.acronimo == "AG" or item.acronimo == "GP" or item.acronimo == "VI" %}"{{ item.acronimo }}",{% endfor %}];
+
+
+            /*
+            var chart = am4core.create("chartdiv", am4maps.MapChart);
+
+            chart.geodata = am4geodata_worldHigh;
+     
+            chart.paddingTop  = "20px";
+            chart.paddingBottom   = "20px";
+            
+            chart.projection = new am4maps.projections.Miller();
+            
+            var polygonSeries = chart.series.push(new am4maps.MapPolygonSeries());
+            
+            polygonSeries.useGeodata = true;
+            var polygonTemplate = polygonSeries.mapPolygons.template;
+            polygonTemplate.tooltipText = "{name}: {value} Organizations";
+            polygonTemplate.fill = am4core.color("#E9F2FB");
+
+            var hs = polygonTemplate.states.create("hover");
+            hs.properties.fill = am4core.color("#E9F2FB");
+            polygonTemplate.propertyFields.fill = "fill";
+
+            polygonSeries.heatRules.push({property: "fill", target: polygonSeries.mapPolygons.template, min: chart.colors.getIndex(1).brighten(1), max: chart.colors.getIndex(1).brighten(-0.3)});
+            polygonSeries.data = [
+                {% for item in paises %}
+                {
+                    "id": "{{item.acronimo}}",
+                    "name": "{{item.nombre}}",
+                    "value": parseInt("{{item.total}}"),
+                    "fill": am4core.color("#418FDE")
+                }, 
+                {% endfor %}
+      
+            ];
+
+            polygonSeries.include = ["CU","DO","JM","PR","BS","KY","BM","TC","HT"];
+
+            var imageSeries = chart.series.push(new am4maps.MapImageSeries());
+
+
+            var imageSeriesTemplate = imageSeries.mapImages.template;
+            var circle = imageSeriesTemplate.createChild(am4core.Circle);
+            circle.radius = 4;
+            circle.fill = am4core.color("#000000");
+            circle.stroke = am4core.color("#000000");
+            circle.strokeWidth = 2;
+            circle.horizontalCenter = "left";
+            circle.verticalCenter = "right";
+            circle.nonScaling = true;
+            circle.tooltipText = "{title}";
+
+
+            imageSeriesTemplate.propertyFields.latitude = "latitude";
+            imageSeriesTemplate.propertyFields.longitude = "longitude";
+
+            var label = imageSeriesTemplate.createChild(am4core.Label);
+            label.text = "{label}";
+            label.horizontalCenter = "left";
+            label.verticalCenter = "middle";
+            label.dy = 0;
+            label.dx = 8;
+            label.fontSize = "13px";
+            imageSeries.data = [
+                {% for item in paises if item.acronimo == "CU" or item.acronimo == "DO" or item.acronimo == "JM" or item.acronimo == "PR" or item.acronimo == "BS" or item.acronimo == "KY" or item.acronimo == "BM" or item.acronimo == "TC" or item.acronimo == "HT" %}
+                {
+                    "latitude": latlong["{{item.acronimo}}"].latitude,
+                    "longitude": latlong["{{item.acronimo}}"].longitude,
+                    "label": "{{item.nombre}}"
+                    },
+                {% endfor %}
+            ];
+*/
+            // Image series
+
+
+            /*
+
+             var chart3 = am4core.create("chartdiv3", am4maps.MapChart);
+
+            chart3.geodata = am4geodata_worldHigh;
+            chart3.paddingTop  = "20px";
+            chart3.paddingBottom   = "20px";
+
+            chart3.projection = new am4maps.projections.Miller();
+        
+            var polygonSeries3 = chart3.series.push(new am4maps.MapPolygonSeries());
+           
+            polygonSeries3.useGeodata = true;
+    
+            var polygonTemplate3 = polygonSeries3.mapPolygons.template;
+            polygonTemplate3.tooltipText = "{name}: {value} Organizations";
+            polygonTemplate3.fill = am4core.color("#E9F2FB");
+   
+            var hs3 = polygonTemplate3.states.create("hover");
+            hs3.properties.fill = am4core.color("#E9F2FB");
+            
+            polygonTemplate3.propertyFields.fill = "fill";
+
+            polygonSeries3.heatRules.push({property: "fill", target: polygonSeries3.mapPolygons.template, min: chart.colors.getIndex(1).brighten(1), max: chart.colors.getIndex(1).brighten(-0.3)});
+            polygonSeries3.data = [
+                {% for item in paises %}
+                {
+                    "id": "{{item.acronimo}}",
+                    "name": "{{item.nombre}}",
+                    "value": parseInt("{{item.total}}"),
+                    "fill": am4core.color("#418FDE")
+                }, 
+                {% endfor %}
+      
+            ];
+            polygonSeries3.include = ["VG","VC","MS","MQ","MF","LC","KN","GD","DM","BB","AI","AG","GP","VI"];
+
+            var imageSeries3 = chart3.series.push(new am4maps.MapImageSeries());
+
+
+            var imageSeriesTemplate3 = imageSeries3.mapImages.template;
+            var circle3 = imageSeriesTemplate3.createChild(am4core.Circle);
+            circle3.radius = 4;
+            circle3.fill = am4core.color("#000000");
+            circle3.stroke = am4core.color("#000000");
+            circle3.strokeWidth = 2;
+            circle3.horizontalCenter = "left";
+            circle3.verticalCenter = "right";
+            circle3.nonScaling = true;
+            circle3.tooltipText = "{title}";
+
+ 
+            imageSeriesTemplate3.propertyFields.latitude = "latitude";
+            imageSeriesTemplate3.propertyFields.longitude = "longitude";
+
+            var label3 = imageSeriesTemplate3.createChild(am4core.Label);
+            label3.text = "{label}";
+            label3.horizontalCenter = "top";
+            label3.verticalCenter = "top";
+
+            label3.fontSize = "13px";
+            label3.dy = 0;
+            label3.dx = 8;
+            imageSeries3.data = [
+                {% for item in paises if item.acronimo == "VG" or item.acronimo == "VC" or item.acronimo == "MS" or item.acronimo == "MQ" or item.acronimo == "MF" or item.acronimo == "LC" or item.acronimo == "KN" or item.acronimo == "GD" or item.acronimo == "DM" or item.acronimo == "BB" or item.acronimo == "AI" or item.acronimo == "AG" or item.acronimo == "GP" or item.acronimo == "VI" %}
+                {
+                    "latitude": latlong["{{item.acronimo}}"].latitude,
+                    "longitude": latlong["{{item.acronimo}}"].longitude,
+                    "label": "{{item.nombre}}",
+                    "horizontalCenter": "top",
+                    "verticalCenter": "middle"
+                    },
+                {% endfor %}
+            ];
+
+            */
+
+            Highcharts.chart('container', {
+                chart: {
+                    type: 'column',
+                    style: {
+                        fontFamily: 'Roboto'
+                    }
+                },
+                title: {
+                    text: ''
+                },
+                xAxis: {
+                    categories: [{% for item in paises %}'{{ item.nombre }}',{% endfor %}],
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: ''
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' + '<td style="padding:0 "> <b> {point.y} </b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                series: [
+                    {
+                        color: '#E56A54',
+                        name: 'Organizations',
+                        data: [{% for item in paises %}parseInt("{{ item.total }}"),{% endfor %}]
+
+                    }
+                ]
+            });
+
+            Highcharts.chart('container2', {
+                chart: {
+                    type: 'bar',
+                    style: {
+                        fontFamily: 'Roboto'
+                    }
+                },
+                title: {
+                    text: null
+                },
+                xAxis: {
+                    categories: [{% for item in otypes %}"{{ item.nombre }}",{% endfor %}],
+                    title: {
+                        text: null
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: null
+                    },
+                    labels: {
+                        overflow: 'justify'
+                    }
+                },
+                tooltip: {
+                    valueSuffix: 'millions'
+                },
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [
+                    {
+                        name: 'Organizations',
+                        color: '#418FDE',
+                        data: [{% for item in otypes %}parseInt("{{ item.total }}"),{% endfor %}]
+                    }
+                ]
+            });
+
+
+            Highcharts.chart('container3', {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: 'pie',
+                    style: {
+                        fontFamily: 'Roboto'
+                    }
+                },
+                title: {
+                    text: ''
+                },
+                tooltip: {
+                    pointFormat: '<b>{point.y}</b>({point.percentage:.1f}%)'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: false
+                        },
+                        showInLegend: true,
+                        colors: pieColors
+                    }
+                },
+                series: [
+                    {
+                        innerSize: '50%',
+                        data: [{% for item in oficinas %}{
+                                    name: '{{ item.nombre }}',
+                                    y: parseInt("{{ item.total }}"),   
+                                    color: "{{item.id == 1 ? '#FAE6D1'}}{{item.id == 2 ? '#E8F5D6'}}{{item.id == 4 ? '#D4E5F7'}}{{item.id == 5 ? '#EFF2AA'}}"
+                                },{% endfor %}]
+                    }
+                ]
+            });
+
+         
+
+            Highcharts.chart('container5', {
+                chart: {
+                    type: null
+                },
+                xAxis: {
+                    categories: [{% for item in sectores %}"{{ item.nombre }}",{% endfor %}]
+                },
+                yAxis: {
+                    title: {
+                        text: null
+                    }
+                },
+                tooltip: {
+                    shared: true,
+                    valueSuffix: ' units'
+                },
+                credits: {
+                    enabled: false
+                },
+                plotOptions: {
+                    areaspline: {
+                        fillOpacity: 0.5
+                    }
+                },
+                series: [
+                    {
+                        name: 'Organizations',
+                        data: [{% for item in sectores %}parseInt("{{ item.total }}"),{% endfor %}]
+                    }
+                ]
+            });
+
+        });
+
+        var pieColors = (function () {
+            console.log(Highcharts.getOptions().colors[0]);
+            var colors = [],
+                base = "#1F69B3",
+                i;
+
+            for (i = 0; i < 10; i += 1) {
+                // Start out with a darkened base color (negative brighten), and end
+                // up with a much brighter color
+                colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
+            }
+            return colors;
+        }());
+    </script>
+{% endblock %}

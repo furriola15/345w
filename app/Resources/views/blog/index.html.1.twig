@@ -1,0 +1,193 @@
+{% extends 'base.html.twig' %}
+{% block styles %}
+<link rel="stylesheet" href="{{asset('owlcarousel/assets/owl.carousel.min.css')}}">
+        <link rel="stylesheet" href="{{asset('owlcarousel/assets/owl.theme.default.min.css')}}">
+        <link rel="stylesheet" href="{{asset('owlcarousel/assets/animate.css')}}">
+        <link rel="stylesheet" href="{{asset('page/css/icomoon.css')}}">
+        <link rel="stylesheet" href="{{asset('page/css/index.css')}}">
+<style>
+
+</style>
+{% endblock %}
+{% block main %}
+<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+    <!-- 
+    <ol class="carousel-indicators">
+      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+    </ol>
+  Indicators -->
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+        <div class="item active">
+            <video title="1"  controls  poster="{{asset('images/carouse2.jpeg')}}"><source src="{{asset('images/IMG_7664.mp4')}}" type="video/mp4">Your browser does not support the video tag.</video>
+            <div class="carousel-caption">
+                ...
+            </div>
+        </div>
+    </div>
+
+    <!-- 
+    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+    Controls -->
+</div>
+<div class="clearfix"> </div>
+<div id="reservadiv"> 
+    <div class="container">
+        <br>
+        <div align="center">
+
+            <img src="{{asset('images/logo.png')}}" class="" style="height: 70px;">
+            <div class="clearfix"> </div>
+            <p class="color-primary">Reserva tu cita y vive la experiencia de lucir como una reina</p>
+            <div class="clearfix"> </div>
+            <a href="#" class="btn btn-primary btn-lg animate-box" data-animate-effect="fadeIn"><i class="fa fa-calendar"></i> Reservar cita</a>
+            <br>
+        </div>
+    </div>
+</div>
+<div class="clearfix"> </div>
+<!--
+<div id="sobremicro" class="">
+    <div class="container">
+
+
+
+        <div class="col-md-12">
+            <div class="div-text-index animate-box" data-animate-effect="fadeIn">
+                <h2 class="colorazul">MICROPIGMENTACIÓN </h2>
+                <p>La micropigmentación, es una especialidad enmarcada en el campo de la estética cuyo fin es el de embellecer, corregir o mejorar determinados rasgos de la anatomía corporal mediante la pigmentación de la piel.</p>
+
+                <h4 class=" colorazul"> 
+                    Cuál es mi secreto? Te lo comparto... </h4>
+
+
+
+                <div class="">
+                    <span class="icon">
+                        <div class="text-ul">
+                            <i class="ti-shine"></i>
+                    </span> Cada cliente es único, tenemos mucha paciencia, su rostro es su lienzo y merece responsabilidad.
+                </div>
+                <div class="text-ul">
+                    <span class="icon">
+                        <i class="ti-shine"></i>
+                    </span> Disfruto y gozo de realizar un trazo cada día más pulido y perfecto y la paciente se permita con orgullo decir me realizaron un trabajo de calidad y me encantan mis cejas.
+                </div>
+                <div class="text-ul">
+                    <span class="icon">
+                        <i class="ti-shine"></i>
+                    </span> Utilizamos solo productos de la más alta calidad.
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
+
+<div class="clearfix"> </div>
+</div>
+</div>
+<div class="clearfix"> </div>
+<div class="about-sec parallax-section">
+    <div class="gtco-container feature ">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center gtco-heading animate-box">
+                <br><br>
+                <h2 class="colorazul">SERVICIOS</h2>
+                <p>Ofrecemos para ti una serie de servicios con una atención personalizada, visítanos y compruebalo por ti misma</p>
+            </div>
+        </div>
+        <div class="row">
+            {% for k,item in posts %}
+
+            <div class="col-md-4 col-sm-6">
+                <div class="feature-center animate-box" data-animate-effect="fadeIn">
+                    <span class="icon">
+                        <i class="ti-shine"></i>
+                    </span>
+                    <h3 class="title-service">{{item.title}}</h3>
+                    <p class="summary-text colorazul" >{{item.summary|slice(0, 100)}}{{item.summary|length > 100 ? '...':''}}</p>
+                    <a href="{{path('service')}}" class="btn btn-primary"> Ver más</a>
+                </div>
+            </div>
+            {% endfor %}  
+        </div>
+    </div>
+
+</div>
+<div id="section-taller">
+    <div class="container head-section">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center gtco-heading animate-box">
+                <br><br>
+                <h2 class="colorazul">TALLERES</h2>
+                <p>Ofrecemos talleres personalizados los cuales incluyen Certificado</p>
+            </div>
+        </div>
+
+    </div>
+    <div class="container">
+        <div class="row">
+        {% for k,item in talleres %}
+            <div class="col-md-4 col-sm-6">
+                <div class="team-member">
+                    {% if item.dini|date('Y-m-d') > "now"|date('Y-m-d')%}
+                    <div class="proximo-taller"><i class="fa fa-bookmark"></i><br> Próximo taller</div>
+                    {% endif %}
+                    <div class="team-img">
+                        <img src="{{asset('uploads/')}}{{item.imagen}}" alt="team member" class="img-responsive">
+                    </div>
+                    <div class="team-hover">
+                        <div class="desk">
+                            <h4>{{item.title}}</h4>
+                            <p>{{item.summary}}</p>
+                        </div>
+                        <div class="s-link">
+                            {% if item.dini|date('Y-m-d') >= "now"|date('Y-m-d')%}
+                            <a href="{{path('reservar_cita',{'tipo':'1','opt':item.id,'msj':'0'})}}" class="btn btn-blue"><i class="fa fa-calendar"></i> Reservar cupo</a>
+                            {% endif %}
+                            <a href="{{path('taller_info')}}/{{item.slug}}" class="btn btn-blue"><i class="fa fa-eye"></i> Ver más</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-title">
+
+                    <h5><a href="{{path('taller_info')}}/{{item.slug}}">{{item.title}}</a></h5>
+                    <span>{{item.summary}} - {{item.dini|date('d M Y')}}</span>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+    </div>
+</div>
+<br><br>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4 text-center animate-box">
+        <a href="{{path('taller')}}" class="btn btn-white btn-outline btn-lg btn-block">Ver todos los talleres</a>
+    </div>
+</div>
+<br><br>
+
+
+{% endblock %}
+{% block javascripts %}
+<script>
+    $(document).ready(function() {
+        $('.carousel').carousel();
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            console.log('Esto es un dispositivo móvil');
+        } else {
+            $(".img-sobremicro").height($(".div-text-index").height());
+
+        }
+
+    });
+</script>
+{% endblock %}

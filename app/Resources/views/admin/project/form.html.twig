@@ -1,0 +1,1027 @@
+{% extends 'base2.html.twig' %}
+
+{% block styles %}
+    <link href="{{asset('plugins/select2.4/dist/css/select2.min.css')}}" rel="stylesheet"/>
+    <link href="{{asset('site/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <style>
+        form label {
+            margin-bottom: 0;
+            font-weight: bold;
+        }
+        .form-control,
+        .select2-container--default .select2-selection--multiple {
+            border-radius: 2px !important;
+        }
+        .form-check-label {
+            font-weight: normal !important;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        table tr td .form-group {
+            margin-bottom: 0;
+        }
+        table td {
+            padding: 5px 6px !important;
+        }
+        .whoclass {
+            background: #E6E6E6;
+        }
+        .whatclass {
+            background: #D4E5F7;
+        }
+        .whereclass {
+            background: #F8D8D3;
+        }
+        .whomclass {
+            background: #D6F5F3;
+        }
+        .whenclass {
+            background: #E4D8F3;
+        }
+        #div-campos {
+            width: 100%;
+
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">ADMIN FORM PROJECT</h1>
+        <a class="btn btn-primary btn-icon-split" href="{{path('get_projects')}}">
+            <span class="icon text-white-50">
+                <i class="fas fa-bars"></i>
+            </span>
+            <span class="text">Project List</span>
+        </a>
+    </div>
+    <div class='clearfix'></div>
+    <div class="card-body">
+        <form class="needs-validation" novalidate action="{{path('admin_update_project')}}/{{id}}" method="post" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="col-md-12">
+                    <label for="validationCustom01">NAME PROJECT</label>
+                    <input class="form-control" id="validationCustom01" name="nombre" placeholder="Title project" required type="text" value="{{project.nombre}}">
+                </div>
+                <div class="w-100"></div><br>
+
+                <div class="col-md-8">
+                    <label for="validationCustom02">RELATED EMERGENCY / THEME / TOPIC
+                    </label>
+                    <input class="form-control" id="validationCustom02" name="emergency" placeholder="Migration, Sequía" required type="text" value="{{project.emergency}}">
+                </div>
+                <div class="col-md-4">
+                    <label for="validationCustom07">LANGUAGE</label>
+                    <select class="form-control" id="validationCustom07" name="lang" require>
+                        <option value="es" {{project.lang == "es" ? "selected":"" }}>Spanish</option>
+                        <option value="en" {{project.lang == "en" ? "selected":"" }}>English</option>
+                    </select>
+                </div>
+                <div class="w-100"></div><br>
+                <div class="col-md-12">
+                    <label for="validationCustom06">DESCRIPTION</label>
+                    <textarea class="form-control" id="validationCustom06" name="detalle" required>{{project.detalle}}</textarea>
+                </div>
+                <div class="w-100"></div><br>
+                <div class="col-md-12">
+                    <label for="validationCustom06">POWER BI LINK</label>
+                    <textarea class="form-control" id="validationCustom06" name="pbi" >{{project.pbi}}</textarea>
+                </div>
+                <div class="w-100"></div><br>
+                <div class="col-md-12">
+                    <label for="validationCustom04">COUNTRIES</label>
+                    <select class="js-example-basic-multiple" id="validationCustom04" multiple="multiple" name="countries[]" require style="width: 100%;">
+                        {% for item in countries %}
+                            <option value="{{item.id}}" {{item.id in project.paises ? 'selected':'' }}>{{item.nombre}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="w-100"></div><br>
+
+            </div>
+            <div class="form-row">
+                <div id="div-campos">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="">
+
+                                <div class="w-100"></div><br>
+                                <div class="table-responsive">
+                                    <table cellspacing="0" class="table table-bordered" id="fieldstable" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Type</th>
+                                                <th>Name</th>
+                                                <th>Required</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="whoclass">
+                                                <td>Who</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input checked class="form-check-input" id="org_id" name="campos[]" onclick="return false;" type="checkbox" value="org_id">
+                                                            <label class="form-check-label" for="org_id">
+                                                                Organization, Organization Type
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input checked class="form-check-input" name="requires[]" onclick="return false;" type="checkbox" value="org_id">
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr class="whoclass">
+                                                <td>Who</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="financed" name="campos[]" type="checkbox" {{ "financed" in fields ? 'checked':'' }} value="financed">
+                                                            <label class="form-check-label" for="financed">
+                                                                Financial Organization, Financial Organization Type
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "financed" in requs ? 'checked':'' }} value="financed">
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr class="whoclass">
+                                                <td>Who</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="contact" name="campos[]" type="checkbox" {{ "contact" in fields ? 'checked':'' }} value="contact">
+                                                            <label class="form-check-label" for="contact">
+                                                                Contact detail
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "contact" in requs ? 'checked':'' }} value="contact">
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr class="whoclass">
+                                                <td>Who</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="toficina_id" name="campos[]" type="checkbox" {{ "toficina_id" in fields ? 'checked':'' }} value="toficina_id">
+                                                            <label class="form-check-label" for="toficina_id">
+                                                                Office Type (Presence)
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "toficina_id" in requs ? 'checked':'' }} value="toficina_id">
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr class="whoclass">
+                                                <td>Who</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="coverage_id" name="campos[]" type="checkbox" {{ "coverage_id" in fields ? 'checked':'' }} value="coverage_id">
+                                                            <label class="form-check-label" for="coverage_id">
+                                                                Country Coverage
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "coverage_id" in requs ? 'checked':'' }} value="coverage_id">
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr class="whatclass">
+                                                <td>What</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input checked class="form-check-input" id="sector_id" name="campos[]" onclick="return false;" type="checkbox" value="sector_id">
+                                                            <label class="form-check-label" for="sector_id">
+                                                                Sector
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input checked class="form-check-input" name="requires[]" onclick="return false;" type="checkbox" value="sector_id">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <!-- <tr class="whatclass">
+                                                <td>What</td>
+                                               <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="subsector_id" name="campos[]" type="checkbox" {{ "subsector_id" in fields ? 'checked':'' }} value="subsector_id">
+                                                            <label class="form-check-label" for="subsector_id">
+                                                                Sub-Sector
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "subsector_id" in requs ? 'checked':'' }} value="subsector_id">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            -->
+                                            <tr class="whatclass">
+                                                <td>What</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="tactividad" name="campos[]" type="checkbox" {{ "tactividad" in fields ? 'checked':'' }} value="tactividad">
+                                                            <label class="form-check-label" for="tactividad">
+                                                                Activity type
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "tactividad" in requs ? 'checked':'' }} value="tactividad">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whatclass">
+                                                <td>What</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="actividad_id" name="campos[]" type="checkbox" {{ "actividad_id" in fields ? 'checked':'' }} value="actividad_id">
+                                                            <label class="form-check-label" for="actividad_id">
+                                                                Activity
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "actividad_id" in requs ? 'checked':'' }} value="actividad_id">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whatclass">
+                                                <td>What</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="detalle" name="campos[]" type="checkbox" {{ "detalle" in fields ? 'checked':'' }} value="detalle">
+                                                            <label class="form-check-label" for="detalle">
+                                                                Activity Detail
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "detalle" in requs ? 'checked':'' }} value="detalle">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whatclass">
+                                                <td>What</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="description" name="campos[]" type="checkbox" {{ "description" in fields ? 'checked':'' }} value="description">
+                                                            <label class="form-check-label" for="description">
+                                                                Relevant Aditional Information 
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "description" in requs ? 'checked':'' }} value="description">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whatclass">
+                                                <td>What</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="recurso_id" name="campos[]" type="checkbox" {{ "recurso_id" in fields ? 'checked':'' }} value="recurso_id">
+                                                            <label class="form-check-label" for="recurso_id">
+                                                                Tipo de recurso, Quantity, Unit of Measure
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "recurso_id" in requs ? 'checked':'' }} value="recurso_id">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whatclass">
+                                                <td>What</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="tipo_id" name="campos[]" type="checkbox" {{ "tipo_id" in fields ? 'checked':'' }} value="tipo_id">
+                                                            <label class="form-check-label" for="tipo_id">
+                                                                Type (Response, Preparedness)
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "tipo_id" in requs ? 'checked':'' }} value="tipo_id">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whereclass">
+                                                <td>Where</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="departamento" name="campos[]" type="checkbox" {{ "departamento" in fields ? 'checked':'' }} value="departamento">
+                                                            <label class="form-check-label" for="departamento">
+                                                                Admin 1 / Departamento
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "departamento" in requs ? 'checked':'' }} value="departamento">
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr class="whereclass">
+                                                <td>Where</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="municipio" name="campos[]" type="checkbox" {{ "municipio" in fields ? 'checked':'' }} value="municipio">
+                                                            <label class="form-check-label" for="municipio">
+                                                                Admin 2 / Municipio
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "municipio" in requs ? 'checked':'' }} value="municipio">
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr class="whereclass">
+                                                <td>Where</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="admin3" name="campos[]" type="checkbox" {{ "admin3" in fields ? 'checked':'' }} value="admin3">
+                                                            <label class="form-check-label" for="admin3">
+                                                                Admin 3 / Admin 3
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "admin3" in requs ? 'checked':'' }} value="admin3">
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr class="whenclass">
+                                                <td>When</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="dini" name="campos[]" type="checkbox" {{ "dini" in fields ? 'checked':'' }} value="dini">
+                                                            <label class="form-check-label" for="dini">
+                                                                When (Start & End Date, Status)
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "dini" in requs ? 'checked':'' }} value="dini">
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <!--
+                                                                                                                                <tr class="whenclass">
+                                                                                                                                    <td>When</td>
+                                                                                                                                    <td>
+                                                                                                                                        <div class="form-group">
+                                                                                                                                            <div class="form-check">
+                                                                                                                                                <input class="form-check-input" id="dend" name="campos[]" type="checkbox" {{ "dend" in fields ? 'checked':'' }} value="dend">
+                                                                                                                                                <label class="form-check-label" for="dend">
+                                                                                                                                                    Date end
+                                                                                                                                                </label>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </td>
+                                                                                                                                    <td align="center">
+                                                                                                                                        <div class="form-group">
+                                                                                                                                            <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "dend" in requs ? 'checked':'' }} value="dend">
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </td>
+                                                                                        
+                                                                                                                                </tr>
+                                                                                                                                <tr class="whenclass">
+                                                                                                                                    <td>When</td>
+                                                                                                                                    <td>
+                                                                                                                                        <div class="form-group">
+                                                                                                                                            <div class="form-check">
+                                                                                                                                                <input class="form-check-input" id="estado_id" name="campos[]" type="checkbox"  {{ "estado_id" in fields ? 'checked':'' }}  value="estado_id">
+                                                                                                                                                <label class="form-check-label" for="estado_id">
+                                                                                                                                                    Status
+                                                                                                                                                </label>
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </td>
+                                                                                                                                    <td align="center">
+                                                                                                                                        <div class="form-group">
+                                                                                                                                            <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "estado_id" in requs ? 'checked':'' }} value="estado_id">
+                                                                                                                                            </div>
+                                                                                                                                        </div>
+                                                                                                                                    </td>
+                                                                                        
+                                                                                                                                </tr>
+                                                                                                                                -->
+                                            <tr class="whomclass">
+                                                <td>Whom</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="beneficiario_id" name="campos[]" type="checkbox" {{ "beneficiario_id" in fields ? 'checked':'' }} value="beneficiario_id">
+                                                            <label class="form-check-label" for="beneficiario_id">
+                                                                Beneficiary Type
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "beneficiario_id" in requs ? 'checked':'' }} value="beneficiario_id">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whomclass">
+                                                <td>Whom</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="afectados" name="campos[]" type="checkbox" {{ "afectados" in fields ? 'checked':'' }} value="afectados">
+                                                            <label class="form-check-label" for="afectados">
+                                                                People affected
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "afectados" in requs ? 'checked':'' }} value="afectados">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whomclass">
+                                                <td>Whom</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="objetivo" name="campos[]" type="checkbox" {{ "objetivo" in fields ? 'checked':'' }} value="objetivo">
+                                                            <label class="form-check-label" for="objetivo">
+                                                                Target
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" name="requires[]" type="checkbox" {{ "objetivo" in requs ? 'checked':'' }} value="objetivo">
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+                                            </tr>
+                                            <tr class="whomclass">
+                                                <td>Whom</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="atendidas" name="campos[]" type="checkbox" {{ "atendidas" in fields ? 'checked':'' }} value="atendidas">
+                                                            <label class="form-check-label" for="atendidas">
+                                                                People assisted
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" {{ "atendidas" in requs ? 'checked':'' }} name="requires[]" type="checkbox" value="atendidas">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whomclass">
+                                                <td>Whom</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="infancy" name="campos[]" type="checkbox" {{ "infancy" in fields ? 'checked':'' }} value="infancy">
+                                                            <label class="form-check-label" for="infancy">
+                                                                Infancy < 5 years men and women
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" {{ "infancy" in requs ? 'checked':'' }} name="requires[]" type="checkbox" value="infancy">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whomclass">
+                                                <td>Whom</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="childhood" name="campos[]" type="checkbox" {{ "childhood" in fields ? 'checked':'' }} value="childhood">
+                                                            <label class="form-check-label" for="childhood">
+                                                                Childhood 6-12 years men and women
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" {{ "childhood" in requs ? 'checked':'' }} name="requires[]" type="checkbox" value="childhood">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whomclass">
+                                                <td>Whom</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="adolescencef" name="campos[]" type="checkbox" {{ "adolescencef" in fields ? 'checked':'' }} value="adolescencef">
+                                                            <label class="form-check-label" for="adolescencef">
+                                                                Adolescence 13-18 years women
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" {{ "adolescencef" in requs ? 'checked':'' }} name="requires[]" type="checkbox" value="adolescencef">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whomclass">
+                                                <td>Whom</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="adolescencem" name="campos[]" type="checkbox" {{ "adolescencem" in fields ? 'checked':'' }} value="adolescencem">
+                                                            <label class="form-check-label" for="adolescencem">
+                                                                Adolescence 13-18 years men
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" {{ "adolescencem" in requs ? 'checked':'' }} name="requires[]" type="checkbox" value="adolescencem">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whomclass">
+                                                <td>Whom</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="pregnant" name="campos[]" type="checkbox" {{ "pregnant" in fields ? 'checked':'' }} value="pregnant">
+                                                            <label class="form-check-label" for="pregnant">
+                                                                Pregnant and lactating 19-59 years old
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" {{ "pregnant" in requs ? 'checked':'' }} name="requires[]" type="checkbox" value="pregnant">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whomclass">
+                                                <td>Whom</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="olds" name="campos[]" type="checkbox" {{ "olds" in fields ? 'checked':'' }} value="olds">
+                                                            <label class="form-check-label" for="olds">
+                                                                Older adults> 59 years old
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" {{ "olds" in requs ? 'checked':'' }} name="requires[]" type="checkbox" value="olds">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr class="whomclass">
+                                                <td>Whom</td>
+                                                <td>
+                                                    <div class="form-group">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" id="gender" name="campos[]" type="checkbox" {{ "gender" in fields ? 'checked':'' }} value="gender">
+                                                            <label class="form-check-label" for="gender">
+                                                                Gender (Male, Female, Boys, Girls)
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td align="center">
+                                                    <div class="form-group">
+                                                        <div class="form-check"><input class="form-check-input" {{ "gender" in requs ? 'checked':'' }} name="requires[]" type="checkbox" value="gender">
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if project.id > 0 %}
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="">
+                            <label></label>
+                            <div class="w-100"></div><br>
+                            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                <h1 class="h3 mb-0 text-gray-800">ACTIVITIES
+                                </h1>
+                                <a class="d-none d-sm-inline-block btn btn-primary shadow-sm edit-record" data-id="0" href="#" onclick="javascript:return false;">
+                                    <i class="fas fa-plus fa-sm"></i>
+                                    Add record</a>
+                            </div>
+                            <div class='clearfix'></div>
+                            <div class="table-responsive">
+                                <table cellspacing="0" id="tableacts" class="table table-bordered" id="dataTable" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>SECTOR</th>
+
+                                            {% if 'subsector_id' in fields %}
+                                            <th>SUBSECTOR</th>
+                                            {% endif %}
+                                            <th>ID</th>
+
+                                            <th>NAME - EN</th>
+                                            <th>NAME - ES</th>
+                                            <th>Options</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for item in activities %}
+                                            <tr id="tr-act-{{item.id}}">
+                                                <td>{{item.sector}}</td>
+                                                {% if 'subsector_id' in fields %}
+                                                <td>{{item.ssector}}</td>
+                                                {% endif %}
+
+                                                <td width='50'>{{item.id}}</td>
+
+                                                <td>{{item.nombre}}</td>
+                                                <td>{{item.nombre_en}}</td>
+
+                                                <td align="center" width="110">
+<!--
+                                                    <a class="btn btn-danger btn-icon-split btn-sm delete-record" onclick="javascript:return false;" href="#" data-id="{{item.id}}">
+                                                        <span class="text">
+                                                            <i class="fas fa-times"></i>
+                                                        </span>
+                                                    </a>
+-->
+                                                    <a class="btn btn-primary btn-icon-split btn-sm edit-record" onclick="javascript:return false;" href="#" data-id="{{item.id}}">
+                                                        <span class="text">
+                                                            <i class="fas fa-pencil-alt"></i>
+                                                        </span>
+                                                    </a>
+
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                {% endif %}
+            </div>
+            <!--<input id="excelfile" type="file"/>
+            <input id="viewfile" onclick="ExportToTable()" type="button" value="Export To Table"/>
+            -->
+            <br/>
+            <br/>
+            <table id="exceltable"></table>
+            <div class="w-100"></div><br>
+            <input name="id" type="hidden" value="{{project.id}}">
+            <button class="btn btn-primary" type="submit">Submit form</button>
+        </form>
+
+    </div>
+    <div class="modal fade" id="modal-m" role="dialog">
+        <div
+            class="modal-dialog" style="width: 80%;">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+                    <h4 class="modal-title">PERSONAS INSCRITAS</h4>
+                </div>
+                <div class="modal-body" id="modal-detail">
+                    <p>Cargando información....</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div aria-hidden="true" aria-labelledby="myExtraLargeModalLabel" class="modal fade bd-example-modal-xl" id="form-modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">FORM / ACTIVITY</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" class="needs-validation" enctype="multipart/form-data" id="form-record" method="post" novalidate>
+
+                        <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+
+                    </form>
+                    <div class="w-100"></div><br>
+                    <div class="col-md-12"></div>
+                    <div class="w-100"></div><br>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class='clearfix'></div><br>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{asset('plugins/select2.4/dist/js/select2.min.js')}}"></script>
+    <script src="{{asset('site/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('site/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.7.7/xlsx.core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xls/0.7.4-a/xls.core.min.js"></script>
+    <script type="text/javascript" src="{{asset('js/bootbox.min.js')}}"></script>
+
+    <script>
+        $(function () {
+
+            'use strict';
+            window.addEventListener('load', function () { // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+
+            $('.js-example-basic-multiple').select2();
+            $('#fieldstable').DataTable({paging: false, searching: true, "pageLength": 5000, "scrollY": "55vh", "scrollX": true, fixedHeader: true});
+            var table = $('#tableacts').DataTable({paging: false, searching: true, "pageLength": 5000, "scrollY": "55vh", "scrollX": true, fixedHeader: true});
+ 
+            $(document).on('change', '#excelfile', function () {
+                ExportToTable();
+            });
+
+            $(document).on('click', '.edit-record', function () {
+                var id = $(this).data('id');
+                $("#form-modal").modal('show');
+                $.ajax({
+                    type: "GET",
+                    url: "{{ path('admin_table_activity') }}/" + id + "/{{project.id}}/{{ 'subsector_id' in fields ? 'subsector':'sector' }}",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function (xhr) {}
+                }).done(function (data) {
+                    $("#form-record").html(data.html);
+                    $(".select2").select2();
+                });
+
+            });
+
+            $("#form-record").submit(function (e) {
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+                var form = $(this);
+                $.ajax({type: "POST", url: "{{ path('admin_table_activity') }}", data: form.serialize(), beforeSend: function (xhr) {}}).done(function (data) {
+                    if (data.edita == 1) {
+                        $("#tr-record-" + data.id).html(data.html);
+                        console.log(data.html);
+                    } else {
+                        var html_page = "<tr id='tr-act-" + data.id + "'>" + data.html + "</tr>";
+                        table.row.add($(html_page)).draw(false);
+
+                    }
+                    $("#form-modal").modal('hide');
+                });
+
+
+            });
+
+            $(document).on('click', '.delete-record', function () {
+                var id = $(this).data('id');
+                bootbox.confirm({
+                    title: "",
+                    message: "Are you sure you want to delete this record ? This action will be irreversible.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancel'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Delete'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                url: "{{ path('activity_delete') }}/" + id
+                            }).done(function (data) {
+                                $('#tr-act-' + id).hide('slow');
+    
+                            });
+                 
+                        }
+                        
+
+                        // console.log('This was logged in the callback: ' + result);
+                    }
+                });
+            });
+
+
+        });
+
+        function ExportToTable() {
+            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.xlsx|.xls)$/;
+            /*Checks whether the file is a valid excel file*/
+            if (regex.test($("#excelfile").val().toLowerCase())) {
+                var xlsxflag = false; /*Flag for checking whether excel is .xls format or .xlsx format*/
+                if ($("#excelfile").val().toLowerCase().indexOf(".xlsx") > 0) {
+                    xlsxflag = true;
+                }
+                /*Checks whether the browser supports HTML5*/
+                if (typeof(FileReader) != "undefined") {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var data = e.target.result;
+                        /*Converts the excel data in to object*/
+                        if (xlsxflag) {
+                            var workbook = XLSX.read(data, {type: 'binary'});
+                        } else {
+                            var workbook = XLS.read(data, {type: 'binary'});
+                        }
+                        /*Gets all the sheetnames of excel in to a variable*/
+                        var sheet_name_list = workbook.SheetNames;
+
+                        var cnt = 0; /*This is used for restricting the script to consider only first sheet of excel*/
+                        sheet_name_list.forEach(function (y) {
+                            /*Iterate through all sheets*/
+                            /*Convert the cell value to Json*/
+                            if (xlsxflag) {
+                                var exceljson = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
+                            } else {
+                                var exceljson = XLS.utils.sheet_to_row_object_array(workbook.Sheets[y]);
+                            }
+                            if (exceljson.length > 0 && cnt == 0) {
+                                BindTable(exceljson, '#exceltable');
+                                cnt++;
+                            }
+                        });
+                        $('#exceltable').show();
+                    }
+                    if (xlsxflag) { /*If excel file is .xlsx extension than creates a Array Buffer from excel*/
+                        reader.readAsArrayBuffer($("#excelfile")[0].files[0]);
+                    } else {
+                        reader.readAsBinaryString($("#excelfile")[0].files[0]);
+                    }
+                } else {
+                    alert("Sorry! Your browser does not support HTML5!");
+                }
+            } else {
+                alert("Please upload a valid Excel file!");
+            }
+        }
+
+        function BindTable(jsondata, tableid) { /*Function used to convert the JSON array to Html Table*/
+            var columns = BindTableHeader(jsondata, tableid); /*Gets all the column headings of Excel*/
+            for (var i = 0; i < jsondata.length; i++) {
+                var row$ = $('<tr/>');
+                for (var colIndex = 0; colIndex < columns.length; colIndex++) {
+                    var cellValue = jsondata[i][columns[colIndex]];
+                    if (cellValue == null) 
+                        cellValue = "";
+                    
+
+                    row$.append($('<td/>').html(cellValue));
+                }
+                $(tableid).append(row$);
+            }
+        }
+        function BindTableHeader(jsondata, tableid) { /*Function used to get all column names from JSON and bind the html table header*/
+            var columnSet = [];
+            var headerTr$ = $('<tr/>');
+            for (var i = 0; i < jsondata.length; i++) {
+                var rowHash = jsondata[i];
+                for (var key in rowHash) {
+                    if (rowHash.hasOwnProperty(key)) {
+                        if ($.inArray(key, columnSet) == -1) { /*Adding each unique column names to a variable array*/
+                            columnSet.push(key);
+                            headerTr$.append($('<th/>').html(key));
+                        }
+                    }
+                }
+            }
+            $(tableid).append(headerTr$);
+            return columnSet;
+        }
+    </script>
+{% endblock %}

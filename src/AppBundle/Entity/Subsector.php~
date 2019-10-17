@@ -1,0 +1,47 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Sector
+ *
+ * @ORM\Table()
+ * @ORM\Entity
+ */
+class Subsector
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=255)
+     */
+    private $nombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre_en", type="string", length=255)
+     */
+    private $nombre_en;
+    
+
+   /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sector")
+     * @ORM\JoinColumn(name="sector_id", referencedColumnName="id")
+     */
+    private $sector_id;
+    
+
+
+}

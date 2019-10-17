@@ -1,0 +1,43 @@
+<td align="center" width="50">
+    {% if project in app.user.projects %}
+        <a class="btn btn-danger btn-sm delete-record" data-option="0" href="#" role="button" onclick="javascript:return false;" data-id="{{item.id}}" data-org="{{idorg}}">
+            <i class="fa fa-times"></i>
+        </a>
+    {% endif %}
+</td>
+{% if "financed" in campos %}
+    <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" data-org="{{idorg}}">
+        {{ item.financed }}
+    </td>
+{% endif %}
+{% if "toficina_id" in campos %}
+    <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" data-org="{{idorg}}">{{item.toficina}}</td>
+{% endif %}
+{% if "departamento" in campos %}
+    <td class="{{ project in app.user.projects ? 'add-record':'' }} departamentotd" data-id="{{item.id}}" data-org="{{idorg}}">
+        {{ item.departamento }}
+    </td>
+{% endif %}
+{% if "municipio" in campos %}
+    <td class="{{ project in app.user.projects ? 'add-record':'' }} municipiotd" data-id="{{item.id}}" data-org="{{idorg}}">
+        {{ item.municipio }}
+    </td>
+{% endif %}
+{% if "coverage_id" in campos %}
+    <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" data-org="{{idorg}}">{{item.coverage}}
+        data-org="{{record.o_id}}"</td>
+{% endif %}
+{% if "dini" in campos %}
+    <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" width="190" data-org="{{idorg}}">{{item.estado}}</td>
+{% endif %}
+{% if "detalle" in campos %}
+    <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" width="300" style="width: 350px important!; " data-org="{{idorg}}">{{item.detalle|slice(0,80)}}...</td>
+{% endif %}
+{% if "recurso_id" in campos %}
+    <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" data-org="{{idorg}}">{{item.recurso}}</td>
+    <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" data-org="{{idorg}}">{{item.cantidad|number_format(0,'.',',')}}</td>
+    <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" data-org="{{idorg}}">{{item.unidad}}</td>
+{% endif %}
+{% if "atendidas" in campos %}
+    <td class="{{ project in app.user.projects ? 'add-record':'' }}" data-id="{{item.id}}" data-org="{{idorg}}">{{item.atendidas}}</td>
+{% endif %}

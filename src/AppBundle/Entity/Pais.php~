@@ -1,0 +1,115 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+/**
+ * Ocha\ParametroBundle\Entity\Pais
+ *
+ * @ORM\Table(name="pais")
+ * @ORM\Entity
+ */
+class Pais
+{
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @var string $nombre
+     *
+     * @ORM\Column(name="nombre_en", type="string", length=255)
+     */
+    protected $nombre_en;
+    
+    /**
+     * @var string $nombrees
+     *
+     * @ORM\Column(name="nombre", type="string", length=255, nullable = true)
+     */
+    protected $nombre;
+    
+    /**
+     * @var string $acronimo
+     *
+     * @ORM\Column(name="acronimo", type="string", length=255)
+     */
+    protected $acronimo;
+    
+    /**
+     * @var integer $statusepr
+     *
+     * @ORM\Column(name="statusepr", type="integer", options={"default" = 0})
+     */
+    protected $statusepr;
+    
+    /**
+     * @var text $commentepr
+     *
+     * @ORM\Column(name="commentepr", type="text")
+     */
+    protected $commentepr;
+    
+    /**
+     * @var string $latitud
+     *
+     * @ORM\Column(name="latitud", type="string", length=100, nullable = true)
+     */
+    protected $latitud;
+    
+    /**
+     * @var string $longitud
+     *
+     * @ORM\Column(name="longitud", type="string", length=100, nullable = true)
+     */
+    protected $longitud;
+    
+    /**
+     * @var string $codigo_tel
+     *
+     * @ORM\Column(name="codigo_tel", type="string", length=10, nullable = true)
+     */
+    protected $codigo_tel;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="usuario_alta", referencedColumnName="id")
+     */
+    protected $usuario_alta;
+
+    /**
+     * @var datetime $fecha_alta
+     *
+     * @ORM\Column(name="fecha_alta", type="datetime")
+     * 
+     */
+    protected $fecha_alta;
+
+   /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="usuario_modifica", referencedColumnName="id")
+     */
+    protected $usuario_modifica;
+
+    /**
+     * @var datetime $fecha_modifica
+     *
+     * @ORM\Column(name="fecha_modifica", type="datetime", nullable = true)
+     */
+    protected $fecha_modifica;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Region")
+     * @ORM\JoinColumn(name="region_id", referencedColumnName="id")
+     */
+    protected $region_id;
+        
+
+}

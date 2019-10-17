@@ -1,0 +1,400 @@
+{% extends 'tema.html.twig' %}
+{% block styles %}
+<link rel="stylesheet" href="{{asset('page/css/index.css')}}">
+{% endblock %}
+{% block main %}
+
+	<!-- Home -->
+
+	<div class="home">
+
+		<!-- Home Slider -->
+		<div class="home_slider_container">
+			<div class="owl-carousel owl-theme home_slider" style="">
+				
+				<!-- Slide -->
+				<div class="owl-item" >
+					<div class="background_image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5),  rgba(0, 0, 0, 0.5)), url({{asset('images/main2.jpeg')}})"></div>
+					<div class="home_container" >
+						<div class="container">
+							<div class="row">
+								<div class="col">
+									<div class="home_content">
+										<div class="home_title" style="color: #ffffff !important; text-align: center;">Karla León</div>
+										<div class="home_text">
+											<p  style="color: #ffffff; font-size: 20px; font-weight: normal; text-align: center;">Porque la garantía del trabajo se refleja en lo más detallado y perfecto que puedo dejar tu rostro.</p>
+										</div>
+										<div class="home_buttons d-flex flex-row align-items-center justify-content-center text-center" >
+											<div class="button button_1 trans_200 text-center"><a href="#micropigmentacion">Que es micropigmentación ?</a></div>
+										</div>
+										<div class="clearfix"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Slide -->
+				<div class="owl-item" style="width:100%;">
+					<div class="background_image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5),  rgba(0, 0, 0, 0.5)), url({{asset('images/main1.jpeg')}})"></div>
+					<div class="home_container">
+						<div class="container">
+							<div class="row">
+								<div class="col">
+									<div class="home_content">
+
+										<div class="home_title" style="color: #ffffff !important; text-align: center;">Has tu cita hoy!</div>
+										<div class="home_text">
+											<p style="color: #ffffff; font-size: 20px; font-weight: normal; text-align: center;">Reserva una cita y descubre por ti misma el profesionalismo con el cual serás atendidad. Escribiendonos por whatsapp o al siguiente enlace!</p>
+										</div>
+										<div class="home_buttons d-flex flex-row align-items-center justify-content-center">
+											<div class="button button_1 trans_200"><a href="{{path('reservar_cita')}}"><i class="fa fa-calendar"></i> Reservar cita</a></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="owl-item" style="width:100%;">
+					<div class="background_image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5),  rgba(0, 0, 0, 0.5)), url({{asset('images/main4.jpeg')}})"></div>
+					<div class="home_container">
+						<div class="container">
+							<div class="row">
+								<div class="col">
+									<div class="home_content">
+
+										<div class="home_title" style="color: #ffffff !important; text-align: center;">Has tu cita hoy!</div>
+										<div class="home_text">
+											<p style="color: #ffffff; font-size: 20px; font-weight: normal; text-align: center;">Reserva una cita y descubre por ti misma el profesionalismo con el cual serás atendidad. Escribiendonos por whatsapp o al siguiente enlace!</p>
+										</div>
+										<div class="home_buttons d-flex flex-row align-items-center justify-content-center">
+											<div class="button button_1 trans_200"><a href="{{path('reservar_cita')}}"><i class="fa fa-calendar"></i> Reservar cita</a></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+
+			<!-- Home Slider Dots -->
+
+			<div class="home_slider_dots">
+				<ul id="home_slider_custom_dots" class="home_slider_custom_dots d-flex flex-row align-items-center justify-content-start">
+					<li class="home_slider_custom_dot trans_200 active"></li>
+					<li class="home_slider_custom_dot trans_200"></li>
+					<li class="home_slider_custom_dot trans_200"></li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+
+	<!-- Intro -->
+<!--
+	<div class="intro">
+		<div class="container">
+			<div class="row">
+        <div class="col-lg-6 intro_col">
+        <img src="{{asset('images/karla5.jpg')}}" alt="" style="width: 100%;">
+        </div>
+		
+				<div class="col-lg-6 intro_col">
+					<div class="intro_content">
+						<div class="section_title_container">
+							<div class="section_subtitle">MICROPIGMENTACIÓN</div>
+							<div class="section_title"><h2>KARLA LEÓN</h2></div>
+						</div>
+						<div class="intro_text">
+							<p>La micropigmentación, es una especialidad enmarcada en el campo de la estética cuyo fin es el de embellecer, corregir o mejorar determinados rasgos de la anatomía corporal mediante la pigmentación de la piel.</p>
+						</div>
+            <div class="intro_text">
+							<p>También se emplea para corregir daños provocados por tratamientos médicos muy agresivos, como es la quimioterapia, o defectos estéticos genéticos. Si bien es cierto que el proceso provoca una cierta incomodidad, este no es doloroso. </p>
+						</div>
+						<div class="milestones">
+							<div class="row milestones_row">
+							
+							
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				
+			</div>
+		</div>
+	</div>
+-->
+	<!-- Why Choose Us -->
+
+	<div id="micropigmentacion" class="why">
+  <div class="background_image" style="background-image:url({{asset('images/baner333.png')}})"></div>
+		<div class="container">
+			<div class="row ">
+
+				<!-- Why Choose Us Image -->
+				
+        <div class="col-lg-6 order-lg-2 order-1"></div>
+				<!-- Why Choose Us Content -->
+				<div class="col-lg-6 order-lg-2 order-1">
+					<div class="why_content">
+						<div class="section_title_container">
+							
+							<div class="section_title"><h4><b>MICROPIGMENTACIÓN</b>  </h4></div>
+						</div>
+						<div class="why_list_text">
+							<p>La micropigmentación, es una especialidad enmarcada en el campo de la estética cuyo fin es el de embellecer, corregir o mejorar determinados rasgos de la anatomía corporal mediante la pigmentación de la piel. Si bien es cierto que el proceso provoca una cierta incomodidad, este no es doloroso.</p>
+						</div>
+                        <div class="section_title"><br><h4>CUÁL ES MI SECRETO ?  </h4></div>
+						<div class="why_list">
+							<ul>
+
+								<!-- Why List Item -->
+								<li class="d-flex flex-row align-items-center justify-content-start">
+									<div class="d-flex flex-column align-items-center justify-content-center">
+										<div class="icon-li"><i class="fa fa-certificate"></i></div>
+									</div>
+									<div class="why_list_content">
+										<div class="why_list_title">Atención al cliente</div>
+										<div class="why_list_text"><p>Cada cliente es único, tenemos mucha paciencia, su rostro es su lienzo y merece responsabilidad.</p></div>
+									</div>
+								</li>
+
+								<!-- Why List Item -->
+								<li class="d-flex flex-row align-items-center justify-content-start">
+									<div class="d-flex flex-column align-items-center justify-content-center">
+										<div class="icon-li"><i class="fa fa-certificate"></i></div>
+									</div>
+									<div class="why_list_content">
+										<div class="why_list_title">Pasión</div>
+										<div class="why_list_text"><p>Disfruto y gozo de realizar un trazo cada día más pulido y perfecto y la paciente se permita con orgullo decir me realizaron un trabajo de calidad y me encantan mis cejas.</p></div>
+									</div>
+								</li>
+
+								<!-- Why List Item -->
+								<li class="d-flex flex-row align-items-center justify-content-start">
+									<div class="d-flex flex-column align-items-center justify-content-center">
+										<div class="icon-li"><i class="fa fa-certificate"></i></div>
+									</div>
+									<div class="why_list_content">
+										<div class="why_list_title">Calidad</div>
+										<div class="why_list_text"><p>Utilizamos solo productos de la más alta calidad.</p></div>
+									</div>
+								</li>
+
+							</ul>
+						</div>
+					</div>
+				</div>
+        
+			</div>
+		</div>
+</div>
+	<!-- Call to action -->
+
+	<div class="cta">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="cta_container d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
+						<div class="cta_content">
+							<div class="cta_title">Has tu cita hoy!</div>
+							<div class="cta_text">Reserva tu cita y vive la experiencia de lucir como una reina</div>
+						</div>
+						<div class="cta_phone ml-lg-auto"><a href="{{path('reservar_cita')}}"><i class="fa fa-calendar"></i> Reservar cita</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Services -->
+
+	<div class="services" id="servicios">
+		<div class="container">
+			<div class="row">
+				<div class="col text-center">
+					<div class="section_title_container">
+						<div class="section_subtitle"></div>
+						<div class="section_title"><h2>SERVICIOS</h2></div>
+						<p class="text-black-50">Ofrecemos para ti una serie de servicios con una atención personalizada, visítanos y compruebalo por ti misma</p>
+					</div>
+				</div>
+			</div>
+			<div class="row services_row">
+				
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/cejas.png')}}" style="width: 100%;"></div>
+							<div class="service_title">CEJAS</div>
+							<div class="service_text">
+								<p>Obtendrás la apariencia natural que siempre has querido! Contamos con más de 40 colores de pigmentos para tipo de color de piel.</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/5"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/pestanas1.png')}}" style="width: 100%;"></div>
+							<div class="service_title">PESTAÑAS</div>
+							<div class="service_text">
+								<p>No hay excusas para no tener las Pestañas hermosas que siempre has soñado, ven y compruebalo por ti misma</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/6"><i class="fa fa-link"></i> Ver más</a></div>
+											
+                         
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							<div><img src="{{asset('images/estrias.png')}}" style="width: 100%;"></div>
+							<div class="service_title">ESTRIAS</div>
+							<div class="service_text">
+								<p>Una nueva técnica que permite camuflar las estrías por medio del uso de pigmentos especiales permanentes </p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/7"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/depilacion.png')}}" style="width: 100%;"></div>
+							<div class="service_title">DEPILACIÓN</div>
+							<div class="service_text">
+								<p>Un proceso sin dolor, sin sorpresas y que convierte a la depilación en algo por lo que no debes preocuparte.</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/9"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/labios.png')}}" style="width: 100%;"></div>
+							<div class="service_title">LABIOS</div>
+							<div class="service_text">
+								<p>Ya es posible lucir unos labios perfetamente definidos y con un color natural sin necesidad de usar lapiz labial todos los dias.</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/8"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/service_4.png')}}" style="width: 100%; "></div>
+							<div class="service_title">SPA</div>
+							<div class="service_text">
+								<p>Póngale fin a los problemas del día con exclusivos faciales y tratamientos corporales o bien, rejuvenézcase en nuestro SPA.</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/4"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Extra -->
+
+	<!-- Card -->
+    <div class="">
+        <div class="row row-pb-md">
+            <div class="container">
+			<div class="row">
+				<div class="col text-center">
+					<div class="section_title_container">
+						<div class="section_subtitle"></div>
+						<div class="section_title"><h2>TALLERES</h2></div>
+						<p class="text-black-50">Ofrecemos talleres personalizados los cuales incluyen Certificado. 
+Inscríbete en nuestros talleres y mantente actualizada las últimas técnicas sobre micropigmentación.<p>
+					</div>
+				</div>
+			</div>
+        <div class="row">
+        {% for k,item in talleres %}
+            <div class="col-md-6 col-sm-6">
+                <div class="team-member">
+                    {% if item.dini|date('Y-m-d') >= "now"|date('Y-m-d')%}
+                    <div class="proximo-taller"><i class="fa fa-bookmark"></i><br> Próximo taller</div>
+                    {% endif %}
+                    <div class="team-img">
+                        <div align="center">
+                        <img src="{{asset('uploads/')}}{{item.imagen}}" alt="team member" class="img-responsive" style="height: 350px;" >
+                        </div>
+                    </div>
+                    <div class="team-hover">
+                        <div class="desk">
+                            <h4>TALLER</h4>
+                            <p>{{item.title}}</p>
+                        </div>
+                        <div class="s-link">
+                        <div class="home_buttons">
+                            {% if item.dini|date('Y-m-d') >= "now"|date('Y-m-d')%}
+                            <div class="button button_3 extra_link trans_200"> <a href="{{path('reservar_cita',{'tipo':'1','opt':item.id,'msj':'0'})}}" class=""><i class="fa fa-calendar"></i> Reservar</a></div>
+                            {% endif %}
+                            <div class="button button_3 extra_link trans_200"><a href="{{path('taller_info')}}/{{item.slug}}" class=""><i class="fa fa-eye"></i> Ver más</a></div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-title">
+
+                    <h5><a href="{{path('taller_info')}}/{{item.slug}}">{{item.title|title}}</a></h5>
+                    <span>{{item.summary}} - {{item.dini|date('d M Y')}}</span>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+    </div>
+    
+    </div>
+  
+    </div>
+</div>
+<div class="clearfix"></div><br><br><br>
+{% endblock %}
+{% block javascripts %}
+<script>
+$(function () {
+	//$(".owl-carousel .owl-item").css({"height":$(window).height()+"px"});
+});
+</script>
+{% endblock %}

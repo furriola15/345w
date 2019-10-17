@@ -1,0 +1,42 @@
+<div class="col-md-12">
+    <div class="row">
+        <div class="w-100"></div><br>
+        <div class="col-md-12 col-lg-12">
+            <label for="sector_id">SECTOR
+                {{tipo == "subsector" ? '/ SUBSECTOR':'' }}
+            </label>
+            <select class="select2" id="ssector_id" name="ssector_id" style="width: 100%;">
+                <option value="">Select</option>
+                {% for item in sectores %}
+                    <option value="{{item.id}}" {{item.id == record.related ? 'selected':'' }}>{{item.sector}}
+                        {% if tipo == "subsector" %}
+                            /
+                            {{item.nombre}}
+                        {% endif %}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="w-100"></div><br>
+
+
+        <div class="col-md-12">
+            <label for="objetivo">NAME - ES</label>
+            <input class="form-control" id="nombre" name="nombre" placeholder="" autocomplete="off" type="text" value="{{record.nombre}}">
+        </div>
+
+        <div class="w-100"></div><br>
+        <div class="col-md-12">
+            <label for="objetivo">NAME - EN</label>
+            <input class="form-control" id="nombre_en" name="nombre_en" autocomplete="off" placeholder="" type="text" value="{{record.nombre_en}}">
+        </div>
+
+        <div class="w-100"></div><br><br>
+        <div class="col-md-12">
+            <button class="btn btn-success float-right" type="submit">Save & Close</button>
+            <button class="btn btn-secondary float-right" data-dismiss="modal" type="button">Close edition</button>
+        </div>
+    </div>
+</div>
+<input name="id" type="hidden" value="{{record.id}}">
+<input name="tipo" type="hidden" value="{{tipo}}">

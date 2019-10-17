@@ -1,0 +1,354 @@
+{% extends 'tema.html.twig' %}
+{% block styles %}
+<link rel="stylesheet" href="{{asset('owlcarousel/assets/owl.carousel.min.css')}}">
+<link rel="stylesheet" href="{{asset('owlcarousel/assets/owl.theme.default.min.css')}}">
+<link rel="stylesheet" href="{{asset('owlcarousel/assets/animate.css')}}">
+<link rel="stylesheet" href="{{ asset('css/dots.css') }}">
+<link rel="stylesheet" href="{{ asset('page/css/index.css') }}">
+<style>
+.projects-section {
+  padding: 50px 0;
+  background: #fff;
+}
+
+.projects-section .featured-text {
+  padding: 2rem;
+}
+
+@media (min-width: 992px) {
+  .projects-section .featured-text {
+    padding: 0 0 0 2rem;
+    border-left: 0.5rem solid #64a19d;
+  }
+}
+
+.projects-section .project-text {
+  padding: 3rem;
+  font-size: 90%;
+}
+
+@media (min-width: 992px) {
+  .projects-section .project-text {
+    padding: 5rem;
+  }
+  .projects-section .project-text hr {
+    border-color: rgba(238, 87, 159, 1);
+    border-width: .25rem;
+    width: 30%;
+  }
+}
+
+
+.projects-section .img-fluid {
+    width: 100% !important;
+    height:  100% !important;
+}
+</style>
+{% endblock %}
+{% block main %}
+<div class="home">
+
+		<!-- Home Slider -->
+		<div class="home_slider_container">
+			<div class="owl-carousel owl-theme home_slider">
+				
+				<!-- Slide -->
+				<div class="owl-item">
+					<div class="background_image" style="background-image:url({{asset('images/main2.jpg')}})"></div>
+					<div class="home_container">
+						<div class="container">
+							<div class="row">
+								<div class="col">
+									<div class="home_content">
+										<div class="home_title" style="color: #ffffff;">SERVICIOS</div>
+										<div class="home_text">
+											<p  style="color: #000000; font-size: 20px;">Ofrecemos para ti una serie de servicios con una atención personalizada, visítanos y compruebalo por ti misma</p>
+										</div>
+								
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  
+
+<!-- Home -->
+<div class="ctagrey">
+<br><br><br><br><br>
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="cta_container d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
+						<div class="cta_content">
+							<div class="cta_title text-karla2-50">
+                {% autoescape %}
+                  {{post.title|raw}}
+                {% endautoescape %}
+                </div>
+							<div class="cta_text text-karla-50">KARLA LEÓN MICROPIGMENTACIÓN & SPA</div>
+                            <div class="text-black-50">{{post.content|raw}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <section id="projects" class="projects-section">
+    <div class="container">
+
+      <!-- Project One Row -->
+      {% for k,item in posts %}
+      {% if k is not odd %}
+      <div class="row justify-content-center no-gutters mb-5 mb-lg-0">
+        <div class="col-lg-6">
+                {% for j,imagen in item.image %}
+                    <img src="{{asset('uploads/')}}/{{imagen.title}}" class="img-fluid" alt="" style="width: 100%;">
+                {% endfor %}
+        </div>
+        <div class="col-lg-6">
+          <div class="bg-black text-center h-100 project">
+            <div class="d-flex h-100">
+              <div class="project-text w-100 my-auto text-center text-lg-left">
+                <h4 class="text-karla-50">{{item.title}}</h4>
+                <p class="mb-0 text-black-50">{{item.summary}}</p>
+                <hr class="d-none d-lg-block mb-0 ml-0">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% else %}
+        <div class="row justify-content-center no-gutters">
+        <div class="col-lg-6">
+          {% for j,imagen in item.image %}
+                    <img src="{{asset('uploads/')}}/{{imagen.title}}" class="img-fluid" alt="" style="width: 100%;">
+                {% endfor %}
+        </div>
+        <div class="col-lg-6 order-lg-first">
+          <div class="bg-black text-center h-100 project">
+            <div class="d-flex h-100">
+              <div class="project-text w-100 my-auto text-center text-lg-right">
+                <h4 class="text-karla-50">{{item.title}}</h4>
+                <p class="mb-0 text-black-50">{{item.summary}}</p>
+                <hr class="d-none d-lg-block mb-0 mr-0">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}  
+      <!-- Project Two Row -->
+      
+
+    </div>
+  </section>
+    
+	<div class="cta">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="cta_container d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
+						<div class="cta_content">
+							<div class="cta_title">Has tu cita hoy!</div>
+							<div class="cta_text">Reserva tu cita y vive la experiencia de lucir como una reina</div>
+						</div>
+						<div class="cta_phone ml-lg-auto"><i class="fa fa-calendar"></i> Reservar cita</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="services" id="servicios">
+		<div class="container">
+			<div class="row">
+				<div class="col text-center">
+					<div class="section_title_container">
+						<div class="section_subtitle"></div>
+						<div class="section_title"><h2>SERVICIOS</h2></div>
+					</div>
+				</div>
+			</div>
+			<div class="row services_row">
+				
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/cejas.png')}}" style="width: 100%; height: 230px;"></div>
+							<div class="service_title">CEJAS</div>
+							<div class="service_text">
+								<p>Obtendrás la apariencia natural que siempre has querido! Contamos con más de 40 colores de pigmentos para tipo de color de piel.</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/5"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/pestanas1.png')}}" style="width: 100%; height: 230px;"></div>
+							<div class="service_title">PESTAÑAS</div>
+							<div class="service_text">
+								<p>No hay excusas para no tener las Pestañas hermosas que siempre has soñado, ven y compruebalo por ti misma</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/6"><i class="fa fa-link"></i> Ver más</a></div>
+											
+                         
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							<div><img src="{{asset('images/estrias.png')}}" style="width: 100%; height: 230px;"></div>
+							<div class="service_title">ESTRIAS</div>
+							<div class="service_text">
+								<p>Una nueva técnica que permite camuflar las estrías por medio del uso de pigmentos especiales permanentes </p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/7"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/depilacion.png')}}" style="width: 100%; height: 230px;"></div>
+							<div class="service_title">DEPILACIÓN</div>
+							<div class="service_text">
+								<p>Un proceso sin dolor, sin sorpresas y que convierte a la depilación en algo por lo que no debes preocuparte.</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/9"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/labios.png')}}" style="width: 100%; height: 230px;"></div>
+							<div class="service_title">LABIOS</div>
+							<div class="service_text">
+								<p>Ya es posible lucir unos labios perfetamente definidos y con un color natural sin necesidad de usar lapiz labial todos los dias.</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/8"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/service_4.png')}}" style="width: 100%; height: 230px;"></div>
+							<div class="service_title">SPA</div>
+							<div class="service_text">
+								<p>Póngale fin a los problemas del día con exclusivos faciales y tratamientos corporales o bien, rejuvenézcase en nuestro SPA.</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/4"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+<div class="clearfix"></div>
+
+{% endblock %}
+{% block javascripts %}
+<script type="text/javascript" src="{{asset('js/modernizr.js')}}"></script> 
+<script>
+    $(document).ready(function() {
+
+
+        $('.owl-carousel').owlCarousel({
+            items: 1,
+            margin: 10,
+            autoplay: true,
+            loop: true,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+            smartSpeed: 450,
+            dots: true
+
+
+
+        });
+
+        var contentSections = $('.cd-section'),
+                navigationItems = $('#cd-vertical-nav a');
+
+        updateNavigation();
+        $(window).on('scroll', function() {
+            updateNavigation();
+        });
+
+        //smooth scroll to the section
+        navigationItems.on('click', function(event) {
+            event.preventDefault();
+            smoothScroll($(this.hash));
+        });
+        //smooth scroll to second section
+        $('.cd-scroll-down').on('click', function(event) {
+            event.preventDefault();
+            smoothScroll($(this));
+        });
+
+        //open-close navigation on touch devices
+        $('.touch .cd-nav-trigger').on('click', function() {
+            $('.touch #cd-vertical-nav').toggleClass('open');
+
+        });
+        //close navigation on touch devices when selectin an elemnt from the list
+        $('.touch #cd-vertical-nav a').on('click', function() {
+            $('.touch #cd-vertical-nav').removeClass('open');
+        });
+
+        function updateNavigation() {
+            contentSections.each(function() {
+                $this = $(this);
+                var activeSection = $('#cd-vertical-nav a[href="#' + $this.attr('id') + '"]').data('number') - 1;
+                if (($this.offset().top - $(window).height() / 2 < $(window).scrollTop()) && ($this.offset().top + $this.height() - $(window).height() / 2 > $(window).scrollTop())) {
+                    navigationItems.eq(activeSection).addClass('is-selected');
+                } else {
+                    navigationItems.eq(activeSection).removeClass('is-selected');
+                }
+            });
+        }
+$('.carousel').carousel({
+  interval: 2500
+});
+        function smoothScroll(target) {
+            $('body,html').animate(
+                    {'scrollTop': (target.offset().top) - 110},
+            900
+                    );
+        }
+
+
+    });
+</script>
+{% endblock %}

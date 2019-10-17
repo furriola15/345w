@@ -1,0 +1,194 @@
+{% extends 'base.html.twig' %}
+{% block styles %}
+<link rel="stylesheet" href="{{asset('owlcarousel/assets/owl.carousel.min.css')}}">
+<link rel="stylesheet" href="{{asset('owlcarousel/assets/owl.theme.default.min.css')}}">
+<link rel="stylesheet" href="{{asset('owlcarousel/assets/animate.css')}}">
+<link rel="stylesheet" href="{{ asset('css/dots.css') }}">
+<link rel="stylesheet" href="{{ asset('page/css/index.css') }}">
+{% endblock %}
+{% block main %}
+<nav id="cd-vertical-nav">
+    <ul>
+         {% for k,item in posts %}
+        <li>
+            <a href="#section{{k+1}}" data-number="{{k+1}}">
+                <span class="cd-dot"></span>
+                <span class="cd-label">{{item.title}}</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</nav>
+<div class="header-pages">
+    <div class="col-md-8 col-md-offset-2 text-center">
+        <div class="display-t">
+            <div class="">
+                <br>
+                <h1 class="animate-box colorazul" data-animate-effect="fadeInUp"><span class="icon">
+                        <i class="ti-shine"></i>
+                    </span> SERVICIOS</h1>
+                <p>Ofrecemos para ti una serie de servicios con una atención personalizada, visítanos y compruebalo por ti misma</p>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<div class="clearfix"></div>
+<div class="">
+    <div class="">
+        {% for k,item in posts %}
+        {% if k is odd %}
+        
+        <section class="bg-secondary" id="section{{k+1}}">
+            <div class="container">
+
+                <div class="row align-children">
+
+
+                    <div class="col-md-7 col-sm-12 mb-xs-24">
+                        <div class="">
+                            <h3><i class="ti-shine"></i>
+                    </span>{{item.title}}</h3><div class="mb32">
+                                <p>{{item.summary}}</p>
+                                <p>{{item.content == "NA" ? '':item.content|raw}}</p>
+                            </div>
+                            <a class="btn btn-primary btn-lg" href="{{path('reservar_cita',{'tipo':'3','opt':item.id,'msj':'0'})}}"><i class="fa fa-calendar"></i> Reservar cita</a>
+                        </div>
+                    </div>
+                    <!--end of row-->
+                    <div class="col-md-5 col-sm-12 text-center">
+                        <img class="img-responsive" alt="Portfolio Section" src="{{asset('uploads/')}}{{item.image}}">
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% else %}
+        <section class="" id="section{{k+1}}">
+            <div class="container">
+
+                <div class="row align-children">
+
+                    <div class="col-md-5 col-xs-12 text-center mb-xs-24">
+                        <img class="img-responsive" alt="SEO Friendly" src="{{asset('uploads/')}}{{item.image}}">
+                    </div>
+
+                    <div class="col-md-7 col-xs-12">
+                        <div class="">
+                            <h3><i class="ti-shine"></i>
+                    </span>{{item.title}}</h3><div class="mb32">
+                                <p>{{item.summary}}</p>
+                                <p>{{item.content == "NA" ? '':item.content|raw}}</p>
+                            </div>
+                            <a class="btn btn-default btn-lg" href="{{path('reservar_cita',{'tipo':'3','opt':item.id,'msj':'0'})}}"><i class="fa fa-calendar"></i> Realizar cita</a>
+                        </div>
+                    </div>
+                    <!--end of row-->
+                </div>
+            </div>
+        </section>
+        {% endif %}
+         {% endfor %}
+        <!--
+        {% for k,item in posts %}
+        <div id="section{{k+1}}" class="{{ k is odd ? 'divbgservice2':'divbgservice' }}" >
+
+            <div class="col-md-5 col-sm-5 {{ k is odd ? 'pull-left':'pull-right' }}">
+                <div class="row" >
+                    <img src="{{asset('uploads/')}}{{item.image}}" style="height: 100%;">
+                </div>
+            </div>
+            <div style="" class="col-md-7 col-sm-7 animate-box textservice {{ k is odd ? 'pull-right':'pull-left' }}" data-animate-effect="fadeInUp">
+                <h2 class="{{ k is odd ? 'colorazul':'' }} "> <span class="icon">
+                        <i class="ti-shine"></i>
+                    </span>{{item.title}}</h2>
+                <p>{{item.summary}}</p>
+                <div class="sumarytext">{{item.content == "NA" ? '':item.content|raw}}</div>
+                <br>
+                <a class="btn btn-default btn-lg" href="{{path('reservar_cita',{'tipo':'3','opt':item.id,'msj':'0'})}}"><i class="fa fa-calendar"></i> Realizar cita</a>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+
+        {% endfor %}
+        -->
+
+
+    </div>
+</div>
+<div class="clearfix"></div>
+
+{% endblock %}
+{% block javascripts %}
+<script type="text/javascript" src="{{asset('js/modernizr.js')}}"></script> 
+<script>
+    $(document).ready(function() {
+
+
+        $('.owl-carousel').owlCarousel({
+            items: 1,
+            margin: 10,
+            autoplay: true,
+            loop: true,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+            smartSpeed: 450,
+            dots: true
+
+
+
+        });
+
+        var contentSections = $('.cd-section'),
+                navigationItems = $('#cd-vertical-nav a');
+
+        updateNavigation();
+        $(window).on('scroll', function() {
+            updateNavigation();
+        });
+
+        //smooth scroll to the section
+        navigationItems.on('click', function(event) {
+            event.preventDefault();
+            smoothScroll($(this.hash));
+        });
+        //smooth scroll to second section
+        $('.cd-scroll-down').on('click', function(event) {
+            event.preventDefault();
+            smoothScroll($(this));
+        });
+
+        //open-close navigation on touch devices
+        $('.touch .cd-nav-trigger').on('click', function() {
+            $('.touch #cd-vertical-nav').toggleClass('open');
+
+        });
+        //close navigation on touch devices when selectin an elemnt from the list
+        $('.touch #cd-vertical-nav a').on('click', function() {
+            $('.touch #cd-vertical-nav').removeClass('open');
+        });
+
+        function updateNavigation() {
+            contentSections.each(function() {
+                $this = $(this);
+                var activeSection = $('#cd-vertical-nav a[href="#' + $this.attr('id') + '"]').data('number') - 1;
+                if (($this.offset().top - $(window).height() / 2 < $(window).scrollTop()) && ($this.offset().top + $this.height() - $(window).height() / 2 > $(window).scrollTop())) {
+                    navigationItems.eq(activeSection).addClass('is-selected');
+                } else {
+                    navigationItems.eq(activeSection).removeClass('is-selected');
+                }
+            });
+        }
+
+        function smoothScroll(target) {
+            $('body,html').animate(
+                    {'scrollTop': (target.offset().top) - 110},
+            900
+                    );
+        }
+
+
+    });
+</script>
+{% endblock %}

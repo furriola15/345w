@@ -1,0 +1,232 @@
+{% if adminuno|length > 0 %}
+    <div class="">
+        <div id="accordion">
+            <div class="card" id="org_id_{{record.o_id}}">
+                <div class="card-header" id="heading-1">
+                    <h5 class="mb-0 float-left text-black text-md align-middle">
+                        <b>WHO</b>
+                        -
+                        {{record.code|upper}}
+                        -
+                        {{record.org|title}}
+                    </h5>
+                    <div class="float-right">
+                        
+                        
+                        <a class="btn btn-primary btnsmall" href="{{path('tresw_dashboard')}}/{{project}}/{{record.o_id}}" data-toggle="tooltip" target="_blank" title="Go to the Organization Dashboard">
+
+                            <i class="fas fa-chart-bar"></i>
+
+                        </a>
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <nav>
+                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                    <a class="nav-item nav-link active nav-presence color-black" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Where are you</a>
+                                    <a class="nav-item nav-link nav-acts color-black" id="nav-profile-tab" data-toggle="tab" data-org="{{record.o_id}}" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">What are you doing
+                                    </a>
+                                    <a class="nav-item nav-link nav-acts color-black" id="nav-contact-tab" data-toggle="tab" data-org="{{record.o_id}}" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contacts
+                                    </a>
+                                </div>
+                            </nav>
+                            <div class="tab-content" id="nav-tabContent">
+                                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                    <h4 class="color-red float-left">Organization presence by sector</h4>
+                                    <div class="clearfix"></div>
+                                    <div class="col-md-12">
+                                        <label for="validationCustom07">Search location to add it to the table</label>
+                                        <select class="form-control custom-select" id="where_id" name="where_id" style="width: 100%;">
+                                        </select>
+                                    </div>
+                                    <div class="col-md-12">
+
+                                        <table class="table" id="table-chart">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">
+                                                        Admin 1
+                                                    </th>
+                                                    {% if "municipio" in campos %}
+                                                        <th>Admin 2</th>
+                                                    {% endif %}
+                                                    {% for item in sectores %}
+                                                        <th scope="col">
+                                                            <div align="center"><img src="{{asset('images/sectors/')}}{{item.id}}.png" style="width: 15px;" data-toggle="tooltip" title="{{item.nombre}}"></div>
+                                                        </th>
+                                                    {% endfor %}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for k,item in adminuno %}
+                                                    <tr class="tr-pais" data-id="{{item.id}}">
+                                                        <td class="tddepartamento" id="tddepartamento{{item.id}}">{{item.departamento}}</td>
+                                                        {% if "municipio" in campos %}
+                                                            <td class="tdmunicipio" id="tdmunicipio{{item.id}}">{{ item.municipio }}</td>
+                                                        {% endif %}
+                                                        {% for sect in sectores %}
+                                                            <td id="tr-{{item.id}}-{{sect.id}}" data-org="{{record.o_id}}" data-level="{{ "municipio" in campos ? 'municipio':'departamento' }}" data-sector="{{sect.id}}" data-id="{{item.id}}" class="tdselection {{ sect.id in item.sectores ? 'tdfocus':'' }}" data-toggle="tooltip" title="{{item.departamento}} in {{sect.nombre}}"></td>
+                                                        {% endfor %}
+
+                                                    </tr>
+
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="clearfix"></div><br>
+                                </div>
+                                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                    <h4 class="color-red float-left">List of activities you are doing</h4>
+                                    <a href="#" class="btn btn-sm btn-success add-record float-right" data-id="0" onclick="javascript:return false;" role="button" data-org="{{record.o_id}}" data-toggle="tooltip" title="Add activity or record to {{record.code|upper}}">
+                                        <i class="fas fa-plus"></i> Add activities
+                                    </a>
+                                    <div class="clearfix"></div>
+                                    <div id="box-activities">
+                                        <i id='load-spiner' class='fa fa-spinner fa-spin fa-fw'></i>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                    <h4 class="color-red">Contact List</h4>
+                                    <div id="box-contact">
+                                        <table class="table-sm table-striped">
+                                            <thead>
+                                                <tr class="whoclass">
+                                                    <th>ID</th>
+                                                    <th>FIRST NAME</th>
+                                                    <th>LASTNAME</th>
+                                                    <th>ARRIVAL DATE</th>
+                                                    <th>DEPATURE DATE</th>
+                                                    <th>EMAIL</th>
+                                                    <th>WHATSAPP</th>
+                                                    <th>WORK AREA</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Pedro</td>
+                                                    <td>Almengor</td>
+                                                    <td>2019-02-01</td>
+                                                    <td>2019-03-05</td>
+                                                    <td>almengor@mail.com</td>
+                                                    <td>+507 6878 2547</td>
+                                                    <td>Education</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Pedro</td>
+                                                    <td>Almengor</td>
+                                                    <td>2019-02-01</td>
+                                                    <td>2019-03-05</td>
+                                                    <td>almengor@mail.com</td>
+                                                    <td>+507 6878 2547</td>
+                                                    <td>Education</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Pedro</td>
+                                                    <td>Almengor</td>
+                                                    <td>2019-02-01</td>
+                                                    <td>2019-03-05</td>
+                                                    <td>almengor@mail.com</td>
+                                                    <td>+507 6878 2547</td>
+                                                    <td>Education</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Pedro</td>
+                                                    <td>Almengor</td>
+                                                    <td>2019-02-01</td>
+                                                    <td>2019-03-05</td>
+                                                    <td>almengor@mail.com</td>
+                                                    <td>+507 6878 2547</td>
+                                                    <td>Education</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Pedro</td>
+                                                    <td>Almengor</td>
+                                                    <td>2019-02-01</td>
+                                                    <td>2019-03-05</td>
+                                                    <td>almengor@mail.com</td>
+                                                    <td>+507 6878 2547</td>
+                                                    <td>Education</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Pedro</td>
+                                                    <td>Almengor</td>
+                                                    <td>2019-02-01</td>
+                                                    <td>2019-03-05</td>
+                                                    <td>almengor@mail.com</td>
+                                                    <td>+507 6878 2547</td>
+                                                    <td>Education</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Pedro</td>
+                                                    <td>Almengor</td>
+                                                    <td>2019-02-01</td>
+                                                    <td>2019-03-05</td>
+                                                    <td>almengor@mail.com</td>
+                                                    <td>+507 6878 2547</td>
+                                                    <td>Education</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Pedro</td>
+                                                    <td>Almengor</td>
+                                                    <td>2019-02-01</td>
+                                                    <td>2019-03-05</td>
+                                                    <td>almengor@mail.com</td>
+                                                    <td>+507 6878 2547</td>
+                                                    <td>Education</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Pedro</td>
+                                                    <td>Almengor</td>
+                                                    <td>2019-02-01</td>
+                                                    <td>2019-03-05</td>
+                                                    <td>almengor@mail.com</td>
+                                                    <td>+507 6878 2547</td>
+                                                    <td>Education</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td>Pedro</td>
+                                                    <td>Almengor</td>
+                                                    <td>2019-02-01</td>
+                                                    <td>2019-03-05</td>
+                                                    <td>almengor@mail.com</td>
+                                                    <td>+507 6878 2547</td>
+                                                    <td>Education</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-success" role="alert">
+        <h4 class="alert-heading">NO RECORDS REGISTERED FOR YOUR ORGANIZATION</h4>
+        <p class="mb-0">Please select an organization from the left list or add a record for your organization.</p>
+        <p></p>
+        <hr>
+        <p class="mb-0">If you have any doubts, please contact ocha-rolac@un.org</p>
+    </div>
+{% endif %}

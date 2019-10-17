@@ -1,0 +1,184 @@
+{% extends 'base2.html.twig' %}
+
+{% block styles %}
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />  
+    <style>
+    .jsgrid-cell {
+        background: #fcfcfc;
+        font-size: 13px;
+        padding: 7px;
+    }
+    .jsgrid select{
+        height: 30px !important;
+    }
+
+    </style>
+{% endblock %}
+    
+{% block main %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">ADMIN ORGANIZATIONS</h1>
+        <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" href="#">
+            <i class="fas fa-download fa-sm text-white-50"></i>
+            Generate Report</a>
+    </div>
+    <div class="clearfix"></div>
+    <div id="jsGrid"></div>
+      
+    <div class='clearfix'></div>
+    <div class="modal fade" id="modal-m" role="dialog">
+        <div
+            class="modal-dialog" style="width: 80%;">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+                    <h4 class="modal-title">PERSONAS INSCRITAS</h4>
+                </div>
+                <div class="modal-body" id="modal-detail">
+                    <p>Cargando información....</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class='clearfix'></div><br>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{asset('js/bootbox.min.js')}}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+    <script>
+        $(function () {
+
+            var db = {
+
+                    loadData: function(filter) {
+                        return $.grep(this.clients, function(client) {
+                            return (!filter.id || client.id === filter.id)
+                                && (!filter.nombre.toLowerCase() || (client.nombre).toLowerCase().indexOf(filter.nombre.toLowerCase()) > -1)
+                                && (!filter.code.toLowerCase() || (client.code).toLowerCase().indexOf(filter.code.toLowerCase()) > -1)
+                                && (!filter.nombre_en.toLowerCase() || (client.nombre_en).toLowerCase().indexOf(filter.nombre_en.toLowerCase()) > -1)
+                                && (!filter.code_en.toLowerCase() || (client.code_en).toLowerCase().indexOf(filter.code_en.toLowerCase()) > -1)
+                                && (!filter.tipo || client.tipo === filter.tipo);
+                        });
+                    },
+
+                    insertItem: function(insertingClient) {
+                        console.log(insertingClient);
+                        $.ajax({
+                            type: "POST",
+                            url: "{{path('admin_update_org')}}",
+                            data: insertingClient, // serializes the form's elements.
+                            success: function(data)
+                            {
+                                //alert(data); // show response from the php script.
+                            }
+                        });
+                    },
+
+                    updateItem: function(updatingClient) { 
+                        console.log(updatingClient);
+ 
+                         $.ajax({
+                            type: "POST",
+                            url: "{{path('admin_update_org')}}",
+                            data: updatingClient, // serializes the form's elements.
+                            success: function(data)
+                            {
+                                //alert(data); // show response from the php script.
+                            }
+                        });
+
+                    },
+
+                    deleteItem: function(deletingClient) {
+                        console.log(deletingClient);
+                        //var clientIndex = $.inArray(deletingClient, this.clients);
+                    }
+
+                };
+
+                window.db = db;
+
+                db.clients = [
+                    {% for item in orgs %}
+                    { "id": parseInt("{{item.id}}"), "nombre": "{{item.nombre}}", "code": "{{item.code}}", "nombre_en": "{{item.nombre_en}}", "code_en": "{{item.code_en}}", "tipo": parseInt("{{item.tipo_id}}")},
+                    {% endfor %}
+                ];
+            
+                db.tipos = [
+                    { nombre: "Alls", id: 0 },
+                    {% for item in tipos %}
+                        { nombre: "{{item.nombre}}", id: parseInt("{{item.id}}") },
+                    {% endfor %}
+                ];
+ 
+                $("#jsGrid").jsGrid({
+                    width: "100%",
+                    height: "600px",
+                    inserting: true,
+                    editing: {{ "ADMIN_TABLES" in app.user.roles ? 'true':'false' }},
+                    nsertRowLocation: "top",
+                    sorting: true,
+                    filtering: false,
+                    paging: false,
+                    controller: db,
+                    data: db.clients,
+                    fields: [
+                        { name: "nombre", title: "NAME - ES", type: "text", validate: "required" },
+                        { name: "code", title: "ACRONYM - ES", type: "text" },
+                        { name: "nombre_en", title: "NAME - EN", type: "text" },
+                        { name: "code_en", type: "text", title: "ACRONYM - EN" },
+                        { name: "tipo", title: "TYPE", type: "select", items: db.tipos, valueField: "id", textField: "nombre" }, 
+                        { type: "control", deleteButton: false }
+                    ]
+                });
+
+                $("#jsGrid").jsGrid("sort", "nombre");
+
+            $(document).on('click', '.list-users', function () {
+                var id = $(this).data('id');
+                $("#modal-m").modal('show');
+                $("#modal-detail").html("Cargando información....");
+                $("#modal-detail").load("{{path('personas')}}/" + id, function (responseTxt, statusTxt, xhr) {});
+            });
+
+            $(document).on('click', '.deletecita', function () {
+                var id = $(this).data('id');
+                bootbox.confirm({
+                    title: "Eliminar registro ?",
+                    message: "Está seguro que quiere eliminar este registro ? Esto es irreversible.",
+                    buttons: {
+                        cancel: {
+                            label: '<i class="fa fa-times"></i> Cancelar'
+                        },
+                        confirm: {
+                            label: '<i class="fa fa-check"></i> Eliminar'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $(this).html('<i class="fa fa-spinner fa-spin" style="font-size:24px"></i> Eliminando');
+                            $.ajax({
+                                url: "#" + id,
+                                context: document.body
+                            }).done(function () {
+                                $('#tr_' + id).hide('slow');
+
+                            });
+                        }
+                        // console.log('This was logged in the callback: ' + result);
+                    }
+                });
+
+
+            });
+
+        });
+    </script>
+{% endblock %}

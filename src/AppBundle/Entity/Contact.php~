@@ -1,0 +1,181 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Contact
+ *
+ * @ORM\Table(name="contact")
+ * @ORM\Entity
+ */
+class Contact
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lastname", type="string", length=255)
+     */
+    private $lastname;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mail2", type="string", length=255, nullable = true)
+     */
+    private $mail2;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="detail", type="string", length=255, nullable = true)
+     */
+    private $detail;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="baja", type="integer",  nullable = true)
+     */
+    private $baja;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="clead", type="integer",  nullable = true)
+     */
+    private $clead;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=255)
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ciudad", type="string", length=255, nullable = true)
+     */
+    private $ciudad;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="phone", type="string", length=255, nullable = true)
+     */
+    private $phone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mobile", type="string", length=255, nullable = true )
+     */
+    private $mobile;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="skype", type="string", length=255, nullable = true )
+     */
+    private $skype;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Pais")
+     * @ORM\JoinColumn(name="pais_id", referencedColumnName="id")
+     */
+    private $pais_id;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Organizacion")
+     * @ORM\JoinColumn(name="org_id", referencedColumnName="id", nullable = true)
+     */
+    private $org_id;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Oficina")
+     * @ORM\JoinColumn(name="oficina_id", referencedColumnName="id")
+     */
+    private $oficina_id;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="usuario_alta", referencedColumnName="id")
+     */
+    private $usuario_alta;
+
+    /**
+     * @var datetime $fecha_alta
+     *
+     * @ORM\Column(name="fecha_alta", type="datetime", nullable = true)
+     * 
+     */
+    private $fecha_alta;
+
+   /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Entity\User")
+     * @ORM\JoinColumn(name="usuario_modifica", referencedColumnName="id")
+     */
+    private $usuario_modifica;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Sector")
+     * @ORM\JoinColumn(name="clead_id", referencedColumnName="id")
+     */
+    private $clead_id;
+
+    /**
+     * @var datetime $fecha_modifica
+     *
+     * @ORM\Column(name="fecha_modifica", type="datetime", nullable = true)
+     */
+    private $fecha_modifica;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Cgroup", inversedBy="contacts")
+     * @ORM\JoinTable(name="contact_group")
+     *
+     */
+    private $grupos;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Sector", inversedBy="contacts")
+     * @ORM\JoinTable(name="sectore_contact")
+     *
+     */
+    private $sectores;
+
+    public function __construct()
+    {
+        $this->grupos = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->sectores = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+
+
+}

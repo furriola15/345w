@@ -1,0 +1,181 @@
+{% extends 'tema.html.twig' %}
+{% block main %}
+<div class="home">
+
+		<!-- Home Slider -->
+		<div class="home_slider_container">
+			<div class="owl-carousel owl-theme home_slider">
+				
+				<!-- Slide -->
+				<div class="owl-item">
+					<div class="background_image" style="background-image:url({{asset('images/main2.jpg')}})"></div>
+					<div class="home_container">
+						<div class="container">
+							<div class="row">
+								<div class="col">
+									<div class="home_content">
+										<div class="home_title" style="color: #ffffff;">NOSOTROS</div>
+										<div class="home_text">
+											<p  style="color: #000000; font-size: 17px;">Karla León - Micropigmentación & SPA</p>
+										</div>
+								
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<div class="clearfix"></div><br><br>
+<div id="gtco-history" class="container">
+
+        <div class="row row-pb-md">
+			
+            <div class="col-md-12">
+				<div class="section_title_container">
+							
+							<div class="section_title"><h3><b>NOSOTROS</b>  </h3></div>
+							
+						</div>
+                <p>Con más de 12 años dedicados a mi formación como especialista en la cosmetología e Imagen Integral, con plena capacidad de integrar conocimientos, habilidades y experiencia las cuales me han permitido colaborar en la promoción de la estética humana y en la atención a los problemas relacionados con la cosmetología en beneficio de las personas y de la sociedad.</p>
+                <br>
+                <p>Impulsada por el bienestar de nuestro cuerpo, el cual es nuestro templo y más allá de un maquillaje bien aplicado he orientado mis estudios y trabajos tanto a la parte artística pero sobre todo a la parte científica; cuyo principal campo de acción es la piel del rostro y de todo el cuerpo, con el objetivo de embellecerla y ensalzar los rasgos de forma muy natural y saludable..</p>
+                <br>
+				<p>Involucro conocimientos y técnicas de la ciencia médica dermatológica, en cuanto a elementos, instrumentos y también interacción entre compuestos. La estructura facial de cada persona, se determina por la posición, forma y prominencia de sus huesos, tomando en cuenta líneas, perfil, nariz y frente.</p>
+                
+      
+            </div>
+   
+           
+        </div>
+</div><div class="clearfix"></div><br><br>
+      <div class="cta">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="cta_container d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-start">
+						<div class="cta_content">
+							<div class="cta_title">Has tu cita hoy!</div>
+							<div class="cta_text">Reserva tu cita y vive la experiencia de lucir como una reina</div>
+						</div>
+						<div class="cta_phone ml-lg-auto"><a href="{{path('reservar_cita')}}"><i class="fa fa-calendar"></i> Reservar cita</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="services" id="servicios">
+		<div class="container">
+			<div class="row">
+				<div class="col text-center">
+					<div class="section_title_container">
+						<div class="section_subtitle"></div>
+						<div class="section_title"><h2>SERVICIOS</h2></div>
+					</div>
+				</div>
+			</div>
+			<div class="row services_row">
+				
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/cejas.png')}}" style="width: 100%;"></div>
+							<div class="service_title">CEJAS</div>
+							<div class="service_text">
+								<p>Obtendrás la apariencia natural que siempre has querido! Contamos con más de 40 colores de pigmentos para tipo de color de piel.</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/5"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/pestanas1.png')}}" style="width: 100%;"></div>
+							<div class="service_title">PESTAÑAS</div>
+							<div class="service_text">
+								<p>No hay excusas para no tener las Pestañas hermosas que siempre has soñado, ven y compruebalo por ti misma</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/6"><i class="fa fa-link"></i> Ver más</a></div>
+											
+                         
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							<div><img src="{{asset('images/estrias.png')}}" style="width: 100%; "></div>
+							<div class="service_title">ESTRIAS</div>
+							<div class="service_text">
+								<p>Una nueva técnica que permite camuflar las estrías por medio del uso de pigmentos especiales permanentes </p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/7"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/depilacion.png')}}" style="width: 100%; "></div>
+							<div class="service_title">DEPILACIÓN</div>
+							<div class="service_text">
+								<p>Un proceso sin dolor, sin sorpresas y que convierte a la depilación en algo por lo que no debes preocuparte.</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/9"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/labios.png')}}" style="width: 100%; "></div>
+							<div class="service_title">LABIOS</div>
+							<div class="service_text">
+								<p>Ya es posible lucir unos labios perfetamente definidos y con un color natural sin necesidad de usar lapiz labial todos los dias.</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/8"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+				<!-- Service -->
+				<div class="col-xl-4 col-md-6 service_col">
+					<div class="service text-center">
+						<div class="service">
+							
+                            <div><img src="{{asset('images/service_4.png')}}" style="width: 100%; "></div>
+							<div class="service_title">SPA</div>
+							<div class="service_text">
+								<p>Póngale fin a los problemas del día con exclusivos faciales y tratamientos corporales o bien, rejuvenézcase en nuestro SPA.</p>
+							</div>
+                            <div class="button button_1 extra_link trans_200"><a href="{{path('service')}}/4"><i class="fa fa-link"></i> Ver más</a></div>
+							
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12 col-lg-12">
+            <label for="toficina_id">{{table == "Provincia" ? 'COUNTRY':'' }}</label>
+            <select class="select2" id="related_id" name="related_id" style="width: 100%;">
+                <option value="">Select</option>
+                {% for item in tipos %}
+                    <option value="{{item.id}}" {{item.id == record.rid ? 'selected':'' }}>{{item.nombre}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="w-100"></div><br>
+
+        <div class="col-md-12">
+            <label for="objetivo">NAME - ES</label>
+            <input class="form-control" id="nombre" name="nombre" placeholder="" autocomplete="off" type="text" value="{{record.nombre}}">
+        </div>
+
+        <div class="w-100"></div><br>
+        <div class="col-md-12">
+            <label for="objetivo">PCODE</label>
+            <input class="form-control" id="pcode" name="pcode" autocomplete="off" placeholder="" type="text" value="{{record.pcode}}">
+        </div>
+        <div class="w-100"></div><br>
+        <div class="col-md-12">
+            <label for="objetivo">ISO2</label>
+            <input class="form-control" id="iso2" name="iso2" autocomplete="off" placeholder="" type="text" value="{{record.iso2}}">
+        </div>
+        <input class="form-control" id="related" name="related" autocomplete="off" placeholder="" type="hidden" value="{{record.rid}}">
+        <div class="w-100"></div><br><br>
+        <div class="col-md-12">
+            <button class="btn btn-success float-right" type="submit">Save & Close</button>
+            <button class="btn btn-secondary float-right" data-dismiss="modal" type="button">Close edition</button>
+        </div>
+    </div>
+</div>
+<input name="id" type="hidden" value="{{record.id}}">
+<input name="table" type="hidden" value="{{table}}">

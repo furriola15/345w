@@ -1,0 +1,138 @@
+{% extends 'base2.html.twig' %}
+
+{% block styles %}
+    <link href="{{asset('site/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <style>
+        table.dataTable th {
+            color: #418FDE !important;
+            font-weight: normal;
+            border-bottom: 1px solid #999;
+        }
+
+        table.dataTable td,
+        table.dataTable th {
+            font-size: 14px;
+
+        }
+        table.dataTable td {
+            padding: 4px 8px;
+        }
+        .card-project {
+            margin-bottom: 10px;
+            word-wrap: break-word;
+            border: none !important;
+            border-radius: 0 !important;
+            border-bottom: 1px solid #418FDE !important;
+        }
+        .card-project .card-text {
+            word-wrap: break-word;
+        }
+        .card-project h5 {
+            color: #418FDE;
+        }
+        .card-project .btn {
+            margin-right: 7px;
+            font-size: 13px;
+            padding: 8px 15px !important;
+        }
+        #search {
+            border-radius: 0 !important;
+            margin-bottom: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">ADMIN PROJECTS</h1>
+        {% if "ADMIN_WWW" in app.user.roles %}
+            <a class="d-none d-sm-inline-block btn btn-primary shadow-sm" href="{{path('admin_update_project',{'id':0})}}">
+                <i class="fas fa-download fa-sm text-white-50"></i>Add Project
+            </a>
+        {% endif %}
+    </div>
+    <div class='clearfix'></div>
+    <div class="row">
+        <div class="col-md-12">
+            <input type="text" class="form-control" id="search" placeholder="Search project">
+        </div>
+        <div class="clearfix"></div><br>
+        {% for item in records %}
+            <div class="col-md-12">
+                <div class="card card-project">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i class="fa fa-table"></i>
+                            PW-{{item.id}}
+                            /
+                            {{item.nombre}}</h5>
+                        <p class="card-text">{{item.detalle}}</p>
+                        <hr>
+                        <a href="{{path('admin_update_project')}}/{{item.id}}" class="btn btn-primary">
+                            <i class="fas fa-cog"></i>
+                            Config</a>
+                        <a href="{{item.pbi}}" class="btn btn-primary">
+                            <i class="fas fa-chart-pie"></i>
+                            Power BI</a>
+                        {% if item.id == 2 %}
+                            <a href="{{path('tresw_dashboard_caribbean')}}/{{item.id}}/0" class="btn btn-primary">
+                                <i class="fas fa-chart-bar"></i>
+                                Dashboard</a>
+                        {% else %}
+                            <a href="{{path('tresw_dashboard')}}/{{item.id}}/0" class="btn btn-primary">
+                                <i class="fas fa-chart-bar"></i>
+                                Dashboard</a>
+                        {% endif %}
+                        <a href="{{path('admin_new_doc')}}/{{item.id}}" class="float-right btn btn-success">
+                            <i class="fas fa-plus"></i>
+                            Add data of your organization</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    
+
+    <div class="modal fade" id="modal-m" role="dialog">
+        <div
+            class="modal-dialog" style="width: 80%;">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+                    <h4 class="modal-title">PERSONAS INSCRITAS</h4>
+                </div>
+                <div class="modal-body" id="modal-detail">
+                    <p>Cargando información....</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class='clearfix'></div><br>
+{% endblock %}
+{% block javascripts %}
+
+    <script src="{{asset('site/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('site/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $('#search').keyup(function () { // Search text
+                var text = $(this).val();
+
+                // Hide all content class element
+                $('.card-project').hide();
+
+                // Search and show
+                $('.card-project:contains("' + text + '")').show();
+
+            });
+        });
+    </script>
+{% endblock %}

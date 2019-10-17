@@ -1,0 +1,87 @@
+{% extends 'base2.html.twig' %}
+
+{% block styles %}
+    <link href="{{asset('site/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+    <style></style>
+{% endblock %}
+
+{% block main %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">ADMIN USERS</h1>
+        <a class="d-none d-sm-inline-block btn btn-primary shadow-sm" href="{{path('add_user',{'id':0})}}">
+            <i class="fas fa-plus fa-sm"></i>
+            Add User</a>
+    </div>
+    <div class='clearfix'></div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table cellspacing="0" class="table table-bordered" id="dataTable" width="100%">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Organization</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for item in records %}
+                        <tr>
+                            <td>{{item.id}}</td>
+                            <td>{{item.fullName}}</td>
+                            <td>{{item.email}}</td>
+                            <td>{{item.org_name}}</td>
+                           
+                            <td align="center">
+                                <a class="btn btn-success btn-icon-split btn-sm" href="{{path('add_user')}}/{{item.id}}"> 
+                                    <span class="text"><i class="fas fa-edit"></i></span>
+                                </a>
+
+                                <a class="btn btn-primary btn-icon-split btn-sm" href="{{path('tresw_dashboard')}}/{{item.id}}/0"> 
+                                    <span class="text"><i class="fas fa-chart-bar"></i></span>
+                                </a>
+
+                                
+                            </td>
+                        </tr>
+                    {% endfor %}
+                  
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-m" role="dialog">
+        <div
+            class="modal-dialog" style="width: 80%;">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+                    <h4 class="modal-title">PERSONAS INSCRITAS</h4>
+                </div>
+                <div class="modal-body" id="modal-detail">
+                    <p>Cargando información....</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class='clearfix'></div><br>
+{% endblock %}
+{% block javascripts %}
+
+    <script src="{{asset('site/vendor/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('site/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+    <script>
+        $(function () {
+            $('#dataTable').DataTable();
+        });
+    </script>
+{% endblock %}

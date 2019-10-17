@@ -1,0 +1,11 @@
+{% for j,tipo in tipos %}
+    <div class="list-list">
+        {{ tipo.nombre|upper }}
+    </div>
+    {% for k,item in orgs if item.tipo == tipo.id %}
+        <div class="list-list list-org" id="list-org{{item.id}}" data-id="{{item.id}}" data-toggle="tooltip" data-placement="top" title="{{item.nombre}}">
+            <div class="span-total-org float-right">{{ item.total }}</div>
+            {{ item.code }}
+        </div>
+    {% endfor %}
+{% endfor %}

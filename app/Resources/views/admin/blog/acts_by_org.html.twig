@@ -1,0 +1,255 @@
+{% extends 'base2.html.twig' %}
+
+{% block styles %}
+    <link href="{{asset('plugins/dtables/datatables.min.css')}}" rel="stylesheet">
+
+
+    <style>
+        table.dataTable td,
+        table.dataTable th {
+            font-size: 13px;
+            border: none !important;
+            white-space: nowrap;
+        }
+        table.dataTable th {
+            border: none !important;
+        }
+        div.dataTables_wrapper div.dataTables_paginate ul.pagination,
+        div.dataTables_wrapper div.dataTables_info {
+            white-space: nowrap;
+            font-size: 13px !important;
+        }
+        button.dt-button,
+        div.dt-button,
+        a.dt-button {
+            background-color: #10897D !important;
+            background-image: none !important;
+            color: #fff !important;
+            border: none !important;
+        }
+        .bg-info-table {
+            background: #F8D8D3;
+            border: none !important;
+            color: #000 !important;
+        }
+        .btn-icon-split {
+            border-radius: 0 !important;
+        }
+        #buttons {
+            margin-bottom: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-12 header">
+            <h1 class="h3 mb-0 text-gray-800 float-left">{{project.nombre|upper}}
+            </h1>
+
+            <a class="btn btn-success btn-icon-split float-right" href="{{path('admin_new_doc')}}/{{project.id}}">
+                <span class="icon">
+                    <i class="fas fa-cog"></i>
+                    Admin project
+                </span>
+            </a>
+            {% if project.id == 2 %}
+                <a class="btn btn-primary btn-icon-split float-right" href="{{path('tresw_dashboard_caribbean')}}/{{project.id}}/0">
+                    <span class="icon">
+                        <i class="fas fa-chart-bar"></i>
+                        Dashboard
+                    </span>
+                </a>
+            {% else %}
+                <a class="btn btn-primary btn-icon-split float-right" href="{{path('tresw_dashboard')}}/{{project.id}}/0">
+                    <span class="icon">
+                        <i class="fas fa-chart-bar"></i>
+                        Dashboard
+                    </span>
+                </a>
+            {% endif %}
+            <div class="clearfix"></div>
+            <hr>
+        </div>
+        <div class="clearfix"></div><br>
+
+        <div class="col-md-12">
+            <div id="buttons"></div>
+            <div id="box-data">
+                <table class=" table-sm table-striped" id="table-data" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            {% if "toficina_id" in campos %}
+                                <th>TYPE OF PRESENCE</th>
+                            {% endif %}
+                            {% if "coverage_id" in campos %}
+                                <th>COUNTRY COVERAGE</th>
+                            {% endif %}
+                            <th>SECTOR</th>      
+                            <th>COUNTRY</th>
+                            {% if "departamento" in campos %}
+                                <th>ADMIN 1</th>
+                            {% endif %}
+                            {% if "municipio" in campos %}
+                                <th>ADMIN 2</th>
+                            {% endif %}
+                            {% if "admin3" in campos %}
+                                <th>ADMIN 3</th>
+                            {% endif %}
+                            {% if "dini" in campos %}
+                                <th>START DATE</th>
+                                <th>END DATE</th>
+                                <th>STATUS</th>
+                            {% endif %}
+                            {% if "recurso_id" in campos %}
+                                <th>RESOURCE</th>
+                                <th>QUANTITY</th>
+                                <th>MEASURE UNIT</th>
+                            {% endif %}
+                            {% if "beneficiario_id" in campos %}
+                                <th>BENEFICIARY</th>
+                            {% endif %}
+                            {% if "afectados" in campos %}
+                                <th>AFFECTED</th>
+                            {% endif %}
+                            {% if "objetivo" in campos %}
+                                <th>TARGET</th>
+                            {% endif %}
+                            {% if "atendidas" in campos %}
+                                <th>REACHED</th>
+                            {% endif %}
+                            {% if "infancy" in campos %}
+                                <th>INFANCY</th>
+                            {% endif %}
+                            {% if "childhood" in campos %}
+                                <th>CHILDHOOD</th>
+                            {% endif %}
+                            {% if "adolescencem" in campos %}
+                                <th>ADOLESC. MALE</th>
+                            {% endif %}
+                            {% if "adolescencef" in campos %}
+                                <th>ADOLESC. FEMALE</th>
+                            {% endif %}
+                            {% if "pregnant" in campos %}
+                                <th>PREGNANT</th>
+                            {% endif %}
+                            {% if "olds" in campos %}
+                                <th>OLDS</th>
+                            {% endif %}
+                            {% if "gender" in campos %}
+                                <th class="">MALE</th>
+                                <th class="">FEMALE</th>
+                                <th class="">BOYS</th>
+                                <th class="">GIRLS</th>
+                            {% endif %}
+
+                        </tr>
+                    </thead>
+                    <div class="my-tbody">
+                        <tbody>
+                            {% for item in records %}
+                                <tr id="tr-record-{{item.id}}">
+                                    {% if "toficina_id" in campos %}
+                                        <td>{{item.toficina}}</td>
+                                    {% endif %}
+                                    {% if "coverage_id" in campos %}
+                                        <td>{{item.coverage}}</td>
+                                    {% endif %}
+                                    <td width="190">{{item.sector}}</td>
+                                    <td>{{item.pais}}</td>
+                                    {% if "departamento" in campos %}
+                                        <td>
+                                            {{ item.departamento }}
+                                        </td>
+                                    {% endif %}
+                                    {% if "municipio" in campos %}
+
+                                        <td>
+                                            {{ item.municipio }}
+                                        </td>
+                                    {% endif %}
+                                    {% if "admin3" in campos %}
+                                        <td>
+                                            {{ item.admin3 }}
+                                        </td>
+                                    {% endif %}
+                                    {% if "dini" in campos %}
+                                        <td style="width: 100px;">{{item.dini|date('d/m/Y')}}</td>
+                                        <td style="width: 100px;">{{item.dend|date('d/m/Y')}}</td>
+                                        <td style="width: 100px;">{{item.estado}}</td>
+                                    {% endif %}
+                                    {% if "recurso_id" in campos %}
+                                        <td>{{item.recurso}}</td>
+                                        <td>{{item.cantidad}}</td>
+                                        <td>{{item.unidad}}</td>
+                                    {% endif %}
+                                    {% if "beneficiario_id" in campos %}
+                                        <td>{{item.beneficiario}}</td>
+                                    {% endif %}
+                                    {% if "afectados" in campos %}
+                                        <td>{{item.afectados}}</td>
+                                    {% endif %}
+                                    {% if "objetivo" in campos %}
+                                        <td>{{item.objetivo}}</td>
+                                    {% endif %}
+                                    {% if "atendidas" in campos %}
+                                        <td>{{item.atendidas}}</td>
+                                    {% endif %}
+                                    {% if "infancy" in campos %}
+                                        <td>{{item.infancy}}</td>
+                                    {% endif %}
+                                    {% if "childhood" in campos %}
+                                        <td>{{item.childhood}}</td>
+                                    {% endif %}
+                                    {% if "adolescencem" in campos %}
+                                        <td>{{item.adolescencem}}</td>
+                                    {% endif %}
+                                    {% if "adolescencef" in campos %}
+                                        <td>{{item.adolescencef}}</td>
+                                    {% endif %}
+                                    {% if "pregnant" in campos %}
+                                        <td>{{item.pregnant}}</td>
+                                    {% endif %}
+                                    {% if "olds" in campos %}
+                                        <td>{{item.olds}}</td>
+                                    {% endif %}
+                                    {% if "gender" in campos %}
+                                        <td>{{item.male}}</td>
+                                        <td>{{item.female}}</td>
+                                        <td>{{item.boys}}</td>
+                                        <td>{{item.girls}}</td>
+                                    {% endif %}
+
+                                </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class='clearfix'></div>
+
+        <div class='clearfix'></div><br>
+    {% endblock %}
+    {% block javascripts %}
+        <script src="{{asset('plugins/select2.4/dist/js/select2.min.js')}}"></script>
+        <script src="{{asset('plugins/dtables/datatables.min.js')}}"></script>
+
+        <script>
+            $(function () {
+                var table = $("#table-data").DataTable({
+                    paging: false,
+                    searching: true,
+                    filtering: true,
+                    responsive: false,
+                    "scrollY": "55vh",
+                    "scrollX": true,
+                    fixedHeader: true
+                });
+                var buttons = new $.fn.dataTable.Buttons(table, {
+                    buttons: ['copyHtml5', 'excelHtml5', 'csvHtml5', 'pdfHtml5']
+                }).container().appendTo($('#buttons'));
+            });
+        </script>
+    {% endblock %}

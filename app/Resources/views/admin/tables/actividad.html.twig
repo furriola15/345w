@@ -1,0 +1,201 @@
+{% extends 'base2.html.twig' %}
+
+{% block styles %}
+    <link href="{{asset('plugins/dtables/datatables.min.css')}}" rel="stylesheet">
+    <link href="{{asset('plugins/select2.4/dist/css/select2.min.css')}}" rel="stylesheet"/>
+    <style>
+        .table th {
+            color: #000 !important;
+        }
+        table.dataTable td,
+        table.dataTable th {
+            font-size: 14px;
+        }
+        table.dataTable td {
+            padding: 7px 10px !important;
+        }
+        #form-modal label {
+            margin-bottom: 0 !important;
+        }
+        .form-control,
+        .select2-container--default .select2-selection--multiple,
+        .select2-container .select2-selection--single {
+            border-radius: 2px !important;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+        .select2-container .select2-selection--single {
+            border-radius: 2px;
+            height: 35px;
+            padding-top: 3px;
+            border: 1px solid #d1d3e2;
+            font-size: 13px;
+        }
+        .select2-results__option {
+            font-size: 13px;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">ADMIN TABLES / ACTIVITY
+        </h1>
+        <a class="d-none d-sm-inline-block btn btn-primary shadow-sm edit-record" data-id="0" href="#">
+            <i class="fas fa-plus fa-sm"></i>
+            Add record</a>
+    </div>
+    <div class='clearfix'></div>
+    <div class="">
+        <table cellspacing="0" class="table table-bordered" id="dataTable" width="100%">
+            <thead>
+                <tr>
+
+                    <th>ID_SECTOR</th>
+                    <th>SECTOR</th>
+
+                    <th>ID_SUBSECTOR</th>
+                    <th>SUBSECTOR</th>
+
+                    <th>ID</th>
+
+                    <th>NAME - EN</th>
+                    <th>NAME - ES</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in records %}
+                    <tr id="tr-record-{{item.id}}">
+
+                        <td>{{item.id_sector}}</td>
+                        <td>{{item.sector}}</td>
+
+                        <td>{{item.id_ssector}}</td>
+                        <td>{{item.ssector}}</td>
+
+                        <td width='50'>{{item.id}}</td>
+
+                        <td>{{item.nombre}}</td>
+                        <td>{{item.nombre_en}}</td>
+
+                        <td align="center" width="110">
+
+                            <a class="btn btn-danger btn-icon-split btn-sm" href="#" data-id="{{item.id}}">
+                                <span class="text">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </a>
+
+                            <a class="btn btn-primary btn-icon-split btn-sm edit-record" onclick="javascript:return false;" href="#" data-id="{{item.id}}">
+                                <span class="text">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </span>
+                            </a>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    <div aria-hidden="true" aria-labelledby="myExtraLargeModalLabel" class="modal fade bd-example-modal-xl" id="form-modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">FORM / ACTIVITY</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" class="needs-validation" enctype="multipart/form-data" id="form-record" method="post" novalidate>
+
+                        <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+
+                    </form>
+                    <div class="w-100"></div><br>
+                    <div class="col-md-12"></div>
+                    <div class="w-100"></div><br>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-m" role="dialog">
+        <div
+            class="modal-dialog" style="width: 80%;">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal" type="button">&times;</button>
+                    <h4 class="modal-title">PERSONAS INSCRITAS</h4>
+                </div>
+                <div class="modal-body" id="modal-detail">
+                    <p>Cargando información....</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class='clearfix'></div><br>
+{% endblock %}
+{% block javascripts %}
+
+    <script src="{{asset('plugins/dtables/datatables.min.js')}}"></script>
+    <script src="{{asset('plugins/select2.4/dist/js/select2.min.js')}}"></script>
+    <script>
+        $(function () {
+            var table = $('#dataTable').DataTable({
+                "pageLength": 5000,
+                "order": [
+                    [1, "asc"]
+                ]
+            });
+
+            $(document).on('click', '.edit-record', function () {
+                var id = $(this).data('id');
+                $("#form-modal").modal('show');
+                $.ajax({
+                    type: "GET",
+                    url: "{{ path('admin_table_activity') }}/" + id + "/{{project}}",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function (xhr) {}
+                }).done(function (data) {
+                    $("#form-record").html(data.html);
+                    $(".select2").select2();
+                });
+
+            });
+
+            $("#form-record").submit(function (e) {
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+                var form = $(this);
+                $.ajax({type: "POST", url: "{{ path('admin_table_activity') }}", data: form.serialize(), beforeSend: function (xhr) {}}).done(function (data) {
+                    if (data.edita == 1) {
+                        $("#tr-record-" + data.id).html(data.html);
+                        console.log(data.html);
+                    } else {
+                        var html_page = "<tr id='tr-record-" + data.id + "'>" + data.html + "</tr>";
+                        table.row.add($(html_page)).draw(false);
+
+                    }
+                    $("#form-modal").modal('hide');
+                });
+
+
+            });
+
+
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'tema.html.twig' %}
+{% block styles %}
+    <link rel="stylesheet" href="{{asset('page/css/index.css')}}">
+    <style>
+
+    </style>
+{% endblock %}
+{% block main %}
+<div class="home align-items-start justify-content-end" style="height: 180px; margin-top: 300px;" >
+    <div class="parallax_background parallax-window" data-parallax="scroll" ></div>
+		 <div class="home_container">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="home_content">
+							<div class="home_title text-karla2-50">TALLERES</div>
+							<div class="home_text text-black-50">Ofrecemos talleres personalizados los cuales incluyen Certificado.
+                                <br>
+                                Inscríbete en nuestros talleres y mantente actualizada las últimas técnicas sobre micropigmentación.
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<div class="clearfix"></div>
+<div class="container">
+
+<!-- Card -->
+    <div class="">
+        <div class="row row-pb-md">
+            <div class="container">
+        <div class="row">
+        {% for k,item in talleres %}
+            <div class="col-md-6 col-sm-6">
+                <div class="team-member">
+                    {% if item.dini|date('Y-m-d') >= "now"|date('Y-m-d')%}
+                    <div class="proximo-taller"><i class="fa fa-bookmark"></i><br> Próximo taller</div>
+                    {% endif %}
+                    <div class="team-img">
+                        <div align="center">
+                        <img src="{{asset('uploads/')}}{{item.imagen}}" alt="team member" class="img-responsive" style="height: 350px;" >
+                        </div>
+                    </div>
+                    <div class="team-hover">
+                        <div class="desk">
+                            <h4>TALLER</h4>
+                            <p>{{item.title}}</p>
+                        </div>
+                        <div class="s-link">
+                        <div class="home_buttons">
+                            {% if item.dini|date('Y-m-d') >= "now"|date('Y-m-d')%}
+                            <div class="button button_3 extra_link trans_200"> <a href="{{path('reservar_cita',{'tipo':'1','opt':item.id,'msj':'0'})}}" class=""><i class="fa fa-calendar"></i> Reservar</a></div>
+                            {% endif %}
+                            <div class="button button_3 extra_link trans_200"><a href="{{path('taller_info')}}/{{item.slug}}" class=""><i class="fa fa-eye"></i> Ver más</a></div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-title">
+
+                    <h5><a href="{{path('taller_info')}}/{{item.slug}}">{{item.title}}</a></h5>
+                    <span>{{item.summary}} - {{item.dini|date('d M Y')}}</span>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+    </div>
+    
+    </div>
+  
+    </div>
+</div>
+<div class="clearfix"></div><br><br><br>
+{% endblock %}

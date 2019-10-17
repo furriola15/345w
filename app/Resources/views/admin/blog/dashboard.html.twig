@@ -1,0 +1,1069 @@
+{% extends 'base2.html.twig' %}
+
+{% block styles %}
+
+    <style>
+        .btn-icon-split {
+            border-radius: 0 !important;
+        }
+        .org-td-type {
+            padding: 3px;
+            font-size: 11px !important;
+            color: #CD3A1F !important;
+            text-align: center;
+            margin-bottom: 1px;
+            float: left;
+            margin-right: 1px;
+            background: #F8D8D3;
+            cursor: pointer;
+        }
+        #chartdiv,
+        #chartdiv2 {
+            width: 100%;
+            height: 500px;
+        }
+        table tr th,
+        table tr td {
+
+            cursor: pointer;
+        }
+        tr:hover td {
+            background-color: #f5f5f5 !important;
+        }
+
+        .table-responsive{
+            height: 315px;  
+            overflow:auto;
+        }
+        .table-responsive .table tr td{
+            font-size: 13px;
+             white-space: nowrap;
+        }
+        .table-responsive .table tr th{
+            font-size: 13px;
+             white-space: nowrap;
+        }
+        .table-responsive thead tr:nth-child(1) th{
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .titlechart{
+            color: #000;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-12 header">
+            <h1 class="h3 mb-0 text-gray-800 float-left">DASHBOARD -
+                {{project.nombre|upper}}
+            </h1>
+
+            <a class="btn btn-success btn-icon-split float-right" href="{{path('admin_new_doc')}}/{{project.id}}/{{org}}">
+                <span class="icon">
+                    <i class="fas fa-cog"></i>
+                    Admin project
+                </span>
+            </a>
+            <a class="btn btn-primary btn-icon-split float-right" href="{{path('admin_www_list')}}/{{project.id}}">
+                <span class="icon">
+                    <i class="fas fa-bars"></i>
+                    List
+                </span>
+            </a>
+            <div class="clearfix"></div>
+            <hr>
+        </div>
+        <div class="clearfix"></div><br>
+
+
+    </div>
+    <div
+        class="row">
+
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-3 col-md-3 mb-3">
+
+            <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Locations</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{record.locations}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-globe fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-3 mb-3">
+            <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Organizations</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{record.orgs}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-building fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Pending Requests Card Example -->
+        <div class="col-xl-3 col-md-3 mb-3">
+            <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total affected</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{record.afectados}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-3 mb-3">
+            <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Assisted</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{record.atendidas|number_format(0,'.',',')}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-users fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="row">
+    <div class="col-xl-12 col-lg-12">
+            <div
+                class="card shadow mb-4">
+                
+                <!-- Card Body -->
+                <div class="card-body">
+                <h3 class="titlechart">ORGANIZATIONS BY COUNTRY, ESTATE OR TERRITORY - SECTOR</h3>
+                <div class="table-responsive" style="height: 450px;">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                {% for item in sectores %}
+                                    <th scope="col">{{item.acronimo}}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in departamentos %}
+                                <tr class="tr-pais" data-id="{{item.id}}">
+                                    <td>{{item.nombre}}</td>
+                                    {% for record in sectores %}
+                                        <td id="tr-{{item.id}}-{{record.id}}"></td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                 </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div id="container2" style="width: 100%; height: 350px; margin: 0 auto"></div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-6 col-lg-6" >
+            <div class="card shadow mb-4">
+                <div class="card-body" style="height: 390px;">
+                <h3 class="titlechart"> Sectors By Organization</h3>
+                <div class="table-responsive">
+                    <table class="table table-sm table-fixed" >
+                        <thead>
+                            <tr>
+                                <th class="">Organization</th>
+                                <th class="">Sectors</th>
+                                <th class="">T. Sectors</th>
+                                {% if "actividad_id" in campos %}<th class="">T. Acts</th>{% endif %}
+                                {% if "departamento" in campos %}<th class="">T. Admin 1</th>{% endif %}
+                                {% if "municipio" in campos %}<th class="">T. Admin 2</th>{% endif %}
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in orgspro %}
+                                <tr>
+                                    <td class="">{{item.nombre}}</td>
+                                    <td class="">
+                                        {% for record in item.sectores %}
+                                            <img src="{{asset('images/sectors/')}}{{record.id}}.png" style="width: 15px;" data-toggle="tooltip" title="{{record.nombre}}">
+                                        {% endfor %}
+                                    </td>
+                                    <td class="" align="center">{{item.sectores|length}}</td>
+                                    {% if "actividad_id" in campos %}<td class="" align="center">{{item.acts}}</td>{% endif %}
+                                    {% if "departamento" in campos %}<td class="" align="center">{{item.tadmin1}}</td>{% endif %}
+                                    {% if "municipio" in campos %}<td class="" align="center">{{item.tadmin2}}</td>{% endif %}
+                                    
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6" >
+            <div class="card shadow mb-4">
+                <div class="card-body" style="height: 390px;">
+                <h3 class="titlechart"> Sectors By Admin 1</h3>
+                <div class="table-responsive">
+                    <table class="table table-sm table-fixed" >
+                        <thead>
+                            <tr>
+                                <th class="">Organization</th>
+                                <th class="">Sectors</th>
+                                <th class="">T. Sectors</th>
+                                {% if "actividad_id" in campos %}<th class="">T. Acts</th>{% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in departamentos %}
+                                <tr>
+                                    <td class="">{{item.nombre}}</td>
+                                    <td class="">
+                                        {% for record in item.sectores %}
+                                            <img src="{{asset('images/sectors/')}}{{record.id}}.png" style="width: 15px;" data-toggle="tooltip" title="{{record.nombre}}">
+                                        {% endfor %}
+                                    </td>
+                                    <td class="" align="center">{{item.sectores|length}}</td>
+                                    {% if "actividad_id" in campos %}<td class="" align="center">{{item.acts}}</td>{% endif %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div id="container5" style="width: 100%; height: 350px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-{{ main_country == 13 ? '8':'4' }} col-lg-{{ main_country == 13 ? '8':'4' }}">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div id="containermap" style="height: {{ main_country == 13 ? '550':'350' }}px; width: 100%;"></div>
+                </div>
+            </div>
+
+        </div>
+        {% if "municipio" in campos %}
+        <div class="col-xl-4 col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div id="containermap2" style="height: 350px; width: 100%;"></div>
+                </div>
+            </div>
+
+        </div>
+        {% endif %}
+        <div class="col-xl-4 col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div id="container" style="width: 100%; height: {{ main_country == 13 ? '550':'350' }}px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie Chart -->
+
+        <!-- Area Chart -->
+        
+        
+       
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div id="container3" style="width: 100%; height: 350px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+        
+         {% if "actividad_id" in campos %}
+          
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div id="actmapadmin1" style="height: 350px; width: 100%;"></div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="col-xl-4 col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div id="chartestados" style="width: 100%; height: 350px; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div id="actmapadmin2" style="height: 350px; width: 100%;"></div>
+                </div>
+            </div>
+
+        </div>
+        {% endif %}
+
+        {% if "actividad_id" in campos %}
+        <div id="chart_recurso"></div>
+        {% endif %}
+
+        <div class="col-xl-4 col-lg-4" >
+            <div class="card shadow mb-4">
+                <div class="card-body" style="height: 390px;">
+                <h3 class="titlechart"> Sectors By Admin 2</h3>
+                <div class="table-responsive">
+                    <table class="table table-sm table-fixed" >
+                        <thead>
+                            <tr>
+                                <th class="">Admin 1</th>
+                                <th class="">Admin 2</th>
+                                <th class="">Sectors</th>
+                                <th class="">T. Sectors</th>
+                                {% if "actividad_id" in campos %}<th class="">T. Acts</th>{% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in municipios %}
+                                <tr>
+                                    <td class="">{{item.departamento}}</td>   
+                                    <td class="">{{item.nombre}}</td>
+                                    <td class="">
+                                        {% for record in item.sectores %}
+                                            <img src="{{asset('images/sectors/')}}{{record.id}}.png" style="width: 15px;" data-toggle="tooltip" title="{{record.nombre}}">
+                                        {% endfor %}
+                                    </td>
+                                    <td class="" align="center">{{item.sectores|length}}</td>
+                                    {% if "actividad_id" in campos %}<td class="" align="center">{{item.acts}}</td>{% endif %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="clearfix"></div>
+                </div>
+                </div>
+            </div>
+        </div>
+        
+
+    </div>
+    <div class='clearfix'></div>
+</div>
+<div class='clearfix'></div>
+
+<div class='clearfix'></div><br>{% endblock %}{% block javascripts %}
+<script src="{{asset('js/shapes/')}}{{main_country}}/admin1.js"></script>
+{% if "municipio" in campos %}
+<script src="{{asset('js/shapes/')}}{{main_country}}/admin2.js"></script>
+{% endif %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="//code.highcharts.com/maps/modules/map.js"></script>
+<script src="https://code.highcharts.com/maps/modules/data.js"></script>
+<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+<script>
+
+    var data = [];
+    var data2 = [];
+    var alto1 = 0;
+    var bajo1 = 999000000;
+    var alto2 = 0;
+    var bajo2 = 999000000;
+    var dataacts1 = [];
+    var dataacts2 = [];
+    {% for item in departamentos %}
+        data.push(["{{ item.pcode }}", parseInt("{{ item.total }}")]);
+        dataacts1.push(["{{ item.pcode }}", parseInt("{{ item.acts }}")]);
+        if (parseInt("{{ item.total }}") > alto1) {
+            alto1 = parseInt("{{ item.total }}");
+        }
+        if (parseInt("{{ item.total }}") < bajo1) {
+            bajo1 = parseInt("{{ item.total }}");
+        }
+    {% endfor %}
+    {% for item in municipios %}
+        data2.push(["{{ item.pcode }}", parseInt("{{ item.total }}")]);
+        dataacts2.push(["{{ item.pcode }}", parseInt("{{ item.acts }}")]);
+        if (parseInt("{{ item.total }}") > alto2) {
+            alto2 = parseInt("{{ item.total }}");
+        }
+        if (parseInt("{{ item.total }}") < bajo2) {
+            bajo2 = parseInt("{{ item.total }}");
+        }
+    {% endfor %}
+
+console.log(data);
+    $(function () { // Create map instance
+
+        $('[data-toggle="tooltip"]').tooltip();
+        {% if main_country != 13 %}
+        Highcharts.mapChart('containermap', {
+            chart: {
+                map: am4geodata_admin1,
+                backgroundColor: '#e1e9f6',
+                style: {
+                    fontFamily: 'Roboto'
+                }
+            },
+            title: {
+                text: 'ORGS BY Admin 1 / Departament'
+            },
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom'
+                }
+            },
+            colorAxis: {
+                min: bajo1,
+                max: alto1,
+                tickInterval: 4,
+                stops: [[0, '#D4E5F7'],[ 0.33, '#418FDE'],[0.66, '#1F69B3'],[1, '#0B2641']],
+                labels: {
+                    format: '{value}'
+                },
+                tickColor: "#990000"
+            },
+            series: [
+                {
+                    data: data,
+                    fillOpacity: 1,
+                    keys: [
+                        'admin1Pcod', 'value'
+                    ],
+                    joinBy: 'admin1Pcod',
+                    name: 'Organizations',
+                    borderColor: "#ffffff",
+                    color: '#ffffff',
+                    states: {
+                        hover: {
+                            color: '#c7c8ca'
+                        }
+                    },
+                    dataLabels: {
+                            enabled: false,
+                        format: '{point.properties.admin1Name}: {point.value}',
+                        style: {
+                            textShadow: false,
+                            textOutline: false,
+                            fontSize: "10px",
+                            color: '#000000', // level 2 color
+                        }
+                    },
+                    tooltip: {
+                        pointFormat: '{point.properties.admin1Name}: {point.value}'
+                    }
+                }
+               
+            ]
+        });
+
+        {% else %}
+        Highcharts.mapChart('containermap', {
+            chart: {
+                map: am4geodata_admin1,
+                backgroundColor: '#e1e9f6',
+                style: {
+                    fontFamily: 'Roboto'
+                }
+            },
+            title: {
+                text: 'ORGS BY Admin 1 / Departament'
+            },
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom'
+                }
+            },
+            colorAxis: {
+                min: bajo1,
+                max: alto1,
+                tickInterval: 4,
+                stops: [[0, '#D4E5F7'],[ 0.33, '#418FDE'],[0.66, '#1F69B3'],[1, '#0B2641']],
+                labels: {
+                    format: '{value}'
+                },
+                tickColor: "#990000"
+            },
+           
+            series: [{
+            name: 'Countries',
+            color: '#E0E0E0',
+            enableMouseTracking: true
+        }, {
+            type: 'mapbubble',
+            name: 'Population 2016',
+            joinBy: ['admin1Pcod','hc-key'],
+            data: data,
+            minSize: 4,
+            maxSize: '12%',
+            dataLabels: {
+                            enabled: true,
+                        format: '{point.z}',
+                        style: {
+                            textShadow: false,
+                            textOutline: false,
+                            fontSize: "10px",
+                            color: '#000000', // level 2 color
+                        }
+                    },
+            tooltip: {
+                pointFormat: '{point.properties.admin1Name}: {point.z} organizations'
+            }
+        }]
+        });
+        {% endif %}
+
+        {% if "actividad_id" in campos %}
+        {% if main_country != 13 %}
+        Highcharts.mapChart('actmapadmin1', {
+            chart: {
+                map: am4geodata_admin1,
+                backgroundColor: '#e1e9f6',
+                style: {
+                    fontFamily: 'Roboto'
+                }
+            },
+            title: {
+                text: 'Activities by  Admin 1 / Departament'
+            },
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom'
+                }
+            },
+            colorAxis: {
+                minColor: "#D4E5F7",
+                maxColor: "#0B2641",
+                tickInterval: 4,
+                labels: {
+                    format: '{value}'
+                },
+
+            },
+            plotOptions: {
+                map: {
+                    color: "#990000",
+                    opacity: 1
+                }
+            },
+            series: [
+                {
+                    data: dataacts1,
+                    fillOpacity: 1,
+                    keys: [
+                        'admin1Pcod', 'value'
+                    ],
+                    joinBy: 'admin1Pcod',
+                    name: 'Organizations',
+                    borderColor: "#ffffff",
+                    color: '#ffffff',
+                    states: {
+                        hover: {
+                            color: '#c7c8ca'
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false,
+                        backgroundColor: "#990000",
+                        format: '{point.properties.admin1Name}',
+                        style: {
+                            textShadow: false,
+                            textOutline: false,
+                            fontSize: "12px",
+                            color: '#dddddd', // level 2 color
+                        }
+                    },
+                    tooltip: {
+                        pointFormat: '{point.properties.admin1Name}: {point.value}'
+                    }
+                }
+            ]
+        });
+
+        {%else %}
+            Highcharts.mapChart('actmapadmin1', {
+            chart: {
+                map: am4geodata_admin1,
+                backgroundColor: '#e1e9f6',
+                style: {
+                    fontFamily: 'Roboto'
+                }
+            },
+            title: {
+                text: 'Activities by Admin 1 / Departament'
+            },
+            mapNavigation: {
+                enabled: true,
+                buttonOptions: {
+                    verticalAlign: 'bottom'
+                }
+            },
+            colorAxis: {
+                min: bajo1,
+                max: alto1,
+                tickInterval: 4,
+                stops: [[0, '#D4E5F7'],[ 0.33, '#418FDE'],[0.66, '#1F69B3'],[1, '#0B2641']],
+                labels: {
+                    format: '{value}'
+                },
+                tickColor: "#990000"
+            },
+           
+            series: [{
+            name: 'Countries',
+            color: '#E0E0E0',
+            enableMouseTracking: true
+        }, {
+            type: 'mapbubble',
+            name: 'Population 2016',
+            joinBy: ['admin1Pcod','hc-key'],
+            data: dataacts1,
+            minSize: 4,
+            maxSize: '12%',
+            dataLabels: {
+                            enabled: true,
+                        format: '{point.z}',
+                        style: {
+                            textShadow: false,
+                            textOutline: false,
+                            fontSize: "10px",
+                            color: '#000000', // level 2 color
+                        }
+                    },
+            tooltip: {
+                pointFormat: '{point.properties.admin1Name}: {point.z} activities'
+            }
+        }]
+        });
+        {% endif %}
+
+        {% endif %}
+        
+        {% if "municipio" in campos %}
+            Highcharts.mapChart('containermap2', {
+                chart: {
+                    map: am4geodata_admin2,
+                    backgroundColor: '#e1e9f6',
+                    style: {
+                        fontFamily: 'Roboto'
+                    }
+                },
+                title: {
+                    text: 'Admin 2 / Municipalities'
+                },
+                mapNavigation: {
+                    enabled: true,
+                    buttonOptions: {
+                        verticalAlign: 'bottom'
+                    }
+                },
+                colorAxis: {
+                    min: bajo2,
+                    max: alto2,
+                    tickInterval: 4,
+                    stops: [
+                        [
+                            0, '#D4E5F7'
+                        ],
+                        [
+                            0.33, '#418FDE'
+                        ],
+                        [
+                            0.66, '#1F69B3'
+                        ],
+                        [
+                            1, '#0B2641'
+                        ]
+                    ],
+                    labels: {
+                        format: '{value}'
+                    }
+                },
+                series: [
+                    {
+                        data: data2,
+                        fillOpacity: 1,
+                        keys: [
+                            'admin2Pcod', 'value'
+                        ],
+                        joinBy: 'admin2Pcod',
+                        name: 'Organizations',
+                        borderColor: "#ffffff",
+                        states: {
+                            hover: {
+                                color: '#c7c8ca'
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        tooltip: {
+                            pointFormat: '{point.properties.admin2Name}: {point.value}'
+                        }
+                    }
+                ]
+            });
+
+            {% if "actividad_id" in campos %}
+            Highcharts.mapChart('actmapadmin2', {
+                chart: {
+                    map: am4geodata_admin2,
+                    backgroundColor: '#e1e9f6',
+                    style: {
+                        fontFamily: 'Roboto'
+                    }
+                },
+                title: {
+                    text: 'Activities by  Admin 2 / Municipalities'
+                },
+                mapNavigation: {
+                    enabled: true,
+                    buttonOptions: {
+                        verticalAlign: 'bottom'
+                    }
+                },
+                colorAxis: {
+                    minColor: '#D4E5F7',
+                    maxColor: '#0B2641',
+                    tickInterval: 4,
+                    labels: {
+                        format: '{value}'
+                    }
+                },
+                series: [
+                    {
+                        data: dataacts2,
+                        fillOpacity: 1,
+                        keys: [
+                            'admin2Pcod', 'value'
+                        ],
+                        joinBy: 'admin2Pcod',
+                        name: 'Organizations',
+                        borderColor: "#ffffff",
+                        states: {
+                            hover: {
+                                color: '#c7c8ca'
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        tooltip: {
+                            pointFormat: '{point.properties.admin2Name}: {point.value}'
+                        }
+                    }
+                ]
+            });
+            {% endif %}
+            {% endif %}
+
+        $(".tr-pais").each(function (index) {
+            var pais = $(this).data('id');
+            $.ajax({
+                type: "GET",
+                url: "{{ path('get_table_sectors') }}/" + "{{ project.id }}/" + "{{ project.lang }}/" + pais + "/{{ org }}"
+
+            }).done(function (data) { // console.log(data.total);
+
+                var records = data.records;
+
+                for (var i = 0; i > records.length; i++) {
+                    // $("#tr-11-1").html($("#tr-11-1").html()+"<div>"+records[i].code+"</div>");
+                    // console.log("<div>"+records[i].code+"</div>");
+                    console.log(i);
+
+                }
+                for (var item of records) {
+                    console.log("Valor: " + item);
+                    $("#tr-" + pais + "-" + item.sector).html($("#tr-" + pais + "-" + item.sector).html() + "<span data-togled='notogled' data-id='" + item.oid + "' title='" + item.sname + " | " + item.nombre + "' data-toggle='tooltip' data-placement='top' class='org-td-type org-label" + item.oid + " org-td-type" + item.oficina + "'>" + item.code + "</span>");
+                }
+                $('[data-toggle="tooltip"]').tooltip();
+
+
+            });
+        });
+
+
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column',
+                style: {
+                    fontFamily: 'Roboto'
+                }
+            },
+            title: {
+                text: 'Organizations By Admin 1'
+            },
+            xAxis: {
+                categories: [{% for item in departamentos %}'{{ item.nombre }}',{% endfor %}],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: ''
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' + '<td style="padding:0 "> <b> {point.y} </b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                series: {
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        useHTML: true
+                    }
+                }
+            },
+            series: [
+                {
+                    color: '#E56A54',
+                    name: 'Organizations',
+                    data: [{% for item in departamentos %}parseInt("{{ item.total }}"),{% endfor %}]
+
+                }
+            ]
+        });
+
+        Highcharts.chart('container2', {
+            chart: {
+                type: 'bar'
+            },
+            title: {
+                text: 'By organization Type'
+            },
+            xAxis: {
+                categories: [{% for item in otypes %}"{{ item.nombre }}",{% endfor %}],
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: null
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            series: [
+                {
+                    name: 'Organizations',
+                    color: '#418FDE',
+                    data: [{% for item in otypes %}parseInt("{{ item.total }}"),{% endfor %}]
+                }
+            ]
+        });
+
+
+        Highcharts.chart('container3', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+                style: {
+                    fontFamily: 'Roboto'
+                }
+            },
+            title: {
+                text: 'By Type'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true,
+                    colors: pieColors
+                }
+            },
+            series: [
+                {
+                    innerSize: '50%',
+                    name: 'Brands',
+                    data: [{% for item in oficinas %}{
+                                name: '{{ item.nombre }}',
+                                y: parseInt("{{ item.total }}")
+                            },{% endfor %}]
+                }
+            ]
+        });
+        {% if "actividad_id" in campos %}
+        Highcharts.chart('chartestados', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+                style: {
+                    fontFamily: 'Roboto'
+                }
+            },
+            title: {
+                text: 'Activities by status'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true,
+                    colors: pieColors
+                }
+            },
+            series: [
+                {
+                    innerSize: '50%',
+                    name: '',
+                    colors: ["#CD3A1F","#E56A54","#EFA497","#F8D8D3"],
+                    data: [{% for item in estados %}{
+                                name: '{{ item.nombre }}',
+                                y: parseInt("{{ item.total }}")
+                            },
+                            {% endfor %}]
+                }
+            ]
+        });
+
+        {% endif %}
+        Highcharts.chart('container5', {
+            chart: {
+                type: null
+            },
+            title: {
+                text: 'Organizations By Sector'
+            },
+            xAxis: {
+                categories: [{% for item in sectores %}"{{ item.nombre }}",{% endfor %}]
+            },
+            yAxis: {
+                title: {
+                    text: null
+                }
+            },
+            tooltip: {
+                shared: true,
+                valueSuffix: ' Organizations'
+            },
+            credits: {
+                enabled: false
+            },
+            plotOptions: {
+                areaspline: {
+                    fillOpacity: 0.5
+                },
+
+                series: {
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        useHTML: true
+                    }
+                }
+
+            },
+            series: [
+                {
+                    name: 'Organizations',
+                    data: [{% for item in sectores %}parseInt("{{ item.total }}"),{% endfor %}]
+                }
+            ]
+        });
+
+    });
+
+    var pieColors = (function () {
+        console.log(Highcharts.getOptions().colors[0]);
+        var colors = [],
+            base = "#1F69B3",
+            i;
+
+        for (i = 0; i < 10; i += 1) {
+            // Start out with a darkened base color (negative brighten), and end
+            // up with a much brighter color
+            colors.push(Highcharts.Color(base).brighten((i - 3) / 7).get());
+        }
+        return colors;
+    }());
+</script>{% endblock %}

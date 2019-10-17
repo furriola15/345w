@@ -1,0 +1,382 @@
+<div id="accordion0">
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+                <a aria-controls="collapseFour" aria-expanded="false" class="btn btn-link collapsed">
+                    <b>WHO / {{record.org_code|upper}} - {{record.org_name}}</b>
+                </a>
+            </h5>
+        </div>
+        <div>
+            <div class="card-body">
+                <p style="font-size: 12px; color: #990000;">(If your organization is not here, please write your contacts and the contacts of your organization to cruz23@un.org or urriola@un.org)</p>
+                <div class="row">
+                    <input type="hidden" id="organizacion_id" name="org_id" value="{{record.org_id}}">
+                    {% if "financed" in campos %}
+                        <div class="col-md-12 col-lg-12">
+                            <label for="financed">Who is financing (Organization Name)</label>
+                            <select class="orgs-select custom-select" id="financed" name="financed" style="width: 100%;">
+                                {% if record.forg_name != "" %}
+                                    <option value="{{record.financed}}">{{record.forg_code}}
+                                        -
+                                        {{record.forg_name}}
+                                    </option>
+                                {% else %}
+                                    <option value="">Type key words for searching an activity partner</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    {% endif %}
+                    <!--
+                                        {% if "contact" in campos %}
+                                            <div class="col-md-12">
+                                                <label for="contacto">Contact / Organization Focal Point (Name, Email, Phone)</label>
+                                                <textarea class="form-control" id="contacto" name="contacto" placeholder="" rows="3">{{record.contacto}}</textarea>
+                                            </div>
+                                        {% endif %}
+                                        -->
+                    {% if "toficina_id" in campos %}
+                        <div class="col-md-6 col-lg-6">
+                            <label for="toficina_id">Type of presence</label>
+                            <select class="select2 custom-select" id="toficina_id" name="toficina_id" style="width: 100%;">
+                                <option value="">Select</option>
+                                {% for item in toficinas %}
+                                    <option value="{{item.id}}" {{record.toficina_id == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                    {% if "coverage_id" in campos %}
+                        <div class="col-md-6 col-lg-6">
+                            <label for="coverage_id">Coverage (Country)</label>
+                            <select class="select2 custom-select" id="coverage_id" name="coverage_id" style="width: 100%;">
+                                <option value="">Select</option>
+                                {% for item in paises %}
+                                    <option value="{{item.id}}" {{record.coverage_id == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header" id="headingTwo">
+            <h5 class="mb-0">
+                <a aria-controls="collapseFour" aria-expanded="false" class="btn btn-link collapsed">
+                    WHAT / What the organization doing or working on
+                </a>
+            </h5>
+        </div>
+        <div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="sector_id'">Sector</label>
+                        <select class="form-control select2 custom-select" id="sector_id" name="sector_id" required style="width: 100%;">
+                            <option value="">Select a sector
+                                {{ "actividad_id" in campos ? ' to filter the activities':'' }}</option>
+                            {% for item in subsectores %}
+                                <option value="{{item.id}}" {{record.subsector_id == item.id ? 'selected':'' }}>
+                                    <b>{{item.sector_name}}</b>
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% if "actividad_id" in campos %}
+                        <div class="col-md-8">
+                            <label for="actividad_id">Activity Name</label>
+                            <select class="form-control select2 custom-select" id="actividad_id" name="actividad_id" required style="width: 100%;">
+                                <option value="">Type key words for searching an activity</option>
+                                {% if record.actividad_id != "" %}
+                                    <option value="{{record.actividad_id}}" selected>{{record.aname}}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    {% endif %}
+                    {% if "tipo_id" in campos %}
+                        <div class="col-md-3">
+                            <label for="tactividad">Type</label>
+                            <select class="form-control select2 custom-select" id="tipo_id" name="tipo_id" style="width: 100%;">
+                                {% for item in tipos %}
+                                    <option value="{{item.id}}" {{record.tipo_id == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                    {% if "dini" in campos %}
+                        <div class="col-md-3">
+                            <label for="dini">Start Date</label>
+                            <div class="input-group dates" data-target-input="nearest" id="datetimepicker11">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker11" id="dini" name="dini" value="{{record.dini|date('d/m/Y')}}"/>
+                                <div class="input-group-append" data-target="#datetimepicker11" data-toggle="datetimepicker">
+                                    <div class="input-group-text">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="dend">End Date</label>
+                            <div class="input-group dates" data-target-input="nearest" id="datetimepicker12">
+                                <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker12" id="dend" name="dend" value="{{record.dend|date('d/m/Y')}}">
+                                <div class="input-group-append" data-target="#datetimepicker12" data-toggle="datetimepicker">
+                                    <div class="input-group-text">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="estado_id">Activity's Status</label>
+                            <select class="form-control select2 custom-select" id="estado_id" name="estado_id" required style="width: 100%;">
+                                {% for item in estados %}
+                                    <option value="{{item.id}}" {{record.estado_id == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                    {% if "detalle" in campos %}
+                        <div class="col-md-12">
+                            <label for="detalle">Activity Description</label>
+                            <textarea class="form-control" id="detalle" name="detalle" placeholder="" rows="3">{{record.detalle}}</textarea>
+                        </div>
+                    {% endif %}
+
+
+                    {% if "tactividad" in campos %}
+                        <div class="col-md-6">
+                            <label for="tactividad">Activity Type</label>
+                            <select class="form-control select2 custom-select" id="tactividad" name="tactividad" style="width: 100%;">
+                                <option value="">Select</option>
+                                {% for item in tactividades %}
+                                    <option value="{{item.id}}" {{record.tactividad == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header" id="headingFour">
+            <h5 class="mb-0">
+                <a aria-controls="collapseFour" aria-expanded="false" class="btn btn-link collapsed">
+                    WHERE, WHEN AND WHOM
+                </a>
+            </h5>
+        </div>
+        <div>
+            <div class="card-body">
+                <div class="row">
+                    {% if "recurso_id" in campos %}
+                        <div class="col-md-12">
+                            <p class="pform">If you have data for what resources you are given to the beneficiaries, please describe them</p>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="recurso_id">Resource Type</label>
+                            <select class="form-control select2 custom-select" id="recurso_id" name="recurso_id" style="width: 100%;">
+                                <option value="">Select</option>
+                                {% for item in recursos %}
+                                    <option value="{{item.id}}" {{record.recurso_id == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="cantidad">Cantidad</label>
+                            <input class="form-control" id="cantidad" name="cantidad" placeholder="" type="text" value="{{record.cantidad}}">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="unidad_id">Unidad</label>
+                            <select class="form-control select2 custom-select" id="unidad_id" name="unidad_id" style="width: 100%;">
+                                <option value="">Select</option>
+                                {% for item in unidades %}
+                                    <option value="{{item.id}}" {{record.unidad_id == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    {% if "beneficiario_id" in campos or "afectados" in campos or "objetivo" in campos or "atendidas" in campos or "infancy" in campos or "childhood" in campos or "adolescencem" in campos or "adolescencef" in campos or "pregnant" in campos or "olds" in campos or "gender" in campos  %}
+                        <div class="col-md-12">
+                            <p class="pform">Please describe the beneficiaries next.</p>
+                        </div>
+                    {% endif %}
+                    {% if "beneficiario_id" in campos %}
+                        <div class="col-md-2">
+                            <label for="beneficiario_id">Type of Beneficiary</label>
+                            <select class="form-control select2 custom-select" id="beneficiario_id" name="beneficiario_id" style="width: 100%;">
+                                <option value="">Select</option>
+                                {% for item in beneficiarios %}
+                                    <option value="{{item.id}}" {{record.beneficiario_id == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                    {% if "afectados" in campos %}
+                        <div class="col-md-2">
+                            <label for="afectados"># Total Affected</label>
+                            <input class="form-control" id="afectados" name="afectados" placeholder="" type="text" value="{{record.afectados}}">
+                        </div>
+                    {% endif %}
+                    {% if "objetivo" in campos %}
+                        <div class="col-md-2">
+                            <label for="objetivo"># Total Target</label>
+                            <input class="form-control" id="objetivo" name="objetivo" placeholder="" type="text" value="{{record.objetivo}}">
+                        </div>
+                    {% endif %}
+                    {% if "atendidas" in campos %}
+                        <div class="col-md-2">
+                            <label for="atendidas"># Reached Population</label>
+                            <input class="form-control" id="atendidas" name="atendidas" placeholder="" type="text" value="{{record.atendidas}}">
+                        </div>
+                    {% endif %}
+                    {% if "infancy" in campos %}
+                        <div class="col-md-2">
+                            <label for="infancy">#  Infancy < 5 years men and women</label>
+                            <input class="form-control" id="infancy" name="infancy" placeholder="" type="text" value="{{record.infancy}}">
+                        </div>
+                    {% endif %}
+                    {% if "childhood" in campos %}
+                        <div class="col-md-2">
+                            <label for="childhood"># Childhood 6-12 years men and women</label>
+                            <input class="form-control" id="childhood" name="childhood" placeholder="" type="text" value="{{record.childhood}}">
+                        </div>
+                    {% endif %}
+                    {% if "adolescencem" in campos %}
+                        <div class="col-md-2">
+                            <label for="adolescencem"># Adolescence 13-18 years men</label>
+                            <input class="form-control" id="adolescencem" name="adolescencem" placeholder="" type="text" value="{{record.adolescencem}}">
+                        </div>
+                    {% endif %}
+                    {% if "adolescencef" in campos %}
+                        <div class="col-md-2">
+                            <label for="adolescencef"># Adolescence 13-18 years women</label>
+                            <input class="form-control" id="adolescencef" name="adolescencef" placeholder="" type="text" value="{{record.adolescencef}}">
+                        </div>
+                    {% endif %}
+                    {% if "pregnant" in campos %}
+                        <div class="col-md-2">
+                            <label for="pregnant"># Pregnant and lactating 19-59 years old</label>
+                            <input class="form-control" id="pregnant" name="pregnant" placeholder="" type="text" value="{{record.pregnant}}">
+                        </div>
+                    {% endif %}
+                    {% if "olds" in campos %}
+                        <div class="col-md-2">
+                            <label for="olds"># Older adults> 59 years old</label>
+                            <input class="form-control" id="olds" name="olds" placeholder="" type="text" value="{{record.olds}}">
+                        </div>
+                    {% endif %}
+                    {% if "gender" in campos %}
+                        <div class="col-md-2">
+                            <label for="olds"># Male</label>
+                            <input class="form-control" id="male" name="male" placeholder="" type="text" value="{{record.male}}">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="olds"># Female</label>
+                            <input class="form-control" id="female" name="female" placeholder="" type="text" value="{{record.female}}">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="olds"># Boys</label>
+                            <input class="form-control" id="boys" name="boys" placeholder="" type="text" value="{{record.boys}}">
+                        </div>
+                        <div class="col-md-2">
+                            <label for="olds"># Girls</label>
+                            <input class="form-control" id="girls" name="girls" placeholder="" type="text" value="{{record.girls}}">
+                        </div>
+                    {% endif %}
+
+                    {% if "description" in campos %}
+                        <div class="col-md-12">
+                            <label for="description">Relevant Aditional Information</label>
+                            <textarea class="form-control" id="description" name="description" placeholder="" rows="3">{{record.description}}</textarea>
+                        </div>
+                    {% endif %}
+
+
+                    <div class="col-md-12">
+                        <p class="pform">Select the country, departament or municipality where you are working and when.</p>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="validationCustom07">Location (*)</label>
+                        <select class="form-control custom-select" id="where_id_org" name="where_id_org" required style="width: 100%;">
+                            <option value="{{record.where_id}}">{{record.where_name}}</option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div></div><div class="w-100"></div><input type="hidden" name="project_id" value="{{project}}"><input type="hidden" name="t_where" value="{{t_where}}"><input type="hidden" name="campos" value="{{tcampos}}"><input name="id" name="id" type="hidden" value="{{id}}"><div class="col-md-12">
+{% if id != 0 %}
+<div class="">
+    <button class="btn btn-success btn-block" id="btn-add-record" type="submit">
+        <i class="fa fa-{{ id == 0 ? 'plus':'check'}}"></i>
+        {{ id == 0 ? 'Add record/activity to the list':'Save changes & close'}}</button>
+</div>
+<div class="w-100"></div><br>
+{% endif %}
+</div>
+{% if id == 0 %}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12">
+        <p class="savingact"><i class='fa fa-spinner fa-spin fa-1x fa-fw'></i> Saving activity ...</p>
+            <table class="table-sm table-striped" id="table-modal">
+                <thead>
+                    <tr class="whoclass">
+                        <th>ID</th>
+                        {% if "financed" in campos %}
+                            <th>ORG. FINANCED</th>
+                        {% endif %}
+                        {% if "toficina_id" in campos %}
+                            <th>TYPE OF PRESENCE</th>
+                        {% endif %}
+                        {% if "departamento" in campos %}
+                            <th data-name="dropdown3" id="departamentoth">ADMIN 1</th>
+                        {% endif %}
+                        {% if "municipio" in campos %}
+                            <th data-name="dropdown4" id="municipioth">ADMIN 2</th>
+                        {% endif %}
+
+                        {% if "coverage_id" in campos %}
+                            <th>COUNTRY COVERAGE</th>
+                        {% endif %}
+
+                        {% if "dini" in campos %}
+                            <th width="80">STATUS</th>
+                        {% endif %}
+
+                        {% if "detalle" in campos %}
+                            <th>ACTIVITY DETAIL</th>
+                        {% endif %}
+                        {% if "recurso_id" in campos %}
+                            <th>RESOURCE</th>
+                            <th>QUANTITY</th>
+                            <th>UNIT</th>
+                        {% endif %}
+                        {% if "atendidas" in campos %}
+                            <th>REACHED</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>{% endif %}

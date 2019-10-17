@@ -1,0 +1,236 @@
+{% extends 'tema.html.twig' %}
+{% block styles %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+<link rel="stylesheet" href="{{ asset('wizard/css/style.css') }}">
+
+{% endblock %}
+{% block main %}
+<div class="home align-items-start justify-content-end" style="height: 120px; margin-top: 300px;" >
+		 <div class="home_container">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="home_content">
+							<div class="home_title text-karla2-50">CITAS</div>
+							<div class="home_text text-black-50">Reserva una cita en Karla León micropigmentación & SPA y vive la experiencia de un trato personalizado y de calidad.</div>
+                            
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<div class="clearfix"></div>
+<div class="clearfix"></div>
+<div class="">
+    <div class="container">
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                {% if msj == 1 %}
+                
+                <div class="alert alert-success alert-dismissible fade show" role="alert"> 
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span></button> 
+                    <h2><b>{{tipo == 1 ? 'CUPO PARA EL TALLER RESERVADO CORRECTAMENTE':'CITA RESERVADA CORRECTAMENTE!' }} </b></h2> 
+                    <p>Su {{tipo == 1 ? 'cupo':'cita'}}  ha sido {{tipo == 1 ? 'reservado':'reservada'}} correctamente. Nos estarémos comunicando con usted para brindarle más detalle.<br><br>
+                    Gracias por preferirnos!</p> <p> 
+                        
+                    </p> </div>
+                {% endif %}
+                <form role="form" action="{{path('add_cita',{'id':0})}}" method="post" class="f1">
+                    <div class="f1-steps">
+                        <div class="f1-progress">
+                            <div class="f1-progress-line" data-now-value="16.66" data-number-of-steps="3" style="width: 16.66%;"></div>
+                        </div>
+                        <div class="f1-step active">
+                            <div class="f1-step-icon"><i class="fa fa-user"></i></div>
+                            <p>Información</p>
+                        </div>
+                        <div class="f1-step">
+                            <div class="f1-step-icon"><i class="fa fa-calendar"></i></div>
+                            <p>Fecha</p>
+                        </div>
+                        <div class="f1-step">
+                            <div class="f1-step-icon"><i class="fa fa-check"></i></div>
+                            <p>Confirmación</p>
+                        </div>
+                    </div>
+
+                    <fieldset>
+                        <h4>Información de contacto</h4>
+                        <div class="row">
+
+                        <div class="col-md-6">
+                            <input type="hidden" name="par1" value="{{tipo}}">
+                            <input type="hidden" name="par2" value="{{opt}}">
+                        <label class="labelform">Nombre</label>
+                        <div class="form-group">
+                            <label class="sr-only" for="nombre">Nombre</label>
+                            <input type="text" required name="nombre" value="" placeholder="Nombre..." class="f1-first-name form-control" id="nombre">
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labelform">Apellido</label>
+                        <div class="form-group">
+                            <label class="sr-only" for="apellido">Apellido</label>
+                            <input type="text" required name="apellido" value="" placeholder="Apellido..." class="f1-last-name form-control" id="apellido">
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labelform">Teléfono</label>
+                        <div class="form-group">
+                            <label class="sr-only" for="telefono">Teléfono</label>
+                            <input type="text" required name="telefono" value="" placeholder="No. de teléfono..." class="f1-last-name form-control" id="telefono">
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="labelform">Correo Electrónico</label>
+                        <div class="form-group">
+                            <label class="sr-only" for="email">Correo Electrónico</label>
+                            <input type="text" required name="email" value="" placeholder="Email name..." class="f1-last-name form-control" id="email">
+                        </div>
+                        </div>
+                  
+                        </div>
+                        <div class="f1-buttons">
+                            <button type="button" class="btn btn-next btn-primary">Siguiente</button>
+                        </div>
+                        
+                    </fieldset>
+
+                    <fieldset>
+                        <h4>Servicio y fecha</h4>
+                        <div class="row">
+                        <div class="col-md-12">
+                        <label class="labelform">Seleccionar servicio</label>
+                        <div class="form-group">
+                            <label class="sr-only" for="f1-password">Password</label>
+                            <select  name="post_id" id="post_id" class="form-control" required>
+                                    <option value="">Servicios</option>
+                                    {% for item in posts %}
+                                        <option value="{{item.id}}" {{opt == item.id ? 'selected':''}} >{{item.cat}} / {{item.title}}</option>
+                                    {% endfor %}
+                                </select>
+                        </div>
+                        </div>
+                        {% if tipo != 1 %}
+                        <div class="col-sm-6">
+            <div class="form-group">
+            <label class="labelform">Fecha</label>
+                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                    <input type="text" class="form-control datetimepicker-input" id="fecha" name="fecha"  data-target="#datetimepicker2"/>
+                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                     
+                        <div class="col-md-6">
+                            <label class="labelform">Fecha</label>
+                        <div class="form-group">
+                            <label class="sr-only" for="hora">Repeat password</label>
+                            <select required name="hora" id="hora" class="form-control">
+                                    <option value="">Seleccionar hora</option>
+                                    <option value="9">9:00 AM</option>
+                                    <option value="10">10:00 AM</option>
+                                    <option value="11">11:00 AM</option>
+                                    <option value="12">12:00 PM</option>
+                                    <option value="13">1:00 PM</option>
+                                    <option value="14">2:00 PM</option>
+                                    <option value="15">3:00 PM</option>
+                                    <option value="16">4:00 PM</option>
+                                    <option value="17">5:00 PM</option>
+                                </select>
+                        </div>
+                        </div>
+                        {% endif %}
+                        
+                        </div>
+                        <div class="f1-buttons">
+                            <button type="button" class="btn btn-previous">Anterior</button>
+                            <button type="button" class="btn btn-next btn-primary">Siguiente</button>
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <h4>Confirmación de cita</h4>
+                        
+                        <div class="col-md-12">
+                            <h5>NOMBRE</h5>
+                            <p id="textnombre"></p>
+                        </div>
+                        <div class="col-md-12">
+                            <h5>CORREO ELECTRÓNICO</h5>
+                            <p id="textemail"></p>
+                        </div>
+                        <div class="col-md-12">
+                            <h5>{{tipo == 1 ? 'NOMBRE DEL TALLER A PARTICIPAR':'NOMBRE DEL SERVICIO' }}</h5>
+                            <p id="textservicio"></p>
+                        </div>
+                        {% if tipo != 1 %}
+                        <div class="col-md-12">
+                            <h5>FECHA</h5>
+                            <p id="textfecha"></p>
+                        </div>
+                        {% endif %}
+                        <div class="f1-buttons">
+                            <button type="button" class="btn btn-previous">Anterior</button>
+                            <button type="submit" class="btn btn-submit btn-primary">Confirmar cita</button>
+                        </div>
+                    </fieldset>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+    <div class="clearfix"></div><br><br><br>
+</div>
+
+{% endblock %}
+{% block javascripts %}
+<script type="text/javascript" src="{{asset('moment/moment.js')}}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+  
+<script src="{{asset('wizard/js/jquery.backstretch.min.js')}}"></script>
+<script src="{{asset('wizard/js/retina-1.1.0.min.js')}}"></script>
+<script src="{{asset('wizard/js/scripts.js')}}"></script>
+<script>
+    $(document).ready(function() {
+        $('#datetimepicker2').datetimepicker({
+                    locale: 'es',
+            format: 'YYYY-MM-DD'
+                });
+    
+        $( "#nombre" ).blur(function() {
+            $("#textnombre").text($("#nombre").val() +" "+ $("#apellido").val() );
+        });
+        $( "#apellido" ).blur(function() {
+            $("#textnombre").text($("#nombre").val() +" "+ $("#apellido").val() );
+        });
+        $( "#email" ).blur(function() {
+            $("#textemail").text($(this).val());
+        });
+        $( "#telefono" ).blur(function() {
+            $("#text").text($(this).val());
+        });
+        {% if tipo != 1 %}
+        $( "#fecha" ).blur(function() {
+            $("#textfecha").text($("#fecha").val() + " - Hora: "+$("#hora :selected").text());
+        });
+        $( "#hora" ).blur(function() {
+            $("#textfecha").text($("#fecha").val() + " - Hora: "+$("#hora :selected").text());
+        });
+        {% endif %}
+        $( "#post_id" ).change(function() {
+            $("#textservicio").text($("#post_id :selected").text());
+        });
+         $("#textservicio").text($("#post_id :selected").text());
+    });
+</script>
+{% endblock %}

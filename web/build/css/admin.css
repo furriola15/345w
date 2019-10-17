@@ -1,0 +1,35 @@
+.labeldiv{
+    font-weight: bold;
+}
+.btn{
+    border-radius: 2px !important;
+}
+.box-title{
+    border-bottom: 1px solid #f5f5f5 ;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+}
+.box-title h1{
+    margin: 0px !important;
+}
+#ajax_loader {  
+    z-index:1200;
+    background-color: #fff;
+    opacity: .8;
+    position:fixed !important;
+    position:absolute;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+    display: none;
+}
+#ajax_loader_div {  
+    width: 100px;
+    height: 100px;
+    margin-left: -32px;
+    margin-top: -32px;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+}

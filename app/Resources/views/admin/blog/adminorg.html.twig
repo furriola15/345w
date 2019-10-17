@@ -1,0 +1,637 @@
+{% extends 'base2.html.twig' %}
+
+{% block styles %}
+    <link href="{{asset('plugins/dtables/datatables.min.css')}}" rel="stylesheet">
+    <link href="{{asset('plugins/select2.4/dist/css/select2.min.css')}}" rel="stylesheet"/>
+
+
+    <style>
+        table.dataTable td,
+        table.dataTable th {
+            font-size: 13px;
+            border: none !important;
+            white-space: nowrap;
+        }
+        table.dataTable th {
+            border: none !important;
+        }
+        div.dataTables_wrapper div.dataTables_paginate ul.pagination,
+        div.dataTables_wrapper div.dataTables_info {
+            white-space: nowrap;
+            font-size: 13px !important;
+        }
+        .input-group-text {
+            border-radius: 0;
+        }
+        .legend-form {
+            border-bottom: 1px solid #418FDE;
+            font-weight: normal;
+            color: #418FDE;
+            padding: 5px 5px 3px;
+            font-size: 17px;
+            margin-bottom: 0px;
+        }
+        button.dt-button,
+        div.dt-button,
+        a.dt-button {
+            background-color: #10897D !important;
+            background-image: none !important;
+            color: #fff !important;
+            border: none !important;
+        }
+        .bg-info-table {
+            background: #F8D8D3;
+            border: none !important;
+            color: #000 !important;
+        }
+        .btn-icon-split {
+            border-radius: 0 !important;
+        }
+        #buttons {
+            margin-bottom: 10px;
+        }
+
+        .form-control,
+        .select2-container--default .select2-selection--multiple,
+        .select2-container .select2-selection--single {
+            border-radius: 2px !important;
+            margin-bottom: 10px;
+            font-size: 13px;
+            height: 35px;
+        }
+        .select2-container .select2-selection--single {
+            border-radius: 2px;
+            height: 35px;
+            padding-top: 3px;
+            border: 1px solid #d1d3e2;
+            font-size: 13px;
+        }
+        .select2-results__option {
+            font-size: 13px;
+        }
+        label {
+            margin-bottom: 0;
+        }
+        #datetimepicker11,
+        #datetimepicker12 {
+            margin-bottom: 10px;
+        }
+
+        .lista-item {
+            border-radius: 0;
+            background: #f5f5f5;
+            text-align: left;
+            font-size: 14px;
+            border: 1px solid #f5f5f5;
+            color: #700000;
+            padding: 5px 7px;
+            width: 100%;
+            cursor: pointer;
+        }
+        .lista-item:hover {
+
+            background: #ffffff;
+
+        }
+        .box-sector {
+            display: none;
+            background: #fff;
+        }
+
+        .box-sector-active {
+            display: block;
+        }
+        .legend-form .btn {
+            padding: 4px 15px;
+        }
+        .legend-form h4 {
+            margin-bottom: 0 !important;
+        }
+        .border-box {
+            background: #f5f5f5;
+            padding: 10px;
+        }
+        .border-box .form-control, .border-box .select2-container .select2-selection--single{
+            border: 1px solid #F8D8D3 !important;
+        }
+        form label {
+            margin-bottom: 0;
+            font-weight: normal;
+            font-size: 13px;
+            color: #333 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="legend-form">
+                    WHO
+                </div>
+            </div>
+            <div class="col-md-12">
+                <label for="organizacion_id">Organization (*)</label>
+                <select class="orgs-select custom-select" id="organizacion_id" name="org_id" required style="width: 100%;">
+                    {% if record.org_name != "" %}
+                        <option value="{{record.org_id}}">{{record.org_code}}
+                            -
+                            {{record.org_name}}
+                        </option>
+                    {% else %}
+                        <option value="">Select organization</option>
+                    {% endif %}
+                </select>
+                <div class="invalid-feedback"></div>
+            </div>
+
+            {% if "toficina_id" in campos %}
+                <div class="col-md-6 col-lg-6">
+                    <label for="toficina_id">Type of presence</label>
+                    <select class="select2 custom-select" id="toficina_id" name="toficina_id" style="width: 100%;">
+                        <option value="">Select</option>
+                        {% for item in toficinas %}
+                            <option value="{{item.id}}" {{record.toficina_id == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+            {% if "coverage_id" in campos %}
+                <div class="col-md-6 col-lg-6">
+                    <label for="coverage_id">Coverage (Country)</label>
+                    <select class="select2 custom-select" id="coverage_id" name="coverage_id" style="width: 100%;">
+                        <option value="">Select</option>
+                        {% for item in paises %}
+                            <option value="{{item.id}}" {{record.coverage_id == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+            <div class="w-100"></div><br>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="">
+                            {% for k,item in subsectores %}
+                                <div class="lista-item {{k == 0 ? 'active':'' }}" data-id="{{item.id}}">
+                                    {{item.sector_name}}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="">
+                            {% for k,item in subsectores %}
+                                <div class="box-sector {{k == 0 ? 'box-sector-active':''}}" id="page{{item.id}}">
+                                    <div class="">
+                                        <div class="legend-form">
+                                            <h4 class="float-left">{{item.sector_name}}</h4>
+                                            <a class="btn btn-primary float-right add-record" href="#">
+                                                <i class="fa fa-plus"></i>
+                                                add record</a>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="w-100"></div>
+                                    </div>
+                                    <div class="w-100"></div>
+                                </div>
+                            {% endfor %}
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="w-100"></div>
+
+
+    </div>
+    <div class="w-100"></div><br>
+    <input type="hidden" name="project_id" value="{{project_id}}">
+    <input type="hidden" name="t_where" value="{{t_where}}">
+
+
+    {% if 1 == 0 %}
+        <div class="w-100"></div><br>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table table-sm table-striped" id="table-modal">
+                        <thead>
+                            <tr class="bg-info-table">
+                                <th data-sort="string" scope="col">Organization</th>
+                                <th data-sort="string" scope="col">Sector</th>
+                                <th data-sort="string" scope="col">Location</th>
+                                {% if "actividad_id" in campos %}
+                                    <th data-sort="string" scope="col">Activity</th>
+                                {% endif %}
+                                {% if "recurso_id" in campos %}
+                                    <th data-sort="string" scope="col">Resoruce</th>
+                                {% endif %}
+                                {% if "dini" in campos %}
+                                    <th data-sort="string" scope="col">Date</th>
+                                {% endif %}
+                                {% if "objetivo" in campos %}
+                                    <th data-sort="string" scope="col">Target</th>
+                                {% endif %}
+                                {% if "toficina_id" in campos %}
+                                    <th data-sort="string" scope="col">Presence</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+    <div aria-hidden="true" aria-labelledby="myExtraLargeModalLabel" class="modal fade bd-example-modal-xl" data-backdrop="static" data-keyboard="false" id="modal-form-record" role="dialog">
+        <div class="modal-dialog modal-xl" style="width: 95%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" class="needs-validation" enctype="multipart/form-data" id="form-record" method="post" novalidate>
+                        <div class="col-md-12" id="pageformulario">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                             
+                                        {% if "financed" in campos %}
+                                            <div class="col-md-12 col-lg-12">
+                                                <label for="financed">Who is financing</label>
+                                                <select class="orgs-select custom-select" id="financed" name="financed" style="width: 100%;">
+                                                    {% if record.forg_name != "" %}
+                                                        <option value="{{record.financed}}">{{record.forg_code}}
+                                                            -
+                                                            {{record.forg_name}}
+                                                        </option>
+                                                    {% else %}
+                                                        <option value="">Select organization</option>
+                                                    {% endif %}
+                                                </select>
+                                            </div>
+                                        {% endif %}
+                                        <div class="col-md-12">
+                                            <div class="legend-form">
+                                                WHAT
+                                            </div>
+                                        </div>
+                                        
+                                        {% if "actividad_id" in campos %}
+                                            <div class="col-md-9">
+                                                <label for="actividad_id">Activity / Project</label>
+                                                <select class="form-control select2 custom-select" id="actividad_id" name="actividad_id" style="width: 100%;">
+                                                    <option value="">Select</option>
+                                                    {% if record.actividad_id != "" %}
+                                                        <option value="{{record.actividad_id}}" selected>{{record.aname}}</option>
+                                                    {% endif %}
+                                                </select>
+                                            </div>
+                                        {% endif %}
+                                        {% if "tipo_id" in campos %}
+                                            <div class="col-md-3">
+                                                <label for="tipo_id">Type</label>
+                                                <select class="form-control select2 custom-select" id="tipo_id" name="tipo_id" style="width: 100%;">
+                                                    <option value="es">Select</option>
+                                                    {% for item in tipos %}
+                                                        <option value="{{item.id}}" {{record.tipo_id == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if "tactividad" in campos %}
+                                            <div class="col-md-9">
+                                                <label for="tactividad">Activity Type</label>
+                                                <select class="form-control select2 custom-select" id="tactividad" name="tactividad" style="width: 100%;">
+                                                    <option value="es">Select</option>
+                                                    {% for item in tactividades %}
+                                                        <option value="{{item.id}}" {{record.tactividad == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        {% endif %}
+
+                                        {% if "detalle" in campos %}
+                                            <div class="col-md-12">
+                                                <label for="detalle">Description</label>
+                                                <textarea class="form-control" id="detalle" name="detalle" placeholder="" rows="3">{{record.detalle}}</textarea>
+                                            </div>
+                                        {% endif %}
+                                        {% if "recurso_id" in campos %}
+                                            <div class="col-md-4">
+                                                <label for="recurso_id">Tipo de Recurso</label>
+                                                <select class="form-control select2 custom-select" id="recurso_id" name="recurso_id" style="width: 100%;">
+                                                    <option value="">Select</option>
+                                                    {% for item in recursos %}
+                                                        <option value="{{item.id}}" {{record.recurso_id == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label for="cantidad">Cantidad</label>
+                                                <input class="form-control" id="cantidad" name="cantidad" placeholder="" type="text" value="{{record.cantidad}}">
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label for="unidad_id">Unidad</label>
+                                                <select class="form-control select2 custom-select" id="unidad_id" name="unidad_id" style="width: 100%;">
+                                                    <option value="">Select</option>
+                                                    {% for item in unidades %}
+                                                        <option value="{{item.id}}" {{record.unidad_id == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        {% endif %}
+                                        {% if  "dini" in campos %}
+                                            <div class="col-md-12">
+                                                <div class="legend-form">
+                                                    WHEN
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        {% if "dini" in campos %}
+                                            <div class="col-md-4">
+                                                <label for="dini">Start Date</label>
+                                                <div class="input-group dates" data-target-input="nearest" id="datetimepicker11">
+                                                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker11" id="dini" name="dini" value="{{record.dini|date('d/m/Y')}}"/>
+                                                    <div class="input-group-append" data-target="#datetimepicker11" data-toggle="datetimepicker">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label for="dend">End Date</label>
+                                                <div class="input-group dates" data-target-input="nearest" id="datetimepicker12">
+                                                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker12" id="dend" name="dend" value="{{record.dend|date('d/m/Y')}}">
+                                                    <div class="input-group-append" data-target="#datetimepicker12" data-toggle="datetimepicker">
+                                                        <div class="input-group-text">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label for="estado_id">Activity's Status</label>
+                                                <select class="form-control select2 custom-select" id="estado_id" name="estado_id" style="width: 100%;">
+                                                    <option value="">Select</option>
+                                                    {% for item in estados %}
+                                                        <option value="{{item.id}}" {{record.estado_id == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="legend-form">
+                                        WHERE
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="border-box">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label for="validationCustom07">Location (*)</label>
+                                                <select class="form-control custom-select" id="where_id" name="where_id" required style="width: 100%;">
+                                                    <option value="{{record.where_id}}">{{record.where_name}}</option>
+                                                </select>
+                                            </div>
+                                            {% if  "girls" in campos or "boys" in campos or "female" in campos or "male" in campos or "beneficiario_id" in campos or "afectados" in campos or "objetivo" in campos or "atendidas" in campos or "infancy" in campos or "childhood" in campos or "adolescencem" in campos or "adolescencef" in campos or "pregnant" in campos or "olds" in campos %}
+                                                <hr>
+                                                <div class="col-md-12">
+                                                    <div class="" id="whom_location">
+                                                        WHOM IN
+                                                        <span id="text-location">
+                                                            <b>{{record.where_name}}</b>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                            {% if "beneficiario_id" in campos %}
+                                                <div class="col-md-6">
+                                                    <label for="beneficiario_id">Type of Beneficiary</label>
+                                                    <select class="form-control select2 custom-select" id="beneficiario_id" name="beneficiario_id" style="width: 100%;">
+                                                        <option value="">Select</option>
+                                                        {% for item in beneficiarios %}
+                                                            <option value="{{item.id}}" {{record.beneficiario_id == item.id ? 'selected':'' }}>{{item.nombre}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            {% endif %}
+                                            {% if "afectados" in campos %}
+                                                <div class="col-md-2">
+                                                    <label for="afectados"># Total Affected</label>
+                                                    <input class="form-control" id="afectados" name="afectados" placeholder="" type="text" value="{{record.afectados}}">
+                                                </div>
+                                            {% endif %}
+                                            {% if "objetivo" in campos %}
+                                                <div class="col-md-2">
+                                                    <label for="objetivo"># Total Target</label>
+                                                    <input class="form-control" id="objetivo" name="objetivo" placeholder="" type="text" value="{{record.objetivo}}">
+                                                </div>
+                                            {% endif %}
+                                            {% if "atendidas" in campos %}
+                                                <div class="col-md-2">
+                                                    <label for="atendidas"># Reached Population</label>
+                                                    <input class="form-control" id="atendidas" name="atendidas" placeholder="" type="text" value="{{record.atendidas}}">
+                                                </div>
+                                            {% endif %}
+                                            {% if "infancy" in campos %}
+                                                <div class="col-md-2">
+                                                    <label for="infancy">#  Infancy < 5 years men and women</label>
+                                                    <input class="form-control" id="infancy" name="infancy" placeholder="" type="text" value="{{record.infancy}}">
+                                                </div>
+                                            {% endif %}
+                                            {% if "childhood" in campos %}
+                                                <div class="col-md-2">
+                                                    <label for="childhood"># Childhood 6-12 years men and women</label>
+                                                    <input class="form-control" id="childhood" name="childhood" placeholder="" type="text" value="{{record.childhood}}">
+                                                </div>
+                                            {% endif %}
+                                            {% if "adolescencem" in campos %}
+                                                <div class="col-md-2">
+                                                    <label for="adolescencem"># Adolescence 13-18 years men</label>
+                                                    <input class="form-control" id="adolescencem" name="adolescencem" placeholder="" type="text" value="{{record.adolescencem}}">
+                                                </div>
+                                            {% endif %}
+                                            {% if "adolescencef" in campos %}
+                                                <div class="col-md-2">
+                                                    <label for="adolescencef"># Adolescence 13-18 years women</label>
+                                                    <input class="form-control" id="adolescencef" name="adolescencef" placeholder="" type="text" value="{{record.adolescencef}}">
+                                                </div>
+                                            {% endif %}
+                                            {% if "pregnant" in campos %}
+                                                <div class="col-md-2">
+                                                    <label for="pregnant"># Pregnant and lactating 19-59 years old</label>
+                                                    <input class="form-control" id="pregnant" name="pregnant" placeholder="" type="text" value="{{record.pregnant}}">
+                                                </div>
+                                            {% endif %}
+                                            {% if "olds" in campos %}
+                                                <div class="col-md-2">
+                                                    <label for="olds"># Older adults> 59 years old</label>
+                                                    <input class="form-control" id="olds" name="olds" placeholder="" type="text" value="{{record.olds}}">
+                                                </div>
+                                            {% endif %}
+                                            {% if "gender" in campos %}
+                                                <div class="col-md-3">
+                                                    <label for="olds"># Male</label>
+                                                    <input class="form-control" id="male" name="male" placeholder="" type="text" value="{{record.male}}">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="olds"># Female</label>
+                                                    <input class="form-control" id="female" name="female" placeholder="" type="text" value="{{record.female}}">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="olds"># Boys</label>
+                                                    <input class="form-control" id="boys" name="boys" placeholder="" type="text" value="{{record.boys}}">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="olds"># Girls</label>
+                                                    <input class="form-control" id="girls" name="girls" placeholder="" type="text" value="{{record.girls}}">
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w-100"></div><br>
+                                <div class="col-md-12">
+                                    <div class="">
+                                        <button class="btn btn-success btn-block" id="btn-add-record" type="submit">
+                                            <i class="fa fa-check"></i>
+                                            Add record/activity</button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </form>
+                    <div class="w-100"></div><br>
+                    <div class="col-md-12"></div>
+                    <div class="w-100"></div><br>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-dismiss="modal" type="button">Close edition</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{asset('plugins/select2.4/dist/js/select2.min.js')}}"></script>
+    <script src="{{asset('plugins/dtables/datatables.min.js')}}"></script>
+
+    <script>
+        var paises = "";{% for item in project.paises %}paises = paises + "{{ item }}" + "|";{% endfor %}paises = paises.substring(0, paises.length - 1);
+        var campos = "";{% for item in campos %}campos = campos + "{{ item }}" + "|";{% endfor %}campos = campos.substring(0, campos.length - 1)
+        $(function () {
+
+            $(document).on('click', '.add-record', function (e) {
+
+                $("#modal-form-record").modal('show');
+                /*var id = $(this).data('id');
+                var id_org = $(this).data('org');
+
+                $("#form-record").html("<i class='fa fa-spinner fa-spin fa-3x fa-fw'></i><span class='sr-only'>Loading...</span>");
+                $("#modal-form-record").modal('show');
+                $.ajax({
+                    type: "GET",
+                    url: "{{ path('admin_www_new') }}/" + id + " /{{ project.id }}/" + "{{ project.lang }}/" + id_org + "/" + campos,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    beforeSend: function (xhr) {}
+                }).done(function (data) {
+                    $("#form-record").html(data.html);
+                    $("#modal-form-record").modal('show');
+
+                });*/
+            });
+            $(document).on('change', '#where_id', function () {
+                var strArray = $('#organizacion_id option[value="' + $("#organizacion_id").val() + '"]').text().split("-");
+                $("#text-location").html(" <b> " + $('#where_id option[value="' + $("#where_id").val() + '"]').text() + "</b>");
+            });
+            $('#recurso_id, #estado_id, #beneficiario_id, #subsector_id, #toficina_id, #tipo_id, #coverage_id, #unidad_id, #tactividad, #sector_id').select2();
+            $(document).on('click', '.lista-item', function (e) {
+                var id = $(this).data('id');
+                $(".box-sector").css({'display': 'none'});
+                $("#page" + id).css({'display': 'block'});
+
+            });
+            $('#where_id').select2({
+                ajax: {
+                    url: "{{ path('ajax_get_where') }}",
+                    processResults: function (data) {
+                        console.log(data);
+                        return {results: data.items}
+                    },
+                    data: function (params) {
+                        var query = {
+                            q: params.term,
+                            paises: paises,
+                            campos: campos,
+                            type: 'public'
+                        }
+                        return query;
+                    }
+
+                }
+            });
+            $('#actividad_id').select2({
+                ajax: {
+                    url: "{{ path('ajax_get_activities') }}",
+                    processResults: function (data) {
+                        return {results: data.items};
+                    },
+                    data: function (params) {
+                        var query = {
+                            q: params.term,
+                            lang: "{{ project.lang }}",
+                            ssector: sector,
+                            tipo: "{{ 'subsector_id' in campos ? 'ssector':'sector' }}",
+                            project: "{{ project.id }}",
+                            type: 'public'
+                        }
+                        return query;
+                    }
+                }
+            });
+            $('#financed, #organizacion_id').select2({
+                ajax: {
+                    url: "{{ path('ajax_get_orgs') }}",
+                    processResults: function (data) {
+                        console.log(data);
+                        return {results: data.items};
+                    },
+                    data: function (params) {
+                        var query = {
+                            q: params.term,
+                            lang: "{{ project.lang }}",
+                            type: 'public'
+                        }
+                        return query;
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

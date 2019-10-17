@@ -1,0 +1,129 @@
+{#
+   This is the base template used as the application layout which contains the
+   common elements and decorates all the other templates.
+   See https://symfony.com/doc/current/book/templating.html#template-inheritance-and-layouts
+#}
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>{% block title %}Symfony Demo application{% endblock %}</title>
+        <link href="{{ asset('font/css/font-awesome.min.css') }}" rel="stylesheet"> 
+            <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"> 
+            <link rel="stylesheet" href="{{ asset('build/css/app.css') }}">
+            <link rel="stylesheet" href="{{ asset('build/css/admin.css') }}">
+            
+        {% block stylesheets %}
+            
+        {% endblock %}
+
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+
+    <body>
+        <div id="ajax_loader">
+            <div id="ajax_loader_div"><img src="{{asset('images/spinner.gif')}}"></div>
+        </div>
+            <header>
+                <div class="navbar navbar-default navbar-static-top" role="navigation">
+                    <div class="container">
+                        <div class="navbar-header col-md-3 col-lg-2">
+                            <a class="navbar-brand" href="{{ path('homepage') }}">
+                                <i class="fa fa-lock"></i> WEB ADMIN
+                            </a>
+
+                            <button type="button" class="navbar-toggle"
+                                    data-toggle="collapse"
+                                    data-target=".navbar-collapse">
+                                <span class="sr-only">{{ 'menu.toggle_nav'|trans }}</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                        </div>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav navbar-right">
+
+                                {% block header_navigation_links %}
+                                    <li>
+                                        <a href="{{ path('blog_index') }}">
+                                            <i class="fa fa-home" aria-hidden="true"></i> {{ 'menu.homepage'|trans }}
+                                        </a>
+                                    </li>
+
+                                    
+                                {% endblock %}
+
+                                
+                                {% if app.user %}
+                                    <li>
+                                        <a href="{{path('citas')}}">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i> Citas
+                                        </a>
+                                    </li>
+                                {% endif %}
+
+                               
+
+                     
+               
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" id="locales">
+                                        <span class="caret"></span>
+                                        Categorias</span>
+                                    </a>
+                                    <ul class="dropdown-menu locales" role="menu" aria-labelledby="locales">
+                                        {% for item in cats %}
+                                            <li class="" aria-checked="false"  role="menuitem"><a href="{{path('admin_post_index',{'cat':item.id})}}">{{ item.title }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% if app.user %}
+                                    <li>
+                                        <a href="{{ path('security_logout') }}">
+                                            <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+                                        </a>
+                                    </li>
+                                {% endif %}
+                          
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+        <div class="container body-container">
+                <div class="row">
+                    <div id="main" class="col-sm-12">
+                        {% block main %}{% endblock %}
+                    </div>
+
+                    
+                </div>
+        </div>
+
+            <footer>
+                <hr>
+                <div class="container">
+                    <div class="row">
+                        <div id="footer-copyright" class="col-md-6">
+                            <p>&copy; {{ 'now'|date('Y') }} - The Symfony Project</p>
+                            <p>{{ 'mit_license'|trans }}</p>
+                        </div>
+                       
+                    </div>
+                </div>
+            </footer>
+            <script src="{{asset('page/js/jquery.min.js')}}"></script>
+
+            <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+         {% block javascripts %}{% endblock %}
+
+        {# it's not mandatory to set the timezone in localizeddate(). This is done to
+           avoid errors when the 'intl' PHP extension is not available and the application
+           is forced to use the limited "intl polyfill", which only supports UTC and GMT #}
+        <!-- Page rendered on {{ 'now'|localizeddate('long', 'long', null, 'UTC') }} -->
+    </body>
+</html>
